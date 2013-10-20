@@ -112,7 +112,32 @@ namespace SqrlNet.Client
 
 		private string GetDomainFromUrl(string url)
 		{
-			throw new NotImplementedException();
+			// only use this variable for validity checking, never for any cryptographic features because ToLower() will modify nonces
+			var lowerUrl = url.ToLower();
+
+			if(!lowerUrl.StartsWith("sqrl://") || !lowerUrl.StartsWith("qrl://"))
+			{
+				throw new Exception("SQRL urls must begin with 'sqrl://' or 'qrl://'");
+			}
+
+			// strip off scheme
+			var domain = url.Substring(url.IndexOf("://") + 3);
+
+			var pipeIndex = domain.IndexOf('|');
+
+			if(pipeIndex >= 0)
+			{
+				return domain.Substring(0, pipeIndex);
+			}
+
+			var slashIndex = domain.IndexOf('/');
+
+			if(slashIndex < 0)
+			{
+				throw new Exception("SQRL urls must contain a '/'");
+			}
+
+			return domain.Substring(0, slashIndex);
 		}
 
 		#endregion
