@@ -39,6 +39,9 @@
     <Compile Include="Server\ISqrlServer.cs" />
     <Compile Include="Server\SqrlServer.cs" />
     <Compile Include="SqrlData.cs" />
+    <Compile Include="Crypto\IHmacGenerator.cs" />
+    <Compile Include="Crypto\ISqrlSigner.cs" />
+    <Compile Include="Crypto\IPbkdfHandler.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
