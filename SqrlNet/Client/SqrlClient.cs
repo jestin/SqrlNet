@@ -31,16 +31,16 @@ namespace SqrlNet.Client
 
 		public byte[] CalculateMasterKey(byte[] masterIdentityKey, string password)
 		{
-			if(masterIdentityKey.Length != 64)
+			if(masterIdentityKey.Length != 32)
 			{
-				throw new Exception("master identity key must be 256 bits (64 bytes).");
+				throw new Exception("master identity key must be 256 bits (32 bytes).");
 			}
 
 			var passwordKey = _pbkdfHandler.GeneratePasswordKey(password);
 
-			if(passwordKey.Length != 64)
+			if(passwordKey.Length != 32)
 			{
-				throw new Exception("password key must be 256 bits (64 bytes).  Check validity of PBKDF.");
+				throw new Exception("password key must be 256 bits (32 bytes).  Check validity of PBKDF.");
 			}
 
 			return Xor(masterIdentityKey, passwordKey);
@@ -48,16 +48,16 @@ namespace SqrlNet.Client
 
 		public byte[] CalculateMasterIdentityKey(byte[] masterKey, string password)
 		{
-			if(masterKey.Length != 64)
+			if(masterKey.Length != 32)
 			{
-				throw new Exception("master key must be 256 bits (64 bytes).");
+				throw new Exception("master key must be 256 bits (32 bytes).");
 			}
 
 			var passwordKey = _pbkdfHandler.GeneratePasswordKey(password);
 
-			if(passwordKey.Length != 64)
+			if(passwordKey.Length != 32)
 			{
-				throw new Exception("password key must be 256 bits (64 bytes).  Check validity of PBKDF.");
+				throw new Exception("password key must be 256 bits (32 bytes).  Check validity of PBKDF.");
 			}
 
 			return Xor(masterKey, passwordKey);
@@ -115,7 +115,7 @@ namespace SqrlNet.Client
 			// only use this variable for validity checking, never for any cryptographic features because ToLower() will modify nonces
 			var lowerUrl = url.ToLower();
 
-			if(!lowerUrl.StartsWith("sqrl://") || !lowerUrl.StartsWith("qrl://"))
+			if(!lowerUrl.StartsWith("sqrl://") && !lowerUrl.StartsWith("qrl://"))
 			{
 				throw new Exception("SQRL urls must begin with 'sqrl://' or 'qrl://'");
 			}

@@ -5,10 +5,10 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B4C916F0-7A49-4858-B2D6-DAE958790635}</ProjectGuid>
+    <ProjectGuid>{E63F3D25-4D4F-42E7-A7B2-98A83F97B834}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>SqrlNet</RootNamespace>
-    <AssemblyName>SqrlNet</AssemblyName>
+    <RootNamespace>SqrlNetTests</RootNamespace>
+    <AssemblyName>SqrlNetTests</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,22 +30,23 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="nunit.framework, Version=2.6.0.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
+      <Private>False</Private>
+      <Package>nunit</Package>
+    </Reference>
+    <Reference Include="Rhino.Mocks">
+      <HintPath>..\ReferenceDlls\Rhino.Mocks.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Client\SqrlClient.cs" />
-    <Compile Include="Client\ISqrlClient.cs" />
-    <Compile Include="Server\ISqrlServer.cs" />
-    <Compile Include="Server\SqrlServer.cs" />
-    <Compile Include="SqrlData.cs" />
-    <Compile Include="Crypto\IHmacGenerator.cs" />
-    <Compile Include="Crypto\ISqrlSigner.cs" />
-    <Compile Include="Crypto\IPbkdfHandler.cs" />
+    <Compile Include="SqrlClientTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Folder Include="Crypto\" />
-    <Folder Include="Client\" />
-    <Folder Include="Server\" />
+    <ProjectReference Include="..\SqrlNet\SqrlNet.csproj">
+      <Project>{B4C916F0-7A49-4858-B2D6-DAE958790635}</Project>
+      <Name>SqrlNet</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
