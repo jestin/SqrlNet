@@ -48,9 +48,23 @@ namespace SqrlNet.Client
 
 		public byte[] CalculateMasterIdentityKey(byte[] masterKey, string password)
 		{
-			throw new System.NotImplementedException();
+			if(masterKey.Length != 64)
+			{
+				throw new Exception("master key must be 256 bits (64 bytes).");
+			}
+
+			var passwordKey = _pbkdfHandler.GeneratePasswordKey(password);
+
+			if(passwordKey.Length != 64)
+			{
+				throw new Exception("password key must be 256 bits (64 bytes).  Check validity of PBKDF.");
+			}
+
+			return Xor(masterKey, passwordKey);
 		}
 
+		// TODO:  Determine if this method is even a good idea, since we want as much entropy as possible when generating the master key
+		// Gibson suggests using data from accelerometers and cameras in order to generate this value
 		public byte[] GenerateMasterKey()
 		{
 			throw new System.NotImplementedException();
@@ -58,12 +72,21 @@ namespace SqrlNet.Client
 
 		public SqrlData GetSqrlDataForLogin(byte[] masterKey, string url)
 		{
-			throw new System.NotImplementedException();
+			var domain = GetDomainFromUrl(url);
+			var privateKey = _hmacGenerator.GeneratePrivateKey(masterKey, domain);
+
+			return new SqrlData
+				{
+					Url = url,
+					Signature = _signer.Sign(privateKey, url),
+					PublicKey = _signer.MakePublicKey(privateKey)
+				};
 		}
 
 		public SqrlData GetSqrlDataForLogin(byte[] masterIdentityKey, string password, string url)
 		{
-			throw new System.NotImplementedException();
+			var masterKey = CalculateMasterKey(masterIdentityKey, password);
+			return GetSqrlDataForLogin(masterKey, url);
 		}
 
 		#endregion
@@ -85,6 +108,11 @@ namespace SqrlNet.Client
 			}
 
 			return result;
+		}
+
+		private string GetDomainFromUrl(string url)
+		{
+			throw new NotImplementedException();
 		}
 
 		#endregion
