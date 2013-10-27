@@ -44,7 +44,11 @@ namespace SqrlNet.Client
 				throw new Exception("password key must be 256 bits (32 bytes).  Check validity of PBKDF.");
 			}
 
-			return Xor(masterIdentityKey, passwordKey);
+			var masterKey =  Xor(masterIdentityKey, passwordKey);
+
+			Array.Clear(passwordKey, 0, passwordKey.Length);
+
+			return masterKey;
 		}
 
 		public byte[] CalculateMasterIdentityKey(byte[] masterKey, string password, byte[] salt)
@@ -61,7 +65,11 @@ namespace SqrlNet.Client
 				throw new Exception("password key must be 256 bits (32 bytes).  Check validity of PBKDF.");
 			}
 
-			return Xor(masterKey, passwordKey);
+			var masterIdentityKey = Xor(masterKey, passwordKey);
+
+			Array.Clear(passwordKey, 0, passwordKey.Length);
+
+			return masterIdentityKey;
 		}
 
 		public SqrlData GetSqrlDataForLogin(byte[] masterKey, string url)
@@ -122,6 +130,7 @@ namespace SqrlNet.Client
 			identity.MasterIdentityKey = Xor(passwordKey, masterKey);
 
 			Array.Clear(masterKey, 0, masterKey.Length);
+			Array.Clear(passwordKey, 0, passwordKey.Length);
 
 			return identity;
 		}
@@ -149,6 +158,8 @@ namespace SqrlNet.Client
 			identity.MasterIdentityKey = Xor(newPasswordKey, masterKey);
 
 			Array.Clear(masterKey, 0, masterKey.Length);
+			Array.Clear(oldPasswordKey, 0, oldPasswordKey.Length);
+			Array.Clear(newPasswordKey, 0, newPasswordKey.Length);
 
 			return identity;
 		}
