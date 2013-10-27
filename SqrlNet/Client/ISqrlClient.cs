@@ -19,7 +19,10 @@ namespace SqrlNet.Client
 		/// <param name='password'>
 		/// The password that converts the master identity key into the master key
 		/// </param>
-		byte[] CalculateMasterKey(byte[] masterIdentityKey, string password);
+		/// <param name='salt'>
+		/// A salt for adding entropy to the password hash
+		/// </param>
+		byte[] CalculateMasterKey(byte[] masterIdentityKey, string password, byte[] salt);
 
 		/// <summary>
 		/// Calculates the master identity key that is stored on the client.  This is needed when changing passwords.
@@ -33,7 +36,10 @@ namespace SqrlNet.Client
 		/// <param name='password'>
 		/// The password to be used to calculate the master identity key.
 		/// </param>
-		byte[] CalculateMasterIdentityKey(byte[] masterKey, string password);
+		/// <param name='salt'>
+		/// A salt for adding entropy to the password hash
+		/// </param>
+		byte[] CalculateMasterIdentityKey(byte[] masterKey, string password, byte[] salt);
 
 		/// <summary>
 		/// Generates the master key.
@@ -72,6 +78,6 @@ namespace SqrlNet.Client
 		/// <param name='url'>
 		/// URL.
 		/// </param>
-		SqrlData GetSqrlDataForLogin(byte[] masterIdentityKey, string password, string url);
+		SqrlData GetSqrlDataForLogin(byte[] masterIdentityKey, string password, byte[] salt, string url);
 	}
 }

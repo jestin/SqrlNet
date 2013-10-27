@@ -19,7 +19,7 @@ namespace libsodiumnettests
 		}
 
 		[Test]
-		public void Key_Generation_Is_Deterministic()
+		public void Seeded_Key_Generation_Is_Deterministic()
 		{
 			var rng = new RNGCryptoServiceProvider();
 			var seed = new byte[32];
@@ -31,6 +31,16 @@ namespace libsodiumnettests
 
 			Assert.AreEqual(kp1.PrivateKey, kp2.PrivateKey);
 			Assert.AreEqual(kp1.PublicKey, kp2.PublicKey);
+		}
+
+		[Test]
+		public void UnSeeded_Key_Generation_Is_NonDeterministic()
+		{
+			var kp1 = PublicKeyAuth.GenerateKeyPair();
+			var kp2 = PublicKeyAuth.GenerateKeyPair();
+
+			Assert.AreNotEqual(kp1.PrivateKey, kp2.PrivateKey);
+			Assert.AreNotEqual(kp1.PublicKey, kp2.PublicKey);
 		}
 	}
 }

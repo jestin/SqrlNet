@@ -1,4 +1,5 @@
 using System;
+using System.Text;
 using CryptSharp.Utility;
 
 namespace SqrlNet.Crypto.CryptSharp
@@ -11,9 +12,18 @@ namespace SqrlNet.Crypto.CryptSharp
 
 		#region IPbkdfHandler implementation
 
-		public byte[] GeneratePasswordKey(string password)
+		public byte[] GeneratePasswordKey(string password, byte[] salt)
 		{
-			throw new System.NotImplementedException();
+			var key = new byte[32];
+			SCrypt.ComputeKey(Encoding.UTF8.GetBytes(password),
+			                  salt,
+			                  32,
+			                  1024,
+			                  1,
+			                  null,
+			                  key);
+
+			return key;
 		}
 
 		public bool VerifyPassword(string password, byte[] partialHash)

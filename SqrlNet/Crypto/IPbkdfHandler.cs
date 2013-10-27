@@ -16,7 +16,10 @@ namespace SqrlNet.Crypto
 		/// <param name='password'>
 		/// Password.
 		/// </param>
-		byte[] GeneratePasswordKey(string password);
+		/// <param name='salt'>
+		/// Salt.
+		/// </param>
+		byte[] GeneratePasswordKey(string password, byte[] salt);
 
 		/// <summary>
 		/// Verifies the password.

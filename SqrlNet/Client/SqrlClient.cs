@@ -29,14 +29,14 @@ namespace SqrlNet.Client
 
 		#region ISqrlClient implementation
 
-		public byte[] CalculateMasterKey(byte[] masterIdentityKey, string password)
+		public byte[] CalculateMasterKey(byte[] masterIdentityKey, string password, byte[] salt)
 		{
 			if(masterIdentityKey.Length != 32)
 			{
 				throw new Exception("master identity key must be 256 bits (32 bytes).");
 			}
 
-			var passwordKey = _pbkdfHandler.GeneratePasswordKey(password);
+			var passwordKey = _pbkdfHandler.GeneratePasswordKey(password, salt);
 
 			if(passwordKey.Length != 32)
 			{
@@ -46,14 +46,14 @@ namespace SqrlNet.Client
 			return Xor(masterIdentityKey, passwordKey);
 		}
 
-		public byte[] CalculateMasterIdentityKey(byte[] masterKey, string password)
+		public byte[] CalculateMasterIdentityKey(byte[] masterKey, string password, byte[] salt)
 		{
 			if(masterKey.Length != 32)
 			{
 				throw new Exception("master key must be 256 bits (32 bytes).");
 			}
 
-			var passwordKey = _pbkdfHandler.GeneratePasswordKey(password);
+			var passwordKey = _pbkdfHandler.GeneratePasswordKey(password, salt);
 
 			if(passwordKey.Length != 32)
 			{
@@ -83,9 +83,9 @@ namespace SqrlNet.Client
 				};
 		}
 
-		public SqrlData GetSqrlDataForLogin(byte[] masterIdentityKey, string password, string url)
+		public SqrlData GetSqrlDataForLogin(byte[] masterIdentityKey, string password, byte[] salt, string url)
 		{
-			var masterKey = CalculateMasterKey(masterIdentityKey, password);
+			var masterKey = CalculateMasterKey(masterIdentityKey, password, salt);
 			return GetSqrlDataForLogin(masterKey, url);
 		}
 

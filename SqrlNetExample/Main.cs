@@ -2,6 +2,7 @@ using System;
 using SqrlNet.Crypto;
 using System.Security.Cryptography;
 using System.Text;
+using SqrlNet.Client;
 
 namespace SqrlNetExample
 {
@@ -11,21 +12,29 @@ namespace SqrlNetExample
 		{
 			var rngCsp = new RNGCryptoServiceProvider();
 			ISqrlSigner signer = new SqrlSigner();
+			IPbkdfHandler pbkdfHandler = new PbkdfHandler();
+			IHmacGenerator hmac = new HmacGenerator();
+			ISqrlClient client = new SqrlClient(pbkdfHandler, hmac, signer);
 
-			var privateKey = new byte[64];
-			rngCsp.GetBytes(privateKey);
-			var publicKey = signer.MakePublicKey(privateKey);
-			var message = "This is just a test";
+			var masterIdentityKey = new byte[32];
+			rngCsp.GetBytes(masterIdentityKey);
 
-			var signedMessage = signer.Sign(privateKey, message);
+			var salt = new byte[32];
+			rngCsp.GetBytes(salt);
 
-			var decryptedMessage = signer.Verify(publicKey, signedMessage);
+			Console.Write("Password:  ");
+			var password = Console.ReadLine();
 
-			Console.WriteLine("Private Key: {0}", Convert.ToBase64String(privateKey));
-			Console.WriteLine("Public Key: {0}", Convert.ToBase64String(publicKey));
-			Console.WriteLine("Message: {0}", message);
-			Console.WriteLine("Signed Message: {0}", Convert.ToBase64String(signedMessage));
-			Console.WriteLine("Decrypted Message: {0}", Encoding.UTF8.GetString(decryptedMessage));
+			var url = "sqrl://www.example.com/sqrl?KJAnLFDQWWmvt10yVjNDoQ81uTvNorPrr53PPRJesz";
+
+			var sqrlData = client.GetSqrlDataForLogin(masterIdentityKey, password, salt, url);
+
+			var decryptedSignature = signer.Verify(sqrlData.PublicKey, sqrlData.Signature);
+
+			Console.WriteLine("Url: {0}", sqrlData.Url);
+			Console.WriteLine("Public Key: {0}", Convert.ToBase64String(sqrlData.PublicKey));
+			Console.WriteLine("Signature: {0}", Convert.ToBase64String(sqrlData.Signature));
+			Console.WriteLine("Decrypted Signature: {0}", Encoding.UTF8.GetString(decryptedSignature));
 		}
 	}
 }
