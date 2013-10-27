@@ -130,16 +130,8 @@ namespace SqrlNet.Client
 
 		private string GetDomainFromUrl(string url)
 		{
-			// only use this variable for validity checking, never for any cryptographic features because ToLower() will modify nonces
-			var lowerUrl = url.ToLower();
-
-			if(!lowerUrl.StartsWith("sqrl://") && !lowerUrl.StartsWith("qrl://"))
-			{
-				throw new Exception("SQRL urls must begin with 'sqrl://' or 'qrl://'");
-			}
-
 			// strip off scheme
-			var domain = url.Substring(url.IndexOf("://") + 3);
+			var domain = GetUrlWithoutProtocol(url);
 
 			var pipeIndex = domain.IndexOf('|');
 

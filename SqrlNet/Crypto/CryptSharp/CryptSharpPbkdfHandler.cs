@@ -1,6 +1,7 @@
 using System;
 using System.Text;
 using CryptSharp.Utility;
+using System.Security.Cryptography;
 
 namespace SqrlNet.Crypto.CryptSharp
 {
@@ -29,6 +30,13 @@ namespace SqrlNet.Crypto.CryptSharp
 		public bool VerifyPassword(string password, byte[] partialHash)
 		{
 			throw new System.NotImplementedException();
+		}
+
+		public byte[] GetPartialHashFromPasswordKey(byte[] passwordKey)
+		{
+			var sha256 = SHA256Managed.Create();
+			var hash = sha256.ComputeHash(passwordKey);
+			return new ArraySegment<byte>(hash, 16, 16).Array;
 		}
 
 		#endregion
