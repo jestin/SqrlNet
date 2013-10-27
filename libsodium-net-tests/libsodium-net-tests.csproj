@@ -3,12 +3,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>10.0.0</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{B4C916F0-7A49-4858-B2D6-DAE958790635}</ProjectGuid>
+    <ProjectGuid>{4A168610-7001-4FBE-AECE-2628B5749F6B}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>SqrlNet</RootNamespace>
-    <AssemblyName>SqrlNet</AssemblyName>
+    <RootNamespace>libsodiumnettests</RootNamespace>
+    <AssemblyName>libsodium-net-tests</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,36 +30,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="nunit.framework, Version=2.6.0.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77">
+      <Private>False</Private>
+      <Package>nunit</Package>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="Client\SqrlClient.cs" />
-    <Compile Include="Client\ISqrlClient.cs" />
-    <Compile Include="Server\ISqrlServer.cs" />
-    <Compile Include="Server\SqrlServer.cs" />
-    <Compile Include="SqrlData.cs" />
-    <Compile Include="Crypto\IHmacGenerator.cs" />
-    <Compile Include="Crypto\ISqrlSigner.cs" />
-    <Compile Include="Crypto\IPbkdfHandler.cs" />
-    <Compile Include="Crypto\CryptSharp\CryptSharpPbkdfHandler.cs" />
-    <Compile Include="Crypto\HmacGenerator.cs" />
-    <Compile Include="Crypto\Sodium\SodiumSigner.cs" />
-    <Compile Include="Crypto\SqrlSigner.cs" />
-    <Compile Include="Crypto\PbkdfHandler.cs" />
+    <Compile Include="PublicKeyAuthTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Folder Include="Crypto\" />
-    <Folder Include="Client\" />
-    <Folder Include="Server\" />
-    <Folder Include="Crypto\CryptSharp\" />
-    <Folder Include="Crypto\Sodium\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\cryptsharp\CryptSharp\CryptSharp.csproj">
-      <Project>{5E33051D-1471-4E5A-B94E-BD0E8FFFF99E}</Project>
-      <Name>CryptSharp</Name>
-    </ProjectReference>
     <ProjectReference Include="..\libsodium-net\libsodium-net\libsodium-net.csproj">
       <Project>{48C1DF3F-2E09-4088-89B2-6E1B058E3100}</Project>
       <Name>libsodium-net</Name>

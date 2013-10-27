@@ -34,3 +34,5 @@ stats
 test-results/
 *~
 cookies.txt
+libsodium-net*/
+cryptsharp*/

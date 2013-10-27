@@ -1,0 +1,6 @@
+[submodule "cryptsharp"]
+	path = cryptsharp
+	url = git@github.com:jestin/cryptsharp.git
+[submodule "libsodium-net"]
+	path = libsodium-net
+	url = git@github.com:jestin/libsodium-net.git
