@@ -112,12 +112,15 @@ namespace SqrlNet.Client
 		/// <param name='oldPassword'>
 		/// Old password.
 		/// </param>
+		/// <param name='oldSalt'>
+		/// Old salt.
+		/// </param>
 		/// <param name='newPassword'>
 		/// New password.
 		/// </param>
 		/// <param name='masterIdentityKey'>
 		/// Master identity key.
 		/// </param>
-		SqrlIdentity ChangePassword(string oldPassword, string newPassword, byte[] masterIdentityKey);
+		SqrlIdentity ChangePassword(string oldPassword, byte[] oldSalt, string newPassword, byte[] masterIdentityKey);
 	}
 }

@@ -69,18 +69,26 @@ namespace SqrlNet.Client
 			var domain = GetDomainFromUrl(url);
 			var privateKey = _hmacGenerator.GeneratePrivateKey(masterKey, domain);
 
-			return new SqrlData
+			var sqrlData = new SqrlData
 				{
 					Url = url,
 					Signature = _signer.Sign(privateKey, GetUrlWithoutProtocol(url)),
 					PublicKey = _signer.MakePublicKey(privateKey)
 				};
+
+			Array.Clear(privateKey, 0, privateKey.Length);
+
+			return sqrlData;
 		}
 
 		public SqrlData GetSqrlDataForLogin(byte[] masterIdentityKey, string password, byte[] salt, string url)
 		{
 			var masterKey = CalculateMasterKey(masterIdentityKey, password, salt);
-			return GetSqrlDataForLogin(masterKey, url);
+			var sqrlData = GetSqrlDataForLogin(masterKey, url);
+
+			Array.Clear(masterKey, 0, masterKey.Length);
+
+			return sqrlData;
 		}
 
 		public SqrlData GetSqrlDataForLogin(SqrlIdentity identity, string password, string url)
@@ -107,17 +115,42 @@ namespace SqrlNet.Client
 			// call the SCrypt PBKDF to create the password key
 			var passwordKey = _pbkdfHandler.GeneratePasswordKey(password, identity.Salt);
 
+			// get the partial hash for password verification
 			identity.PartialPasswordHash = _pbkdfHandler.GetPartialHashFromPasswordKey(passwordKey);
 
 			// XOR the master key and the password key to get the master identity key
 			identity.MasterIdentityKey = Xor(passwordKey, masterKey);
 
+			Array.Clear(masterKey, 0, masterKey.Length);
+
 			return identity;
 		}
 
-		public SqrlIdentity ChangePassword(string oldPassword, string newPassword, byte[] masterIdentityKey)
+		public SqrlIdentity ChangePassword(string oldPassword, byte[] oldSalt, string newPassword, byte[] masterIdentityKey)
 		{
-			throw new System.NotImplementedException();
+			var identity = new SqrlIdentity();
+			var rngCsp = new RNGCryptoServiceProvider();
+
+			// calculate the master key
+			var oldPasswordKey = _pbkdfHandler.GeneratePasswordKey(oldPassword, oldSalt);
+			var masterKey = Xor(oldPasswordKey, masterIdentityKey);
+
+			// generate new salt
+			identity.Salt = new byte[8];
+			rngCsp.GetBytes(identity.Salt);
+
+			// generate the new password key
+			var newPasswordKey = _pbkdfHandler.GeneratePasswordKey(newPassword, identity.Salt);
+
+			// get the partial hash for password verification
+			identity.PartialPasswordHash = _pbkdfHandler.GetPartialHashFromPasswordKey(newPasswordKey);
+
+			// XOR the master key and the new password key to get the master identity key
+			identity.MasterIdentityKey = Xor(newPasswordKey, masterKey);
+
+			Array.Clear(masterKey, 0, masterKey.Length);
+
+			return identity;
 		}
 
 		#endregion
