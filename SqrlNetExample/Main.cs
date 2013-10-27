@@ -19,7 +19,7 @@ namespace SqrlNetExample
 			var masterIdentityKey = new byte[32];
 			rngCsp.GetBytes(masterIdentityKey);
 
-			var salt = new byte[32];
+			var salt = new byte[8];
 			rngCsp.GetBytes(salt);
 
 			Console.Write("Password:  ");
