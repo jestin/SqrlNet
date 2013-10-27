@@ -73,6 +73,23 @@ namespace SqrlNet.Client
 		SqrlData GetSqrlDataForLogin(byte[] masterIdentityKey, string password, byte[] salt, string url);
 
 		/// <summary>
+		/// Gets the sqrl data for login.
+		/// </summary>
+		/// <returns>
+		/// The sqrl data for login.
+		/// </returns>
+		/// <param name='identity'>
+		/// Identity.
+		/// </param>
+		/// <param name='password'>
+		/// Password.
+		/// </param>
+		/// <param name='url'>
+		/// URL.
+		/// </param>
+		SqrlData GetSqrlDataForLogin(SqrlIdentity identity, string password, string url);
+
+		/// <summary>
 		/// Creates an identity for use with SQRL.
 		/// </summary>
 		/// <returns>

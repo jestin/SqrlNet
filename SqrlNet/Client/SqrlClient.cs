@@ -83,6 +83,11 @@ namespace SqrlNet.Client
 			return GetSqrlDataForLogin(masterKey, url);
 		}
 
+		public SqrlData GetSqrlDataForLogin(SqrlIdentity identity, string password, string url)
+		{
+			return GetSqrlDataForLogin(identity.MasterIdentityKey, password, identity.Salt, url);
+		}
+
 		public SqrlIdentity CreateIdentity(string password, byte[] entropy)
 		{
 			var identity = new SqrlIdentity();
