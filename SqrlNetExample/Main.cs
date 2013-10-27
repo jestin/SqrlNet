@@ -10,24 +10,20 @@ namespace SqrlNetExample
 	{
 		public static void Main(string[] args)
 		{
-			var rngCsp = new RNGCryptoServiceProvider();
 			ISqrlSigner signer = new SqrlSigner();
 			IPbkdfHandler pbkdfHandler = new PbkdfHandler();
 			IHmacGenerator hmac = new HmacGenerator();
 			ISqrlClient client = new SqrlClient(pbkdfHandler, hmac, signer);
 
-			var masterIdentityKey = new byte[32];
-			rngCsp.GetBytes(masterIdentityKey);
-
-			var salt = new byte[8];
-			rngCsp.GetBytes(salt);
-
 			Console.Write("Password:  ");
 			var password = Console.ReadLine();
 
+			// very insecure way of gathering entropy, but good enough for testing temporary identities
+			var identity = client.CreateIdentity(password, Encoding.UTF8.GetBytes(DateTime.Now.ToLongDateString()));
+
 			var url = "sqrl://www.example.com/sqrl?KJAnLFDQWWmvt10yVjNDoQ81uTvNorPrr53PPRJesz";
 
-			var sqrlData = client.GetSqrlDataForLogin(masterIdentityKey, password, salt, url);
+			var sqrlData = client.GetSqrlDataForLogin(identity.MasterIdentityKey, password, identity.Salt, url);
 
 			var decryptedSignature = signer.Verify(sqrlData.PublicKey, sqrlData.Signature);
 

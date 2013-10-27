@@ -42,14 +42,6 @@ namespace SqrlNet.Client
 		byte[] CalculateMasterIdentityKey(byte[] masterKey, string password, byte[] salt);
 
 		/// <summary>
-		/// Generates the master key.
-		/// </summary>
-		/// <returns>
-		/// The master key.
-		/// </returns>
-		byte[] GenerateMasterKey();
-
-		/// <summary>
 		/// Gets the sqrl data for login.
 		/// </summary>
 		/// <returns>
@@ -79,5 +71,36 @@ namespace SqrlNet.Client
 		/// URL.
 		/// </param>
 		SqrlData GetSqrlDataForLogin(byte[] masterIdentityKey, string password, byte[] salt, string url);
+
+		/// <summary>
+		/// Creates an identity for use with SQRL.
+		/// </summary>
+		/// <returns>
+		/// All the data needed to define an identity.
+		/// </returns>
+		/// <param name='password'>
+		/// Password.
+		/// </param>
+		/// <param name='entropy'>
+		/// Random data from some non-deterministic source that allows for more secure master key generation.
+		/// </param>
+		SqrlIdentity CreateIdentity(string password, byte[] entropy);
+
+		/// <summary>
+		/// Changes the password.
+		/// </summary>
+		/// <returns>
+		/// The new identity to be stored
+		/// </returns>
+		/// <param name='oldPassword'>
+		/// Old password.
+		/// </param>
+		/// <param name='newPassword'>
+		/// New password.
+		/// </param>
+		/// <param name='masterIdentityKey'>
+		/// Master identity key.
+		/// </param>
+		SqrlIdentity ChangePassword(string oldPassword, string newPassword, byte[] masterIdentityKey);
 	}
 }

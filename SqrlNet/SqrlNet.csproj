@@ -46,6 +46,7 @@
     <Compile Include="Crypto\Sodium\SodiumSigner.cs" />
     <Compile Include="Crypto\SqrlSigner.cs" />
     <Compile Include="Crypto\PbkdfHandler.cs" />
+    <Compile Include="SqrlIdentity.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

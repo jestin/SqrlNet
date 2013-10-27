@@ -27,7 +27,7 @@ namespace SqrlNet.Crypto.CryptSharp
 			return key;
 		}
 
-		public bool VerifyPassword(string password, byte[] partialHash)
+		public bool VerifyPassword(string password, byte[] salt, byte[] partialHash)
 		{
 			throw new System.NotImplementedException();
 		}

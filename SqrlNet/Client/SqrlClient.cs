@@ -1,4 +1,5 @@
 using System;
+using System.Security.Cryptography;
 using SqrlNet.Crypto;
 
 namespace SqrlNet.Client
@@ -63,13 +64,6 @@ namespace SqrlNet.Client
 			return Xor(masterKey, passwordKey);
 		}
 
-		// TODO:  Determine if this method is even a good idea, since we want as much entropy as possible when generating the master key
-		// Gibson suggests using data from accelerometers and cameras in order to generate this value
-		public byte[] GenerateMasterKey()
-		{
-			throw new System.NotImplementedException();
-		}
-
 		public SqrlData GetSqrlDataForLogin(byte[] masterKey, string url)
 		{
 			var domain = GetDomainFromUrl(url);
@@ -87,6 +81,38 @@ namespace SqrlNet.Client
 		{
 			var masterKey = CalculateMasterKey(masterIdentityKey, password, salt);
 			return GetSqrlDataForLogin(masterKey, url);
+		}
+
+		public SqrlIdentity CreateIdentity(string password, byte[] entropy)
+		{
+			var identity = new SqrlIdentity();
+
+			identity.Salt = new byte[8];
+			var masterKey = new byte[32];
+
+			var rngCsp = new RNGCryptoServiceProvider();
+			var sha256 = SHA256Managed.Create();
+
+			rngCsp.GetBytes(identity.Salt);
+			rngCsp.GetBytes(masterKey);
+
+			// XOR the generated master key with the entropy (making any potential backdoors in the implementation of RNGCryptoServiceProvider irrelevent)
+			masterKey = Xor(masterKey, sha256.ComputeHash(entropy));
+
+			// call the SCrypt PBKDF to create the password key
+			var passwordKey = _pbkdfHandler.GeneratePasswordKey(password, identity.Salt);
+
+			identity.PartialPasswordHash = _pbkdfHandler.GetPartialHashFromPasswordKey(passwordKey);
+
+			// XOR the master key and the password key to get the master identity key
+			identity.MasterIdentityKey = Xor(passwordKey, masterKey);
+
+			return identity;
+		}
+
+		public SqrlIdentity ChangePassword(string oldPassword, string newPassword, byte[] masterIdentityKey)
+		{
+			throw new System.NotImplementedException();
 		}
 
 		#endregion
