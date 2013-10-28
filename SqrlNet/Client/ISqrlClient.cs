@@ -122,5 +122,19 @@ namespace SqrlNet.Client
 		/// Master identity key.
 		/// </param>
 		SqrlIdentity ChangePassword(string oldPassword, byte[] oldSalt, string newPassword, byte[] masterIdentityKey);
+
+		/// <summary>
+		/// Verifies the password.
+		/// </summary>
+		/// <returns>
+		/// The password.
+		/// </returns>
+		/// <param name='password'>
+		/// The password.
+		/// </param>
+		/// <param name='identity'>
+		/// The identity to verify against.
+		/// </param>
+		bool VerifyPassword(string password, SqrlIdentity identity);
 	}
 }

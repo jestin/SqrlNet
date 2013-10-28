@@ -164,6 +164,11 @@ namespace SqrlNet.Client
 			return identity;
 		}
 
+		public bool VerifyPassword(string password, SqrlIdentity identity)
+		{
+			return _pbkdfHandler.VerifyPassword(password, identity.Salt, identity.PartialPasswordHash);
+		}
+
 		#endregion
 
 		#region Private Methods

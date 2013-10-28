@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using NUnit.Framework;
 using System.Security.Cryptography;
 using Sodium;
@@ -29,8 +30,8 @@ namespace libsodiumnettests
 			var kp1 = PublicKeyAuth.GenerateKeyPair(seed);
 			var kp2 = PublicKeyAuth.GenerateKeyPair(seed);
 
-			Assert.AreEqual(kp1.PrivateKey, kp2.PrivateKey);
-			Assert.AreEqual(kp1.PublicKey, kp2.PublicKey);
+			Assert.That(kp1.PrivateKey.SequenceEqual(kp2.PrivateKey));
+			Assert.That(kp1.PublicKey.SequenceEqual(kp2.PublicKey));
 		}
 
 		[Test]
@@ -39,8 +40,8 @@ namespace libsodiumnettests
 			var kp1 = PublicKeyAuth.GenerateKeyPair();
 			var kp2 = PublicKeyAuth.GenerateKeyPair();
 
-			Assert.AreNotEqual(kp1.PrivateKey, kp2.PrivateKey);
-			Assert.AreNotEqual(kp1.PublicKey, kp2.PublicKey);
+			Assert.That(!kp1.PrivateKey.SequenceEqual(kp2.PrivateKey));
+			Assert.That(!kp1.PublicKey.SequenceEqual(kp2.PublicKey));
 		}
 	}
 }

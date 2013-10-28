@@ -21,6 +21,11 @@ namespace SqrlNetExample
 			// very insecure way of gathering entropy, but good enough for testing temporary identities
 			var identity = client.CreateIdentity(password, Encoding.UTF8.GetBytes(DateTime.Now.ToLongDateString()));
 
+			if(client.VerifyPassword(password, identity))
+			{
+				Console.WriteLine("Password verified");
+			}
+
 			var url = "sqrl://www.example.com/sqrl?KJAnLFDQWWmvt10yVjNDoQ81uTvNorPrr53PPRJesz";
 
 			var sqrlData = client.GetSqrlDataForLogin(identity.MasterIdentityKey, password, identity.Salt, url);
