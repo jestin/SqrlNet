@@ -3,6 +3,7 @@ using NUnit.Framework;
 using Rhino.Mocks;
 using SqrlNet.Client;
 using SqrlNet.Crypto;
+using SqrlNet;
 
 namespace SqrlNetTests
 {
@@ -120,6 +121,68 @@ namespace SqrlNetTests
 
 			_mocks.VerifyAll();
 			Assert.AreEqual(result.Url, url);
+		}
+
+		#endregion
+
+		#region CreateIdentity Tests
+
+		[Test]
+		public void CreateIdentity_Succeeds()
+		{
+			_pbkdfHandler.Expect(x => x.GeneratePasswordKey(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything)).Return(new byte[32]);
+			_pbkdfHandler.Expect(x => x.GetPartialHashFromPasswordKey(Arg<byte[]>.Is.Anything)).Return(new byte[16]);
+			_mocks.ReplayAll();
+
+			var result = _client.CreateIdentity("password", new byte[4096]);
+
+			_mocks.VerifyAll();
+			Assert.IsNotNull(result);
+		}
+
+		#endregion
+
+		#region ChangePassword Tests
+
+		[Test]
+		public void ChangePassword_Succeeds()
+		{
+			_pbkdfHandler.Expect(x => x.GeneratePasswordKey(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything)).Return(new byte[32]).Repeat.Times(2);
+			_pbkdfHandler.Expect(x => x.GetPartialHashFromPasswordKey(Arg<byte[]>.Is.Anything)).Return(new byte[16]);
+			_mocks.ReplayAll();
+
+			var result = _client.ChangePassword("oldpassword", new byte[8], "newpassword", new byte[32]);
+
+			_mocks.VerifyAll();
+			Assert.IsNotNull(result);
+		}
+
+		#endregion
+
+		#region VerifyPassword Tests
+
+		[Test]
+		public void VerifyPassword_Succeeds()
+		{
+			_pbkdfHandler.Expect(x => x.VerifyPassword(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything, Arg<byte[]>.Is.Anything)).Return(true);
+			_mocks.ReplayAll();
+
+			var result = _client.VerifyPassword("password", new SqrlIdentity());
+
+			_mocks.VerifyAll();
+			Assert.IsTrue(result);
+		}
+
+		[Test]
+		public void VerifyPassword_Fails()
+		{
+			_pbkdfHandler.Expect(x => x.VerifyPassword(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything, Arg<byte[]>.Is.Anything)).Return(false);
+			_mocks.ReplayAll();
+
+			var result = _client.VerifyPassword("password", new SqrlIdentity());
+
+			_mocks.VerifyAll();
+			Assert.IsFalse(result);
 		}
 
 		#endregion
