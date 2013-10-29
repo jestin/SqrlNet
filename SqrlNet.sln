@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqrlNetExample", "SqrlNetEx
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "libsodium-net-tests", "libsodium-net-tests\libsodium-net-tests.csproj", "{4A168610-7001-4FBE-AECE-2628B5749F6B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SqrlGtk", "SqrlGtk\SqrlGtk.csproj", "{65EF599F-BF87-4CBA-81CF-FBB0ADDEE9C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,12 @@ Global
 		{5E33051D-1471-4E5A-B94E-BD0E8FFFF99E}.Default|Any CPU.Build.0 = Debug|Any CPU
 		{5E33051D-1471-4E5A-B94E-BD0E8FFFF99E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5E33051D-1471-4E5A-B94E-BD0E8FFFF99E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65EF599F-BF87-4CBA-81CF-FBB0ADDEE9C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65EF599F-BF87-4CBA-81CF-FBB0ADDEE9C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65EF599F-BF87-4CBA-81CF-FBB0ADDEE9C9}.Default|Any CPU.ActiveCfg = Debug|Any CPU
+		{65EF599F-BF87-4CBA-81CF-FBB0ADDEE9C9}.Default|Any CPU.Build.0 = Debug|Any CPU
+		{65EF599F-BF87-4CBA-81CF-FBB0ADDEE9C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65EF599F-BF87-4CBA-81CF-FBB0ADDEE9C9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B477657B-1B44-407E-A6B9-280074F70704}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B477657B-1B44-407E-A6B9-280074F70704}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B477657B-1B44-407E-A6B9-280074F70704}.Default|Any CPU.ActiveCfg = Debug|Any CPU
@@ -56,6 +64,6 @@ Global
 		{E63F3D25-4D4F-42E7-A7B2-98A83F97B834}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = SqrlNetExample\SqrlNetExample.csproj
+		StartupItem = SqrlGtk\SqrlGtk.csproj
 	EndGlobalSection
 EndGlobal
