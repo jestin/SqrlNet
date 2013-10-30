@@ -69,4 +69,10 @@
     <Compile Include="AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\SqrlNet\SqrlNet.csproj">
+      <Project>{B4C916F0-7A49-4858-B2D6-DAE958790635}</Project>
+      <Name>SqrlNet</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
