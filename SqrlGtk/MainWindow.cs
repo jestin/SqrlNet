@@ -30,6 +30,8 @@ public partial class MainWindow: Gtk.Window
 
 		var data = _sqrlClient.GetSqrlDataForLogin(identity, "Test", Url);
 
+		this.domainLabel.Text = string.Format("Do you want to log in to {0}", data.Domain);
+
 		dataView.Buffer.Text = string.Format("{0}\n{1}\n{2}",
 		                                     data.Url,
 		                                     Convert.ToBase64String(data.PublicKey),

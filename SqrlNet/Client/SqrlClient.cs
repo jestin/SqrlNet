@@ -78,11 +78,12 @@ namespace SqrlNet.Client
 			var privateKey = _hmacGenerator.GeneratePrivateKey(masterKey, domain);
 
 			var sqrlData = new SqrlData
-				{
-					Url = url,
-					Signature = _signer.Sign(privateKey, GetUrlWithoutProtocol(url)),
-					PublicKey = _signer.MakePublicKey(privateKey)
-				};
+			{
+				Domain = domain,
+				Url = url,
+				Signature = _signer.Sign(privateKey, GetUrlWithoutProtocol(url)),
+				PublicKey = _signer.MakePublicKey(privateKey)
+			};
 
 			Array.Clear(privateKey, 0, privateKey.Length);
 
