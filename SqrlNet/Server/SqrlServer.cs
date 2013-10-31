@@ -1,12 +1,14 @@
 using System;
 using System.Text;
+using System.Security.Cryptography;
 using SqrlNet.Crypto;
+using System.Net;
 
 namespace SqrlNet.Server
 {
 	public class SqrlServer : ISqrlServer
 	{
-		#region Dependencies
+		#region Dependeusing System.Security.Cryptography;ncies
 
 		private readonly ISqrlSigner _sqrlSigner;
 
@@ -17,11 +19,31 @@ namespace SqrlNet.Server
 			_sqrlSigner = sqrlSigner;
 		}
 
+		#region Static Variables
+
+		private static Int32 _counter = 0;
+
+		#endregion
+
 		#region ISqrlServer implementation
 
 		public byte[] GenerateNut(byte[] key)
 		{
-			throw new System.NotImplementedException();
+			var rng = new RNGCryptoServiceProvider();
+
+			var nutData = new NutData
+			{
+				Address = new IPAddress(0),
+				Timestamp = DateTime.UtcNow,
+				Counter = _counter,
+				Entropy = new byte[4]
+			};
+
+			rng.GetBytes(nutData.Entropy);
+
+			_counter++;
+
+			return GenerateNut(key, nutData);
 		}
 
 		public byte[] GenerateNut(byte[] key, NutData data)
@@ -38,11 +60,11 @@ namespace SqrlNet.Server
 		{
 			var decryptedSignatureData = _sqrlSigner.Verify(data.PublicKey, data.Signature);
 
-			var decryotedUrl = Encoding.UTF8.GetString(decryptedSignatureData);
+			var decryptedUrl = Encoding.UTF8.GetString(decryptedSignatureData);
 
 			var url = Utility.GetUrlWithoutProtocol(data.Url);
 
-			return (decryotedUrl == url);
+			return (decryptedUrl == url);
 		}
 
 		#endregion
