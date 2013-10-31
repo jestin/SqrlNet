@@ -48,6 +48,7 @@
     <Compile Include="Crypto\PbkdfHandler.cs" />
     <Compile Include="SqrlIdentity.cs" />
     <Compile Include="Server\NutData.cs" />
+    <Compile Include="Utility.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

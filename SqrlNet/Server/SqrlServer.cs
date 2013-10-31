@@ -1,11 +1,20 @@
 using System;
+using System.Text;
+using SqrlNet.Crypto;
 
 namespace SqrlNet.Server
 {
 	public class SqrlServer : ISqrlServer
 	{
-		public SqrlServer()
+		#region Dependencies
+
+		private readonly ISqrlSigner _sqrlSigner;
+
+		#endregion
+
+		public SqrlServer(ISqrlSigner sqrlSigner)
 		{
+			_sqrlSigner = sqrlSigner;
 		}
 
 		#region ISqrlServer implementation
@@ -27,7 +36,13 @@ namespace SqrlNet.Server
 
 		public bool VerifySqrlRequest(SqrlData data)
 		{
-			throw new System.NotImplementedException();
+			var decryptedSignatureData = _sqrlSigner.Verify(data.PublicKey, data.Signature);
+
+			var decryotedUrl = Encoding.UTF8.GetString(decryptedSignatureData);
+
+			var url = Utility.GetUrlWithoutProtocol(data.Url);
+
+			return (decryotedUrl == url);
 		}
 
 		#endregion
