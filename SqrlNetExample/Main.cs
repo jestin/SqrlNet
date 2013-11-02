@@ -55,6 +55,11 @@ namespace SqrlNetExample
 			Console.WriteLine("Public Key: {0}", Convert.ToBase64String(sqrlData.PublicKey));
 			Console.WriteLine("Signature: {0}", Convert.ToBase64String(sqrlData.Signature));
 			Console.WriteLine("Decrypted Signature: {0}", Encoding.UTF8.GetString(decryptedSignature));
+
+			Console.WriteLine();
+			Console.WriteLine("=========== Server ===========");
+
+			Console.WriteLine("Verified by server:  {0}", server.VerifySqrlRequest(sqrlData));
 		}
 	}
 }
