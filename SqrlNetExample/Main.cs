@@ -51,6 +51,7 @@ namespace SqrlNetExample
 
 			var decryptedSignature = signer.Verify(sqrlData.PublicKey, sqrlData.Signature);
 
+			// This is the data that the client passes to the server
 			Console.WriteLine("Url: {0}", sqrlData.Url);
 			Console.WriteLine("Public Key: {0}", Convert.ToBase64String(sqrlData.PublicKey));
 			Console.WriteLine("Signature: {0}", Convert.ToBase64String(sqrlData.Signature));
@@ -59,6 +60,7 @@ namespace SqrlNetExample
 			Console.WriteLine();
 			Console.WriteLine("=========== Server ===========");
 
+			// The server will verify that the data sent from the client matches what is expected
 			Console.WriteLine("Verified by server:  {0}", server.VerifySqrlRequest(sqrlData));
 		}
 	}

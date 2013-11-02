@@ -16,19 +16,19 @@ namespace SqrlNet.Server
 		/// <summary>
 		/// The timestamp.
 		/// </summary>
-		[FieldOffset(32)]
+		[FieldOffset(4)]
 		public UInt32 Timestamp;
 
 		/// <summary>
 		/// The counter.
 		/// </summary>
-		[FieldOffset(64)]
+		[FieldOffset(8)]
 		public UInt32 Counter;
 
 		/// <summary>
 		/// The entropy.
 		/// </summary>
-		[FieldOffset(96)]
+		[FieldOffset(12)]
 		public UInt32 Entropy;
 
 		/// <summary>
