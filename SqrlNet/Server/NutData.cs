@@ -16,11 +16,11 @@ namespace SqrlNet.Server
 		public NutData(NutStruct nutStruct)
 		{
 			// convert the IP address
-			Address = new IPAddress(BitConverter.GetBytes(nutStruct.Address));
+			Address = new IPAddress(nutStruct.Address);
 
 			// convert the timestamp
 			Timestamp = new DateTime(1970,1,1,0,0,0,0);
-			Timestamp.AddSeconds(nutStruct.Timestamp);
+			Timestamp = Timestamp.AddSeconds(nutStruct.Timestamp).ToLocalTime();
 
 			Counter = nutStruct.Counter;
 			Entropy = nutStruct.Entropy;
@@ -85,6 +85,7 @@ namespace SqrlNet.Server
 			{
 				var sha = SHA256Managed.Create();
 
+				// TODO: I may have to think about how to salt this hash
 				var hash = sha.ComputeHash(Address.GetAddressBytes());
 				nutStruct.Address = BitConverter.ToUInt32(new ArraySegment<byte>(hash, 0, 8).Array, 0);
 			}
