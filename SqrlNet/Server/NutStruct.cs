@@ -5,14 +5,8 @@ using System.Runtime.InteropServices;
 namespace SqrlNet.Server
 {
 	[StructLayout(LayoutKind.Explicit)]
-	public struct NutStruct
+	public unsafe struct NutStruct
 	{
-		/// <summary>
-		/// The bytes.
-		/// </summary>
-		[FieldOffset(0)]
-		public byte[] Bytes;
-
 		/// <summary>
 		/// The address.
 		/// </summary>
@@ -36,6 +30,41 @@ namespace SqrlNet.Server
 		/// </summary>
 		[FieldOffset(96)]
 		public byte[] Entropy;
+
+		/// <summary>
+		/// The bytes.
+		/// </summary>
+		[FieldOffset(0)]
+		public fixed byte ByteArray[16];
+
+		#region Methods
+
+		public byte[] GetBytes()
+		{
+			var data = new byte[16];
+			fixed(byte* ptr = ByteArray)
+			{
+				for (int i = 0; i < 16; i++)
+				{
+					data[i] = ptr[i];
+				}
+			}
+
+			return data;
+		}
+
+		public void SetBytes(byte[] bytes)
+		{
+			fixed(byte* ptr = ByteArray)
+			{
+				for (int i = 0; i < 16; i++)
+				{
+					ptr[i] = bytes[i];
+				}
+			}
+		}
+
+		#endregion
 	}
 }
 

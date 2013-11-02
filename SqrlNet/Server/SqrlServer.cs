@@ -52,15 +52,14 @@ namespace SqrlNet.Server
 
 		public byte[] GenerateNut(byte[] key, byte[] iv, NutData data)
 		{
-			return _aesHandler.Encrypt(key, iv, data.GetNutStruct().Bytes);
+			var nutStruct = data.GetNutStruct();
+			return _aesHandler.Encrypt(key, iv, nutStruct.GetBytes());
 		}
 
 		public NutData DecryptNut(byte[] key, byte[] iv, byte[] nut)
 		{
-			var nutStruct = new NutStruct
-			{
-				Bytes = _aesHandler.Decrypt(key, iv, nut)
-			};
+			var nutStruct = new NutStruct();
+			nutStruct.SetBytes(_aesHandler.Decrypt(key, iv, nut));
 
 			return new NutData(nutStruct);
 		}

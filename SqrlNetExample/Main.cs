@@ -3,6 +3,8 @@ using SqrlNet.Crypto;
 using System.Security.Cryptography;
 using System.Text;
 using SqrlNet.Client;
+using SqrlNet.Server;
+using System.Net;
 
 namespace SqrlNetExample
 {
@@ -14,6 +16,9 @@ namespace SqrlNetExample
 			IPbkdfHandler pbkdfHandler = new PbkdfHandler();
 			IHmacGenerator hmac = new HmacGenerator();
 			ISqrlClient client = new SqrlClient(pbkdfHandler, hmac, signer);
+			IAesHandler aesHandler = new AesHandler();
+			ISqrlServer server = new SqrlServer(signer, aesHandler);
+			var rng = new RNGCryptoServiceProvider();
 
 			Console.Write("Password:  ");
 			var password = Console.ReadLine();
@@ -26,7 +31,21 @@ namespace SqrlNetExample
 				Console.WriteLine("Password verified");
 			}
 
-			var url = "sqrl://www.example.com/sqrl?KJAnLFDQWWmvt10yVjNDoQ81uTvNorPrr53PPRJesz";
+			var nutData = new NutData
+			{
+				Address = IPAddress.Parse("172.8.92.254"),
+				Timestamp = DateTime.UtcNow,
+				Counter = 4,
+				Entropy = new byte[4]
+			};
+
+			var aesKey = new byte[16];
+			var aesIV = new byte[16];
+
+			rng.GetBytes(aesKey);
+			rng.GetBytes(aesIV);
+
+			var url = string.Format("sqrl://www.example.com/sqrl?{0}", Convert.ToBase64String(server.GenerateNut(aesKey, aesIV, nutData)).TrimEnd('='));
 
 			var sqrlData = client.GetSqrlDataForLogin(identity.MasterIdentityKey, password, identity.Salt, url);
 
