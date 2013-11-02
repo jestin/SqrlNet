@@ -26,6 +26,7 @@ public partial class MainWindow: Gtk.Window
 		_sqrlSigner = new SqrlSigner();
 		_sqrlClient = new SqrlClient(_pbkdfHandler, _hmacGenerator, _sqrlSigner);
 
+		// very insecure way of gathering entropy, but good enough for testing temporary identities
 		var identity = _sqrlClient.CreateIdentity("Test", Encoding.UTF8.GetBytes(DateTime.Now.ToLongDateString()));
 
 		var data = _sqrlClient.GetSqrlDataForLogin(identity, "Test", Url);
