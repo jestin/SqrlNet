@@ -66,7 +66,7 @@ namespace SqrlNet.Server
 			return ms.ToArray();
 		}
 
-		public NutData DycryptNut(byte[] key, byte[] iv, byte[] nut)
+		public NutData DecryptNut(byte[] key, byte[] iv, byte[] nut)
 		{
 			var aes = new RijndaelManaged();
 			aes.Key = key;

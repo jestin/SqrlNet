@@ -51,7 +51,7 @@ namespace SqrlNet.Server
 		/// <param name='nut'>
 		/// The nut.
 		/// </param>
-		NutData DycryptNut(byte[] key, byte[] iv, byte[] nut);
+		NutData DecryptNut(byte[] key, byte[] iv, byte[] nut);
 
 		/// <summary>
 		/// Verifies the sqrl request.
