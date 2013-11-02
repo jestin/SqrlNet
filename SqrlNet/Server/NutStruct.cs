@@ -29,7 +29,7 @@ namespace SqrlNet.Server
 		/// The entropy.
 		/// </summary>
 		[FieldOffset(96)]
-		public byte[] Entropy;
+		public UInt32 Entropy;
 
 		/// <summary>
 		/// The bytes.

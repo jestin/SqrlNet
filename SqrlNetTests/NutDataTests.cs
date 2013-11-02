@@ -14,6 +14,7 @@ namespace SqrlNetTests
 		{
 			var data = new NutData();
 			data.Address = IPAddress.Parse("172.34.56.251");
+			data.Entropy = new byte[4];
 
 			var nutStruct = data.GetNutStruct();
 
@@ -25,6 +26,7 @@ namespace SqrlNetTests
 		{
 			var data = new NutData();
 			data.Address = IPAddress.Parse("2001:db8:85a3:8d3:1319:8a2e:370:7348");
+			data.Entropy = new byte[4];
 
 			var sha = SHA256Managed.Create();
 
@@ -43,6 +45,7 @@ namespace SqrlNetTests
 			var data = new NutData();
 			data.Address = IPAddress.Parse("172.34.56.251");
 			data.Timestamp = new DateTime(1981, 12, 8);
+			data.Entropy = new byte[4];
 
 			var nutStruct = data.GetNutStruct();
 

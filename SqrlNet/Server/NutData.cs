@@ -23,7 +23,7 @@ namespace SqrlNet.Server
 			Timestamp = Timestamp.AddSeconds(nutStruct.Timestamp).ToLocalTime();
 
 			Counter = nutStruct.Counter;
-			Entropy = nutStruct.Entropy;
+			Entropy = BitConverter.GetBytes(nutStruct.Entropy);
 		}
 
 		#endregion
@@ -96,7 +96,7 @@ namespace SqrlNet.Server
 
 			nutStruct.Timestamp = (UInt32) (Timestamp - new DateTime(1970, 1, 1).ToLocalTime()).TotalSeconds;
 			nutStruct.Counter = Counter;
-			nutStruct.Entropy = Entropy;
+			nutStruct.Entropy = BitConverter.ToUInt32(Entropy, 0);
 
 			return nutStruct;
 		}
