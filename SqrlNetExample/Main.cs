@@ -5,6 +5,7 @@ using System.Text;
 using SqrlNet.Client;
 using SqrlNet.Server;
 using System.Net;
+using System.Web;
 
 namespace SqrlNetExample
 {
@@ -45,7 +46,11 @@ namespace SqrlNetExample
 			rng.GetBytes(aesKey);
 			rng.GetBytes(aesIV);
 
-			var url = string.Format("sqrl://www.example.com/sqrl?{0}", Convert.ToBase64String(server.GenerateNut(aesKey, aesIV, nutData)).TrimEnd('='));
+			var nut = HttpServerUtility.UrlTokenEncode(server.GenerateNut(aesKey, aesIV, nutData));
+
+			var protocol = "sqrl://";
+			var urlBase = "www.example.com/sqrl/";
+			var url = string.Format("{0}{1}{2}", protocol, urlBase, nut);
 
 			var sqrlData = client.GetSqrlDataForLogin(identity.MasterIdentityKey, password, identity.Salt, url);
 
@@ -61,7 +66,7 @@ namespace SqrlNetExample
 			Console.WriteLine("=========== Server ===========");
 
 			// The server will verify that the data sent from the client matches what is expected
-			Console.WriteLine("Verified by server:  {0}", server.VerifySqrlRequest(sqrlData));
+			Console.WriteLine("Verified by server:  {0}", server.VerifySqrlRequest(sqrlData, string.Format("{0}{1}", urlBase, nut)));
 		}
 	}
 }

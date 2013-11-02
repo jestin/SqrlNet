@@ -62,7 +62,7 @@ namespace SqrlNet.Server
 		/// <param name='data'>
 		/// The data contained in the SQRL request.
 		/// </param>
-		bool VerifySqrlRequest(SqrlData data);
+		bool VerifySqrlRequest(SqrlData data, string expectedUrl);
 	}
 }
 

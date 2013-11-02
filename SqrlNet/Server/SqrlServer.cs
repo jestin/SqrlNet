@@ -64,7 +64,7 @@ namespace SqrlNet.Server
 			return new NutData(nutStruct);
 		}
 
-		public bool VerifySqrlRequest(SqrlData data)
+		public bool VerifySqrlRequest(SqrlData data, string expectedUrl)
 		{
 			var decryptedSignatureData = _sqrlSigner.Verify(data.PublicKey, data.Signature);
 
@@ -72,7 +72,7 @@ namespace SqrlNet.Server
 
 			var url = Utility.GetUrlWithoutProtocol(data.Url);
 
-			return (decryptedUrl == url);
+			return (decryptedUrl == url) && (decryptedUrl == expectedUrl);
 		}
 
 		#endregion
