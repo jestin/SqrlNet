@@ -34,6 +34,8 @@ namespace SqrlServerExample
 			ControllerBuilder.Current.SetControllerFactory(new DependencyControllerFactory());
 
 			GenerateAes();
+
+			Globals.Counter = 0;
 		}
 
 		void GenerateAes()

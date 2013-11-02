@@ -10,6 +10,8 @@ using System.IO;
 using System.Drawing.Imaging;
 using SqrlServerExample.Models;
 using ZXing.Common;
+using System.Net;
+using System.Security.Cryptography;
 
 namespace SqrlServerExample.Controllers
 {
@@ -34,8 +36,19 @@ namespace SqrlServerExample.Controllers
 
 		public ActionResult Index()
 		{
-			var nut = _sqrlServer.GenerateNut(Globals.AesKey, Globals.AesIV);
-			var url = string.Format("{0}/{1}", Url.Action("Index", "Sqrl", new {}, "sqrl"), HttpServerUtility.UrlTokenEncode(nut));
+			var nutData = new NutData
+			{
+				Timestamp = DateTime.Now,
+				Address = IPAddress.Parse(Request.ServerVariables["REMOTE_ADDR"]),
+				Counter = ++Globals.Counter,
+				Entropy = new byte[4]
+			};
+
+			var rng = new RNGCryptoServiceProvider();
+			rng.GetBytes(nutData.Entropy);
+
+			var nut = _sqrlServer.GenerateNut(Globals.AesKey, Globals.AesIV, nutData);
+			var url = string.Format("{0}/{1}", Url.Action("Sqrl", "Login", new {}, "sqrl"), HttpServerUtility.UrlTokenEncode(nut));
 			ViewData["Message"] = url;
 			var barcodeWriter = new BarcodeWriter
 			{
@@ -59,6 +72,11 @@ namespace SqrlServerExample.Controllers
 			};
 
 			return View(model);
+		}
+
+		public ActionResult Sqrl(string id)
+		{
+			return View();
 		}
 
 		#endregion

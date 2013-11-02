@@ -7,7 +7,7 @@
 <body>
 	<div>
 		<a href="<%= Html.Encode(Model.Url) %>" ><img src="data:image/png;base64,<%= Model.QrCode %>" /></a>
-		<%= Html.Encode(Model.Url) %>
+		<h1><%= Html.Encode(Model.Url) %></h1>
 	</div>
 </body>
 

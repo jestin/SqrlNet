@@ -6,5 +6,6 @@ namespace SqrlServerExample
 	{
 		public static byte[] AesKey;
 		public static byte[] AesIV;
+		public static UInt32 Counter;
 	}
 }
