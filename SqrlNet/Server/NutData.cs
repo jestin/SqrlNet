@@ -5,6 +5,21 @@ namespace SqrlNet.Server
 {
 	public class NutData
 	{
+		#region constructors
+
+		public NutData()
+		{
+		}
+
+		public NutData(NutStruct nutStruct)
+		{
+			// TODO: Create a NutData object from a NutStruct
+		}
+
+		#endregion
+
+		#region Public Properties
+
 		/// <summary>
 		/// Gets or sets the address.
 		/// </summary>
@@ -36,6 +51,23 @@ namespace SqrlNet.Server
 		/// Pseudo-random noise to encrypt into the nut.
 		/// </value>
 		public byte[] Entropy { get; set; }
+
+		#endregion
+
+		#region Public Methods
+
+		/// <summary>
+		/// Gets the nut struct.
+		/// </summary>
+		/// <returns>
+		/// The nut struct.
+		/// </returns>
+		public NutStruct GetNutStruct()
+		{
+			throw new NotImplementedException();
+		}
+
+		#endregion
 	}
 }
 

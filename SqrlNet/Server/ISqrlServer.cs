@@ -14,7 +14,10 @@ namespace SqrlNet.Server
 		/// <param name='key'>
 		/// An encryption key that is used on the generated data to return and encrypted nut.
 		/// </param>
-		byte[] GenerateNut(byte[] key);
+		/// <param name='iv'>
+		/// The initialization vector for the Rijndael cipher.
+		/// </param>
+		byte[] GenerateNut(byte[] key, byte[] iv);
 
 		/// <summary>
 		/// Generates the nut.
@@ -25,10 +28,13 @@ namespace SqrlNet.Server
 		/// <param name='key'>
 		/// An encryption key that is used on the given data to return and encrypted nut.
 		/// </param>
+		/// <param name='iv'>
+		/// The initialization vector for the Rijndael cipher.
+		/// </param>
 		/// <param name='data'>
 		/// Data to encrypt into the nut.
 		/// </param>
-		byte[] GenerateNut(byte[] key, NutData data);
+		byte[] GenerateNut(byte[] key, byte[] iv, NutData data);
 
 		/// <summary>
 		/// Dycrypts a nut.
@@ -39,10 +45,13 @@ namespace SqrlNet.Server
 		/// <param name='key'>
 		/// The encryption key.
 		/// </param>
+		/// <param name='iv'>
+		/// The initialization vector for the Rijndael cipher.
+		/// </param>
 		/// <param name='nut'>
 		/// The nut.
 		/// </param>
-		NutData DycryptNut(byte[] key, byte[] nut);
+		NutData DycryptNut(byte[] key, byte[] iv, byte[] nut);
 
 		/// <summary>
 		/// Verifies the sqrl request.

@@ -3,6 +3,7 @@ using System.Text;
 using System.Security.Cryptography;
 using SqrlNet.Crypto;
 using System.Net;
+using System.IO;
 
 namespace SqrlNet.Server
 {
@@ -27,7 +28,7 @@ namespace SqrlNet.Server
 
 		#region ISqrlServer implementation
 
-		public byte[] GenerateNut(byte[] key)
+		public byte[] GenerateNut(byte[] key, byte[] iv)
 		{
 			var rng = new RNGCryptoServiceProvider();
 
@@ -43,17 +44,51 @@ namespace SqrlNet.Server
 
 			_counter++;
 
-			return GenerateNut(key, nutData);
+			return GenerateNut(key, iv, nutData);
 		}
 
-		public byte[] GenerateNut(byte[] key, NutData data)
+		public byte[] GenerateNut(byte[] key, byte[] iv, NutData data)
 		{
-			throw new System.NotImplementedException();
+			var aes = new RijndaelManaged();
+			aes.Key = key;
+			aes.IV = iv;
+			var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
+
+			var ms = new MemoryStream();
+			using(var csEncrypt = new CryptoStream(ms, encryptor,CryptoStreamMode.Write))
+			{
+				using(var bw = new BinaryWriter(csEncrypt))
+				{
+					bw.Write(data.GetNutStruct().Bytes);
+				}
+			}
+
+			return ms.ToArray();
 		}
 
-		public NutData DycryptNut(byte[] key, byte[] nut)
+		public NutData DycryptNut(byte[] key, byte[] iv, byte[] nut)
 		{
-			throw new System.NotImplementedException();
+			var aes = new RijndaelManaged();
+			aes.Key = key;
+			aes.IV = iv;
+			var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
+
+			var ms = new MemoryStream();
+			using(var csDecrypt = new CryptoStream(ms, decryptor,CryptoStreamMode.Write))
+			{
+				using(var bw = new BinaryWriter(csDecrypt))
+				{
+					bw.Write(nut);
+				}
+			}
+
+			var nutStruct = new NutStruct
+			{
+				Bytes = ms.ToArray()
+			};
+
+
+			return new NutData(nutStruct);
 		}
 
 		public bool VerifySqrlRequest(SqrlData data)

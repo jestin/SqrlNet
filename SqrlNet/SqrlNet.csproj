@@ -49,6 +49,7 @@
     <Compile Include="SqrlIdentity.cs" />
     <Compile Include="Server\NutData.cs" />
     <Compile Include="Utility.cs" />
+    <Compile Include="Server\NutStruct.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
