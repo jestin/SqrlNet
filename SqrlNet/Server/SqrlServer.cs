@@ -1,23 +1,26 @@
 using System;
-using System.Text;
 using System.Security.Cryptography;
-using SqrlNet.Crypto;
 using System.Net;
-using System.IO;
+using System.Text;
+using SqrlNet.Crypto;
 
 namespace SqrlNet.Server
 {
 	public class SqrlServer : ISqrlServer
 	{
-		#region Dependeusing System.Security.Cryptography;ncies
+		#region Dependencies
 
 		private readonly ISqrlSigner _sqrlSigner;
+		private readonly IAesHandler _aesHandler;
 
 		#endregion
 
-		public SqrlServer(ISqrlSigner sqrlSigner)
+		public SqrlServer(
+			ISqrlSigner sqrlSigner,
+			IAesHandler aesHandler)
 		{
 			_sqrlSigner = sqrlSigner;
+			_aesHandler = aesHandler;
 		}
 
 		#region Static Variables
@@ -49,44 +52,15 @@ namespace SqrlNet.Server
 
 		public byte[] GenerateNut(byte[] key, byte[] iv, NutData data)
 		{
-			var aes = new RijndaelManaged();
-			aes.Key = key;
-			aes.IV = iv;
-			var encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
-
-			var ms = new MemoryStream();
-			using(var csEncrypt = new CryptoStream(ms, encryptor,CryptoStreamMode.Write))
-			{
-				using(var bw = new BinaryWriter(csEncrypt))
-				{
-					bw.Write(data.GetNutStruct().Bytes);
-				}
-			}
-
-			return ms.ToArray();
+			return _aesHandler.Encrypt(key, iv, data.GetNutStruct().Bytes);
 		}
 
 		public NutData DecryptNut(byte[] key, byte[] iv, byte[] nut)
 		{
-			var aes = new RijndaelManaged();
-			aes.Key = key;
-			aes.IV = iv;
-			var decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
-
-			var ms = new MemoryStream();
-			using(var csDecrypt = new CryptoStream(ms, decryptor,CryptoStreamMode.Write))
-			{
-				using(var bw = new BinaryWriter(csDecrypt))
-				{
-					bw.Write(nut);
-				}
-			}
-
 			var nutStruct = new NutStruct
 			{
-				Bytes = ms.ToArray()
+				Bytes = _aesHandler.Decrypt(key, iv, nut)
 			};
-
 
 			return new NutData(nutStruct);
 		}
