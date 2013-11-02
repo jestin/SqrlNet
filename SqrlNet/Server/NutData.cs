@@ -1,11 +1,13 @@
 using System;
+using System.Linq;
 using System.Net;
+using System.Security.Cryptography;
 
 namespace SqrlNet.Server
 {
 	public class NutData
 	{
-		#region constructors
+		#region Constructors
 
 		public NutData()
 		{
@@ -13,7 +15,15 @@ namespace SqrlNet.Server
 
 		public NutData(NutStruct nutStruct)
 		{
-			// TODO: Create a NutData object from a NutStruct
+			// convert the IP address
+			Address = new IPAddress(BitConverter.GetBytes(nutStruct.Address));
+
+			// convert the timestamp
+			Timestamp = new DateTime(1970,1,1,0,0,0,0);
+			Timestamp.AddSeconds(nutStruct.Timestamp);
+
+			Counter = nutStruct.Counter;
+			Entropy = nutStruct.Entropy;
 		}
 
 		#endregion
@@ -42,7 +52,7 @@ namespace SqrlNet.Server
 		/// <value>
 		/// A rolling up-counter to encrypt into the nut.
 		/// </value>
-		public Int32 Counter { get; set; }
+		public UInt32 Counter { get; set; }
 
 		/// <summary>
 		/// Gets or sets the entropy.
@@ -64,7 +74,30 @@ namespace SqrlNet.Server
 		/// </returns>
 		public NutStruct GetNutStruct()
 		{
-			throw new NotImplementedException();
+			var nutStruct = new NutStruct();
+
+			// test for IPv4 or IPv6
+			if(Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetwork)
+			{
+				nutStruct.Address = BitConverter.ToUInt32(Address.GetAddressBytes(), 0);
+			}
+			else if(Address.AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6)
+			{
+				var sha = SHA256Managed.Create();
+
+				var hash = sha.ComputeHash(Address.GetAddressBytes());
+				nutStruct.Address = BitConverter.ToUInt32(new ArraySegment<byte>(hash, 0, 8).Array, 0);
+			}
+			else
+			{
+				throw new Exception("Unknown IP Address Family");
+			}
+
+			nutStruct.Timestamp = (UInt32) (Timestamp - new DateTime(1970, 1, 1).ToLocalTime()).TotalSeconds;
+			nutStruct.Counter = Counter;
+			nutStruct.Entropy = Entropy;
+
+			return nutStruct;
 		}
 
 		#endregion

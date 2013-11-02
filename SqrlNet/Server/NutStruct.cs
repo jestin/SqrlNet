@@ -17,19 +17,19 @@ namespace SqrlNet.Server
 		/// The address.
 		/// </summary>
 		[FieldOffset(0)]
-		public Int32 Address;
+		public UInt32 Address;
 
 		/// <summary>
 		/// The timestamp.
 		/// </summary>
 		[FieldOffset(32)]
-		public Int32 Timestamp;
+		public UInt32 Timestamp;
 
 		/// <summary>
 		/// The counter.
 		/// </summary>
 		[FieldOffset(64)]
-		public Int32 Counter;
+		public UInt32 Counter;
 
 		/// <summary>
 		/// The entropy.

@@ -34,7 +34,7 @@ namespace SqrlNet.Crypto.CryptSharp
 		{
 			var sha256 = SHA256Managed.Create();
 			var hash = sha256.ComputeHash(passwordKey);
-			return new ArraySegment<byte>(hash, 16, 16).Array;
+			return new ArraySegment<byte>(hash, 0, 16).Array;
 		}
 
 		#endregion

@@ -25,7 +25,7 @@ namespace SqrlNet.Server
 
 		#region Static Variables
 
-		private static Int32 _counter = 0;
+		private static UInt32 _counter = 0;
 
 		#endregion
 
