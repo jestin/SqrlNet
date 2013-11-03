@@ -9,6 +9,7 @@ using SqrlNet;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
+using SqrlGtk;
 
 public partial class MainWindow: Gtk.Window
 {	
@@ -78,8 +79,19 @@ public partial class MainWindow: Gtk.Window
 
 	private SqrlIdentity CreateNewIdentity()
 	{
-		// very insecure way of gathering entropy, but good enough for testing temporary identities
-		var identity = _sqrlClient.CreateIdentity("Test", Encoding.UTF8.GetBytes(DateTime.Now.ToLongDateString()));
+		SqrlIdentity identity = null;
+		var dlg = new CreateIdentityDialog();
+
+		var response = (ResponseType) dlg.Run();
+
+		if(response == ResponseType.Ok)
+		{
+			identity = _sqrlClient.CreateIdentity(dlg.Password, Encoding.UTF8.GetBytes(DateTime.Now.ToLongDateString()));
+			identity.Name = dlg.IdentityName;
+		}
+
+		dlg.Destroy();
+
 		return identity;
 	}
 

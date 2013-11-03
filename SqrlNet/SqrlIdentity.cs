@@ -8,6 +8,14 @@ namespace SqrlNet
 	public class SqrlIdentity
 	{
 		/// <summary>
+		/// Gets or sets the friendly name of this identity.
+		/// </summary>
+		/// <value>
+		/// The name.
+		/// </value>
+		public string Name { get; set; }
+
+		/// <summary>
 		/// Gets or sets the master identity key.
 		/// </summary>
 		/// <value>
