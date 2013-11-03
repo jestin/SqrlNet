@@ -1,9 +1,14 @@
 using System;
+using System.Linq;
 using Gtk;
 using SqrlNet.Client;
 using SqrlNet.Crypto;
 using System.IO;
 using System.Text;
+using SqrlNet;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using System.Collections.ObjectModel;
 
 public partial class MainWindow: Gtk.Window
 {	
@@ -26,8 +31,16 @@ public partial class MainWindow: Gtk.Window
 		_sqrlSigner = new SqrlSigner();
 		_sqrlClient = new SqrlClient(_pbkdfHandler, _hmacGenerator, _sqrlSigner);
 
-		// very insecure way of gathering entropy, but good enough for testing temporary identities
-		var identity = _sqrlClient.CreateIdentity("Test", Encoding.UTF8.GetBytes(DateTime.Now.ToLongDateString()));
+		var identities = GetIdentities();
+
+		if(identities.Count() <= 0)
+		{
+			identities.Add(CreateNewIdentity());
+			SaveIdentities(identities);
+		}
+
+		// for testing, select the first identity in the list
+		var identity = identities.First();
 
 		var data = _sqrlClient.GetSqrlDataForLogin(identity, "Test", Url);
 
@@ -63,6 +76,47 @@ public partial class MainWindow: Gtk.Window
 
 	#region Private Methods
 
+	private SqrlIdentity CreateNewIdentity()
+	{
+		// very insecure way of gathering entropy, but good enough for testing temporary identities
+		var identity = _sqrlClient.CreateIdentity("Test", Encoding.UTF8.GetBytes(DateTime.Now.ToLongDateString()));
+		return identity;
+	}
+
+	private ICollection<SqrlIdentity> GetIdentities()
+	{
+		var identitiesFile = GetFilePath();
+		ICollection<SqrlIdentity> identities = new Collection<SqrlIdentity>();
+
+		if(string.IsNullOrEmpty(identitiesFile) || !File.Exists(identitiesFile))
+		{
+			return identities;
+		}
+
+		using(var fs = File.OpenText(identitiesFile))
+		{
+			var serializer = new JsonSerializer();
+			identities = (ICollection<SqrlIdentity>) serializer.Deserialize(fs, typeof(ICollection<SqrlIdentity>));
+		}
+
+		return identities;
+	}
+
+	private void SaveIdentities(IEnumerable<SqrlIdentity> identities)
+	{
+		var identitiesFile = GetFilePath();
+
+		using(var fs = File.Open(identitiesFile, FileMode.OpenOrCreate))
+		using(var sw = new StreamWriter(fs))
+		using(var jw = new JsonTextWriter(sw))
+		{
+			jw.Formatting = Formatting.Indented;
+
+			var serializer = new JsonSerializer();
+			serializer.Serialize(jw, identities);
+		}
+	}
+
 	private string GetFilePath()
 	{
 		string homePath;
@@ -83,7 +137,7 @@ public partial class MainWindow: Gtk.Window
 		}
 
 		// check working directory first
-		var workingDirFile = "." + pathChar + "identity";
+		var workingDirFile = "." + pathChar + "identities";
 
 		if(File.Exists(workingDirFile))
 		{
@@ -97,7 +151,7 @@ public partial class MainWindow: Gtk.Window
 			return string.Empty;
 		}
 
-		return configPath + pathChar + "identity";
+		return configPath + pathChar + "identities";
 	}
 
 	#endregion
