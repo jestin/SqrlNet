@@ -73,6 +73,8 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="CreateIdentityDialog.cs" />
     <Compile Include="gtk-gui\SqrlGtk.CreateIdentityDialog.cs" />
+    <Compile Include="PasswordDialog.cs" />
+    <Compile Include="gtk-gui\SqrlGtk.PasswordDialog.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

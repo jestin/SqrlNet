@@ -36,21 +36,35 @@ public partial class MainWindow: Gtk.Window
 
 		if(identities.Count() <= 0)
 		{
-			identities.Add(CreateNewIdentity());
+			var newIdentity = CreateNewIdentity();
+			identities.Add(newIdentity);
 			SaveIdentities(identities);
 		}
 
 		// for testing, select the first identity in the list
 		var identity = identities.First();
 
-		var data = _sqrlClient.GetSqrlDataForLogin(identity, "Test", Url);
+		var passwordDlg = new PasswordDialog(identity);
+		var response = (ResponseType) passwordDlg.Run();
 
-		this.domainLabel.Text = string.Format("Do you want to log in to {0}", data.Domain);
+		if(response != ResponseType.Ok)
+		{
+			// ???
+		}
 
-		dataView.Buffer.Text = string.Format("{0}\n{1}\n{2}",
-		                                     data.Url,
-		                                     Convert.ToBase64String(data.PublicKey),
-		                                     Convert.ToBase64String(data.Signature));
+		passwordDlg.Destroy();
+
+		if(_sqrlClient.VerifyPassword(passwordDlg.Password, identity))
+		{
+			var data = _sqrlClient.GetSqrlDataForLogin(identity, passwordDlg.Password, Url);
+
+			this.domainLabel.Text = string.Format("Do you want to log in to {0}", data.Domain);
+
+			dataView.Buffer.Text = string.Format("{0}\n{1}\n{2}",
+			                                     data.Url,
+			                                     Convert.ToBase64String(data.PublicKey),
+			                                     Convert.ToBase64String(data.Signature));
+		}
 	}
 
 	#region Public Properties
