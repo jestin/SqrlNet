@@ -1,17 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Mvc.Ajax;
-using SqrlNet.Server;
-using ZXing;
-using System.IO;
-using System.Drawing.Imaging;
-using SqrlServerExample.Models;
-using ZXing.Common;
-using System.Net;
 using System.Security.Cryptography;
+using System.Drawing.Imaging;
+using ZXing;
+using ZXing.Common;
+using SqrlNet.Server;
+using SqrlServerExample.Models;
 
 namespace SqrlServerExample.Controllers
 {
