@@ -136,5 +136,16 @@ namespace SqrlNet.Client
 		/// The identity to verify against.
 		/// </param>
 		bool VerifyPassword(string password, SqrlIdentity identity);
+
+		/// <summary>
+		/// Gets the domain from URL using the rules that SQRL uses for defining a domain (such as vertical bars).
+		/// </summary>
+		/// <returns>
+		/// The domain from URL.
+		/// </returns>
+		/// <param name='url'>
+		/// URL.
+		/// </param>
+		string GetDomainFromUrl(string url);
 	}
 }

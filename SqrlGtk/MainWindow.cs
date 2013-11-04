@@ -40,6 +40,8 @@ public partial class MainWindow: Gtk.Window
 		_sqrlSigner = new SqrlSigner();
 		_sqrlClient = new SqrlClient(_pbkdfHandler, _hmacGenerator, _sqrlSigner);
 
+		this.domainLabel.Text = string.Format("Do you want to log in to {0}", _sqrlClient.GetDomainFromUrl(url));
+
 		_identities = GetIdentities();
 
 		if(_identities.Count() <= 0)
@@ -100,8 +102,6 @@ public partial class MainWindow: Gtk.Window
 		if(_sqrlClient.VerifyPassword(passwordDlg.Password, identity))
 		{
 			var data = _sqrlClient.GetSqrlDataForLogin(identity, passwordDlg.Password, Url);
-
-			this.domainLabel.Text = string.Format("Do you want to log in to {0}", data.Domain);
 
 			dataView.Buffer.Text = string.Format("{0}\n{1}\n{2}",
 			                                     data.Url,

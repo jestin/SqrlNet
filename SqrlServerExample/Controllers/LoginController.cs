@@ -81,10 +81,12 @@ namespace SqrlServerExample.Controllers
 		[HttpPost]
 		public ActionResult Sqrl(string id, string publickey, string signature, string url)
 		{
-			var data = new SqrlData();
-			data.PublicKey = HttpServerUtility.UrlTokenDecode(publickey);
-			data.Signature = HttpServerUtility.UrlTokenDecode(signature);
-			data.Url = url;
+			var data = new SqrlData
+			{
+				PublicKey = HttpServerUtility.UrlTokenDecode(publickey),
+				Signature = HttpServerUtility.UrlTokenDecode(signature),
+				Url = url
+			};
 
 			var expected = string.Format("{0}/{1}",
 			                             Url.Action("Sqrl",

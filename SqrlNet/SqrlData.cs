@@ -8,14 +8,6 @@ namespace SqrlNet
 	public class SqrlData
 	{
 		/// <summary>
-		/// Gets or sets the domain.
-		/// </summary>
-		/// <value>
-		/// The domain.
-		/// </value>
-		public string Domain { get; set; }
-
-		/// <summary>
 		/// Gets or sets the URL.
 		/// </summary>
 		/// <value>

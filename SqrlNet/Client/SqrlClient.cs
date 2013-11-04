@@ -79,7 +79,6 @@ namespace SqrlNet.Client
 
 			var sqrlData = new SqrlData
 			{
-				Domain = domain,
 				Url = Utility.GetUrlWithoutProtocol(url),
 				Signature = _signer.Sign(privateKey, Utility.GetUrlWithoutProtocol(url)),
 				PublicKey = _signer.MakePublicKey(privateKey)
@@ -168,6 +167,11 @@ namespace SqrlNet.Client
 		public bool VerifyPassword(string password, SqrlIdentity identity)
 		{
 			return _pbkdfHandler.VerifyPassword(password, identity.Salt, identity.PartialPasswordHash);
+		}
+
+		public string GetDomainFromUrl(string url)
+		{
+			return Utility.GetDomainFromUrl(url);
 		}
 
 		#endregion
