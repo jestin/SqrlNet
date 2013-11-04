@@ -10,6 +10,9 @@ public partial class MainWindow
 	private global::Gtk.VBox vbox1;
 	private global::Gtk.MenuBar menubar27;
 	private global::Gtk.Label domainLabel;
+	private global::Gtk.HBox hbox2;
+	private global::Gtk.Label identityLabel;
+	private global::Gtk.ComboBox identityCombo;
 	private global::Gtk.ScrolledWindow GtkScrolledWindow;
 	private global::Gtk.TextView dataView;
 	private global::Gtk.HBox hbox1;
@@ -59,6 +62,30 @@ public partial class MainWindow
 		w3.Expand = false;
 		w3.Fill = false;
 		// Container child vbox1.Gtk.Box+BoxChild
+		this.hbox2 = new global::Gtk.HBox ();
+		this.hbox2.Name = "hbox2";
+		this.hbox2.Spacing = 6;
+		// Container child hbox2.Gtk.Box+BoxChild
+		this.identityLabel = new global::Gtk.Label ();
+		this.identityLabel.Name = "identityLabel";
+		this.identityLabel.LabelProp = global::Mono.Unix.Catalog.GetString ("Identity");
+		this.hbox2.Add (this.identityLabel);
+		global::Gtk.Box.BoxChild w4 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.identityLabel]));
+		w4.Position = 0;
+		w4.Expand = false;
+		w4.Fill = false;
+		// Container child hbox2.Gtk.Box+BoxChild
+		this.identityCombo = global::Gtk.ComboBox.NewText ();
+		this.identityCombo.Name = "identityCombo";
+		this.hbox2.Add (this.identityCombo);
+		global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.hbox2 [this.identityCombo]));
+		w5.Position = 1;
+		this.vbox1.Add (this.hbox2);
+		global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hbox2]));
+		w6.Position = 2;
+		w6.Expand = false;
+		w6.Fill = false;
+		// Container child vbox1.Gtk.Box+BoxChild
 		this.GtkScrolledWindow = new global::Gtk.ScrolledWindow ();
 		this.GtkScrolledWindow.Name = "GtkScrolledWindow";
 		this.GtkScrolledWindow.ShadowType = ((global::Gtk.ShadowType)(1));
@@ -70,8 +97,8 @@ public partial class MainWindow
 		this.dataView.CursorVisible = false;
 		this.GtkScrolledWindow.Add (this.dataView);
 		this.vbox1.Add (this.GtkScrolledWindow);
-		global::Gtk.Box.BoxChild w5 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.GtkScrolledWindow]));
-		w5.Position = 2;
+		global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.GtkScrolledWindow]));
+		w8.Position = 3;
 		// Container child vbox1.Gtk.Box+BoxChild
 		this.hbox1 = new global::Gtk.HBox ();
 		this.hbox1.Name = "hbox1";
@@ -85,8 +112,8 @@ public partial class MainWindow
 		this.cancelButton.UseUnderline = true;
 		this.cancelButton.Label = "gtk-no";
 		this.hbox1.Add (this.cancelButton);
-		global::Gtk.Box.BoxChild w6 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.cancelButton]));
-		w6.Position = 0;
+		global::Gtk.Box.BoxChild w9 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.cancelButton]));
+		w9.Position = 0;
 		// Container child hbox1.Gtk.Box+BoxChild
 		this.loginButton = new global::Gtk.Button ();
 		this.loginButton.CanFocus = true;
@@ -95,19 +122,19 @@ public partial class MainWindow
 		this.loginButton.UseUnderline = true;
 		this.loginButton.Label = "gtk-yes";
 		this.hbox1.Add (this.loginButton);
-		global::Gtk.Box.BoxChild w7 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.loginButton]));
-		w7.Position = 1;
+		global::Gtk.Box.BoxChild w10 = ((global::Gtk.Box.BoxChild)(this.hbox1 [this.loginButton]));
+		w10.Position = 1;
 		this.vbox1.Add (this.hbox1);
-		global::Gtk.Box.BoxChild w8 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hbox1]));
-		w8.Position = 3;
-		w8.Expand = false;
-		w8.Fill = false;
+		global::Gtk.Box.BoxChild w11 = ((global::Gtk.Box.BoxChild)(this.vbox1 [this.hbox1]));
+		w11.Position = 4;
+		w11.Expand = false;
+		w11.Fill = false;
 		this.Add (this.vbox1);
 		if ((this.Child != null)) {
 			this.Child.ShowAll ();
 		}
 		this.DefaultWidth = 400;
-		this.DefaultHeight = 214;
+		this.DefaultHeight = 294;
 		this.Show ();
 		this.DeleteEvent += new global::Gtk.DeleteEventHandler (this.OnDeleteEvent);
 		this.cancelButton.Clicked += new global::System.EventHandler (this.OnCancelButtonClicked);

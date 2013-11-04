@@ -22,6 +22,12 @@ public partial class MainWindow: Gtk.Window
 
 	#endregion
 
+	#region Private Variables
+
+	private ICollection<SqrlIdentity> _identities;
+
+	#endregion
+
 	public MainWindow(string url): base (Gtk.WindowType.Toplevel)
 	{
 		Build();
@@ -32,17 +38,52 @@ public partial class MainWindow: Gtk.Window
 		_sqrlSigner = new SqrlSigner();
 		_sqrlClient = new SqrlClient(_pbkdfHandler, _hmacGenerator, _sqrlSigner);
 
-		var identities = GetIdentities();
+		_identities = GetIdentities();
 
-		if(identities.Count() <= 0)
+		if(_identities.Count() <= 0)
 		{
 			var newIdentity = CreateNewIdentity();
-			identities.Add(newIdentity);
-			SaveIdentities(identities);
+			_identities.Add(newIdentity);
+			SaveIdentities(_identities);
 		}
 
-		// for testing, select the first identity in the list
-		var identity = identities.First();
+		var comboList = new ListStore(typeof(int), typeof(string));
+		var textRenderer = new CellRendererText();
+		identityCombo.PackStart(textRenderer, false);
+		identityCombo.AddAttribute(textRenderer, "text", 1);
+
+		var identitiesArray = _identities.ToArray();
+
+		for(var i = 0; i < identitiesArray.Length; i++)
+		{
+			comboList.AppendValues(i, identitiesArray[i].Name);
+		}
+
+		identityCombo.Model = comboList;
+	}
+
+	#region Public Properties
+
+	public string Url { get; set; }
+
+	#endregion
+	
+	protected void OnDeleteEvent(object sender, DeleteEventArgs a)
+	{
+		Application.Quit();
+		a.RetVal = true;
+	}
+
+	protected void OnLoginButtonClicked(object sender, EventArgs e)
+	{
+		TreeIter activeIter;
+		int index = 0;
+		if(identityCombo.GetActiveIter(out activeIter))
+		{
+			index = (int) identityCombo.Model.GetValue(activeIter, 0);
+		}
+
+		var identity = _identities.ToArray()[index];
 
 		var passwordDlg = new PasswordDialog(identity);
 		var response = (ResponseType) passwordDlg.Run();
@@ -65,23 +106,10 @@ public partial class MainWindow: Gtk.Window
 			                                     Convert.ToBase64String(data.PublicKey),
 			                                     Convert.ToBase64String(data.Signature));
 		}
-	}
-
-	#region Public Properties
-
-	public string Url { get; set; }
-
-	#endregion
-	
-	protected void OnDeleteEvent(object sender, DeleteEventArgs a)
-	{
-		Application.Quit();
-		a.RetVal = true;
-	}
-
-	protected void OnLoginButtonClicked(object sender, EventArgs e)
-	{
-		throw new System.NotImplementedException();
+		else
+		{
+			// ???
+		}
 	}
 
 	protected void OnCancelButtonClicked(object sender, EventArgs e)
