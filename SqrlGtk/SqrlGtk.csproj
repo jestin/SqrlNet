@@ -19,7 +19,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <Commandlineparameters>sqrl://127.0.0.1/Login/Sqrl/lBTpiniN6_4TZWRzwk-GHhCrE41oEDEoJCr-vMZdvno1</Commandlineparameters>
+    <Commandlineparameters>sqrl://127.0.0.1:8080/Login/Sqrl/lBTpiniN6_4TZWRzwk-GHhCrE41oEDEoJCr-vMZdvno1</Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
@@ -59,6 +59,7 @@
     <Reference Include="Newtonsoft.Json">
       <HintPath>ReferenceDlls\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="gtk-gui\gui.stetic">

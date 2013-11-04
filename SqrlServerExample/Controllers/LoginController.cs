@@ -9,6 +9,7 @@ using ZXing;
 using ZXing.Common;
 using SqrlNet.Server;
 using SqrlServerExample.Models;
+using SqrlNet;
 
 namespace SqrlServerExample.Controllers
 {
@@ -45,7 +46,13 @@ namespace SqrlServerExample.Controllers
 			rng.GetBytes(nutData.Entropy);
 
 			var nut = _sqrlServer.GenerateNut(Globals.AesKey, Globals.AesIV, nutData);
-			var url = string.Format("{0}/{1}", Url.Action("Sqrl", "Login", new {}, "sqrl"), HttpServerUtility.UrlTokenEncode(nut));
+			var url = string.Format("{0}/{1}",
+			                        Url.Action("Sqrl",
+												"Login",
+												null,
+												"sqrl",
+												Request.Url.Host + ":" + Request.Url.Port),
+			                        HttpServerUtility.UrlTokenEncode(nut));
 			ViewData["Message"] = url;
 			var barcodeWriter = new BarcodeWriter
 			{
@@ -71,9 +78,28 @@ namespace SqrlServerExample.Controllers
 			return View(model);
 		}
 
-		public ActionResult Sqrl(string id)
+		[HttpPost]
+		public ActionResult Sqrl(string id, string publickey, string signature, string url)
 		{
-			return View();
+			var data = new SqrlData();
+			data.PublicKey = HttpServerUtility.UrlTokenDecode(publickey);
+			data.Signature = HttpServerUtility.UrlTokenDecode(signature);
+			data.Url = url;
+
+			var expected = string.Format("{0}/{1}",
+			                             Url.Action("Sqrl",
+													"Login",
+													null,
+													"sqrl",
+													Request.Url.Host + ":" + Request.Url.Port),
+			                             id);
+
+			if(_sqrlServer.VerifySqrlRequest(data, expected))
+			{
+				return Content("valid");
+			}
+
+			return Content("invalid");
 		}
 
 		#endregion

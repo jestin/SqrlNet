@@ -70,9 +70,7 @@ namespace SqrlNet.Server
 
 			var decryptedUrl = Encoding.UTF8.GetString(decryptedSignatureData);
 
-			var url = Utility.GetUrlWithoutProtocol(data.Url);
-
-			return (decryptedUrl == url) && (decryptedUrl == expectedUrl);
+			return (decryptedUrl == data.Url) && (decryptedUrl == Utility.GetUrlWithoutProtocol(expectedUrl));
 		}
 
 		#endregion

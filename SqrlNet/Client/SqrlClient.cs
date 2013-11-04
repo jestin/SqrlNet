@@ -80,7 +80,7 @@ namespace SqrlNet.Client
 			var sqrlData = new SqrlData
 			{
 				Domain = domain,
-				Url = url,
+				Url = Utility.GetUrlWithoutProtocol(url),
 				Signature = _signer.Sign(privateKey, Utility.GetUrlWithoutProtocol(url)),
 				PublicKey = _signer.MakePublicKey(privateKey)
 			};

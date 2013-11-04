@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Collections.ObjectModel;
 using SqrlGtk;
+using System.Net;
+using System.Web;
 
 public partial class MainWindow: Gtk.Window
 {	
@@ -105,6 +107,10 @@ public partial class MainWindow: Gtk.Window
 			                                     data.Url,
 			                                     Convert.ToBase64String(data.PublicKey),
 			                                     Convert.ToBase64String(data.Signature));
+
+			SendSqrlData(data);
+
+			//Destroy();
 		}
 		else
 		{
@@ -118,6 +124,36 @@ public partial class MainWindow: Gtk.Window
 	}
 
 	#region Private Methods
+
+	private void SendSqrlData(SqrlData data)
+	{
+		var request = WebRequest.Create("http://" + data.Url);
+		request.Method = "POST";
+
+		string postData = string.Format("publickey={0}&signature={1}&url={2}",
+		                                HttpServerUtility.UrlTokenEncode(data.PublicKey),
+		                                HttpServerUtility.UrlTokenEncode(data.Signature),
+		                                data.Url);
+
+		var byteArray = Encoding.UTF8.GetBytes(postData);
+		request.ContentType = "application/x-www-form-urlencoded";
+		request.ContentLength = byteArray.Length;
+		var dataStream = request.GetRequestStream();
+		dataStream.Write(byteArray, 0, byteArray.Length);
+		dataStream.Close();
+
+		var response = request.GetResponse();
+
+		dataStream = response.GetResponseStream();
+		var reader = new StreamReader(dataStream);
+		var responseFromServer = reader.ReadToEnd();
+
+		dataView.Buffer.Text = responseFromServer;
+
+		reader.Close();
+		dataStream.Close();
+		response.Close();
+	}
 
 	private SqrlIdentity CreateNewIdentity()
 	{
