@@ -9,6 +9,7 @@ using StructureMap;
 using StructureMap.Configuration.DSL;
 using SqrlNet.Crypto;
 using SqrlNet.Server;
+using SqrlServerExample.DataAccess;
 
 namespace SqrlServerExample
 {
@@ -19,6 +20,8 @@ namespace SqrlServerExample
 			For<ISqrlSigner>().Use<SqrlSigner>();
 			For<IAesHandler>().Use<AesHandler>();
 			For<ISqrlServer>().Use<SqrlServer>();
+			For<IMongoDbContext>().Use<MongoDbContext>();
+			For<INutRepository>().Use<NutRepository>();
 		}
 	}
 }

@@ -10,6 +10,7 @@ using ZXing.Common;
 using SqrlNet.Server;
 using SqrlServerExample.Models;
 using SqrlNet;
+using SqrlServerExample.DataAccess;
 
 namespace SqrlServerExample.Controllers
 {
@@ -18,14 +19,18 @@ namespace SqrlServerExample.Controllers
 		#region Dependencies
 
 		private readonly ISqrlServer _sqrlServer;
+		private readonly INutRepository _nutRepository;
 
 		#endregion
 
 		#region Constructors
 
-		public LoginController(ISqrlServer sqrlServer)
+		public LoginController(
+			ISqrlServer sqrlServer,
+			INutRepository nutRepository)
 		{
 			_sqrlServer = sqrlServer;
+			_nutRepository = nutRepository;
 		}
 
 		#endregion
@@ -45,15 +50,17 @@ namespace SqrlServerExample.Controllers
 			var rng = new RNGCryptoServiceProvider();
 			rng.GetBytes(nutData.Entropy);
 
-			var nut = _sqrlServer.GenerateNut(Globals.AesKey, Globals.AesIV, nutData);
+			var nut = HttpServerUtility.UrlTokenEncode(_sqrlServer.GenerateNut(Globals.AesKey, Globals.AesIV, nutData));
 			var url = string.Format("{0}/{1}",
 			                        Url.Action("Sqrl",
 												"Login",
 												null,
 												"sqrl",
 												Request.Url.Host + ":" + Request.Url.Port),
-			                        HttpServerUtility.UrlTokenEncode(nut));
-			ViewData["Message"] = url;
+			                        nut);
+
+			_nutRepository.Create(nut);
+
 			var barcodeWriter = new BarcodeWriter
 			{
 				Format = BarcodeFormat.QR_CODE,
@@ -96,7 +103,7 @@ namespace SqrlServerExample.Controllers
 													Request.Url.Host + ":" + Request.Url.Port),
 			                             id);
 
-			if(_sqrlServer.VerifySqrlRequest(data, expected))
+			if(_sqrlServer.VerifySqrlRequest(data, expected) && _nutRepository.Delete(id))
 			{
 				return Content("valid");
 			}
