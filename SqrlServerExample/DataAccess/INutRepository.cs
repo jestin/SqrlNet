@@ -6,6 +6,6 @@ namespace SqrlServerExample.DataAccess
 	{
 		void Create(string nut);
 		bool Delete(string nut);
-		int DeleteOlderThan(DateTime time);
+		long DeleteOlderThan(DateTime time);
 	}
 }

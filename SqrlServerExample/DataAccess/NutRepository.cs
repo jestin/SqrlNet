@@ -1,6 +1,7 @@
 using System;
 using SqrlServerExample.Data;
 using MongoDB.Driver;
+using MongoDB.Driver.Builders;
 
 namespace SqrlServerExample.DataAccess
 {
@@ -31,9 +32,10 @@ namespace SqrlServerExample.DataAccess
 			return result.DocumentsAffected > 0;
 		}
 
-		public int DeleteOlderThan(DateTime time)
+		public long DeleteOlderThan(DateTime time)
 		{
-			throw new System.NotImplementedException();
+			var result = Collection.Remove(Query<NutData>.LT(p => p.Timestamp, time));
+			return result.DocumentsAffected;
 		}
 
 		#endregion

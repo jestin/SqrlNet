@@ -47,6 +47,13 @@ namespace SqrlServerExample.Controllers
 				Entropy = new byte[4]
 			};
 
+			// just to keep the database size down, delete all nuts older than 2 minutes, but only every 10 page requests
+			if(Globals.Counter % 10 == 0)
+			{
+				var deleted = _nutRepository.DeleteOlderThan(DateTime.Now.AddMinutes(-2));
+				Console.WriteLine("{0} nuts deleted", deleted);
+			}
+
 			var rng = new RNGCryptoServiceProvider();
 			rng.GetBytes(nutData.Entropy);
 
