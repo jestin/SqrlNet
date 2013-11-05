@@ -34,7 +34,18 @@ namespace SqrlServerExample.DataAccess
 			return (nutRecord != null) && !nutRecord.Validated && (nutRecord.Timestamp > DateTime.Now.AddMinutes(-2));
 		}
 
-		public bool Validate(string nut)
+		public string IsNutValidated(string nut)
+		{
+			var nutRecord = Collection.FindAllAs<NutRecord>().FirstOrDefault(x => x.Id == nut);
+			if((nutRecord != null) && nutRecord.Validated && (nutRecord.Timestamp > DateTime.Now.AddMinutes(-2)))
+			{
+				return nutRecord.UserId;
+			}
+
+			return string.Empty;
+		}
+
+		public bool Validate(string nut, string userId)
 		{
 			var nutRecord = Collection.FindAllAs<NutRecord>().FirstOrDefault(x => x.Id == nut);
 
@@ -44,6 +55,7 @@ namespace SqrlServerExample.DataAccess
 			}
 
 			nutRecord.Validated = true;
+			nutRecord.UserId = userId;
 
 			var result = Collection.Save(nutRecord);
 			return result.DocumentsAffected > 0;

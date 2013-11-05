@@ -14,6 +14,12 @@ namespace Controllers
 			ViewData["Message"] = "Welcome to ASP.NET MVC on Mono!";
 			return View();
 		}
+
+		[Authorize]
+		public ActionResult Welcome()
+		{
+			return View();
+		}
 	}
 }
 

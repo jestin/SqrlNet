@@ -12,6 +12,7 @@ using SqrlServerExample.Models;
 using SqrlNet;
 using SqrlServerExample.DataAccess;
 using SqrlServerExample.Data;
+using System.Web.Security;
 
 namespace SqrlServerExample.Controllers
 {
@@ -90,7 +91,8 @@ namespace SqrlServerExample.Controllers
 			var model = new SqrlLoginModel
 			{
 				Url = url,
-				QrCode = Convert.ToBase64String(imageBytes)
+				QrCode = Convert.ToBase64String(imageBytes),
+				Nut = nut
 			};
 
 			return View(model);
@@ -130,12 +132,39 @@ namespace SqrlServerExample.Controllers
 					_userRepository.Create(user);
 				}
 
-				_nutRepository.Validate(id);
+				_nutRepository.Validate(id, user.Id);
 
 				return Content("valid");
 			}
 
 			return Content("invalid");
+		}
+
+		public ActionResult IsLoggedInYet(string id)
+		{
+			var validatedUser = _nutRepository.IsNutValidated(id);
+
+			if(validatedUser == string.Empty)
+			{
+				return Content("false");
+			}
+
+			var user = _userRepository.Retrieve(validatedUser);
+
+			if(user == null)
+			{
+				return Content("false");
+			}
+
+			FormsAuthentication.SetAuthCookie(user.Id, false);
+
+			return Content("true");
+		}
+
+		public ActionResult LogOff()
+		{
+		    FormsAuthentication.SignOut();
+		    return RedirectToAction("Index", "Home");
 		}
 
 		#endregion

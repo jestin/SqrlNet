@@ -6,6 +6,7 @@ namespace SqrlServerExample.Models
 	{
 		public string Url { get; set; }
 		public string QrCode { get; set; }
+		public string Nut { get; set; }
 	}
 }
 
