@@ -2,10 +2,11 @@ using System;
 
 namespace SqrlServerExample.Data
 {
-	public class NutData
+	public class NutRecord
 	{
-		public string Nut { get; set; }
+		public string Id { get; set; }
 		public DateTime Timestamp { get; set; }
+		public bool Validated { get; set; }
 	}
 }
 

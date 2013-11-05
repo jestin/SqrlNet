@@ -11,6 +11,7 @@ using SqrlNet.Server;
 using SqrlServerExample.Models;
 using SqrlNet;
 using SqrlServerExample.DataAccess;
+using SqrlServerExample.Data;
 
 namespace SqrlServerExample.Controllers
 {
@@ -20,6 +21,7 @@ namespace SqrlServerExample.Controllers
 
 		private readonly ISqrlServer _sqrlServer;
 		private readonly INutRepository _nutRepository;
+		private readonly IUserRepository _userRepository;
 
 		#endregion
 
@@ -27,10 +29,12 @@ namespace SqrlServerExample.Controllers
 
 		public LoginController(
 			ISqrlServer sqrlServer,
-			INutRepository nutRepository)
+			INutRepository nutRepository,
+			IUserRepository userRepository)
 		{
 			_sqrlServer = sqrlServer;
 			_nutRepository = nutRepository;
+			_userRepository = userRepository;
 		}
 
 		#endregion
@@ -110,8 +114,24 @@ namespace SqrlServerExample.Controllers
 													Request.Url.Host + ":" + Request.Url.Port),
 			                             id);
 
-			if(_sqrlServer.VerifySqrlRequest(data, expected) && _nutRepository.Delete(id))
+			if(_sqrlServer.VerifySqrlRequest(data, expected) && _nutRepository.IsNutActive(id))
 			{
+				var user = _userRepository.Retrieve(publickey);
+
+				if(user == null)
+				{
+					// register user
+					user = new SqrlUser
+					{
+						Id = publickey,
+						Initialized = false
+					};
+
+					_userRepository.Create(user);
+				}
+
+				_nutRepository.Validate(id);
+
 				return Content("valid");
 			}
 

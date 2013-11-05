@@ -22,6 +22,7 @@ namespace SqrlServerExample
 			For<ISqrlServer>().Use<SqrlServer>();
 			For<IMongoDbContext>().Use<MongoDbContext>();
 			For<INutRepository>().Use<NutRepository>();
+			For<IUserRepository>().Use<UserRepository>();
 		}
 	}
 }

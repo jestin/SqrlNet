@@ -84,7 +84,8 @@
     <Compile Include="DataAccess\IMongoDbContext.cs" />
     <Compile Include="DataAccess\MongoDbContext.cs" />
     <Compile Include="DataAccess\MongoRepository.cs" />
-    <Compile Include="Data\NutData.cs" />
+    <Compile Include="Data\SqrlUser.cs" />
+    <Compile Include="Data\NutRecord.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Web.config" />
