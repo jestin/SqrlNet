@@ -158,6 +158,8 @@ namespace SqrlServerExample.Controllers
 
 			FormsAuthentication.SetAuthCookie(user.Id, false);
 
+			_nutRepository.Delete(id);
+
 			return Content("true");
 		}
 
