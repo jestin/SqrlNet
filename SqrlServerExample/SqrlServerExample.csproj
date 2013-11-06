@@ -96,6 +96,7 @@
     <Content Include="Views\Login\Index.aspx" />
     <Content Include="Content\scripts\jquery\jquery-1.8.3.min.js" />
     <Content Include="Views\Home\Welcome.aspx" />
+    <Content Include="Views\Login\Register.aspx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

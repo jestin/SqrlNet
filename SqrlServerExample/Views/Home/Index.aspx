@@ -6,7 +6,7 @@
 </head>
 <body>
 	<div>
-		<%= Html.ActionLink("Log In", "Index", "Login") %>
+		<h1><%= Html.ActionLink("Log In", "Index", "Login") %></h1>
 	</div>
 </body>
 

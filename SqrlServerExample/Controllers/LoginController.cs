@@ -169,6 +169,23 @@ namespace SqrlServerExample.Controllers
 		    return RedirectToAction("Index", "Home");
 		}
 
+		[Authorize]
+		public ActionResult Register()
+		{
+			var user = _userRepository.Retrieve(User.Identity.Name);
+
+			return View(user);
+		}
+
+		[Authorize]
+		[HttpPost]
+		public ActionResult Register(SqrlUser user)
+		{
+			user.Initialized = true;
+			_userRepository.Update(user);
+			return RedirectToAction("Welcome", "Home");
+		}
+
 		#endregion
 	}
 }
