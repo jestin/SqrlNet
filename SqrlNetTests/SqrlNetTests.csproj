@@ -43,6 +43,7 @@
     <Compile Include="SqrlClientTests.cs" />
     <Compile Include="NutDataTests.cs" />
     <Compile Include="AesHandlerTests.cs" />
+    <Compile Include="SsssHandlerTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

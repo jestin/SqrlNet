@@ -54,6 +54,8 @@
     <Compile Include="Server\NutStruct.cs" />
     <Compile Include="Crypto\IAesHandler.cs" />
     <Compile Include="Crypto\AesHandler.cs" />
+    <Compile Include="Crypto\ISsssHandler.cs" />
+    <Compile Include="Crypto\SsssHandler.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
