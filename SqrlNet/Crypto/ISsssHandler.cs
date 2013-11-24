@@ -16,7 +16,7 @@ namespace SqrlNet.Crypto
 		/// <param name='secret'>
 		/// The secret to be split into parts.
 		/// </param>
-		/// <param name='threshhold'>
+		/// <param name='threshold'>
 		/// The minimum number of shares required to reconstruct the secret.
 		/// </param>
 		/// <param name='numShares'>
@@ -25,7 +25,7 @@ namespace SqrlNet.Crypto
 		/// <returns>
 		/// A dictionary of the shares where the key is the x-coordinate and the value is the y-coordinate
 		/// </returns>
-		IDictionary<int, byte[]> Split(byte[] secret, int threshhold, int numShares);
+		IDictionary<int, byte[]> Split(byte[] secret, int threshold, int numShares);
 
 		/// <summary>
 		/// Restore the secret given the threshhold number, and that number of shares.

@@ -25,6 +25,41 @@ namespace SqrlNetTests
 		#region Tests
 
 		[Test]
+		[ExpectedException(typeof(ArgumentException), ExpectedMessage = "The threshold cannot be larger than the number of shares\nParameter name: threshold")]
+		public void Split_Bad_Threshold()
+		{
+			_handler.Split(new byte[32], 5, 4);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentException), ExpectedMessage = "The number of shares cannot be larger or eqaul to 257\nParameter name: numShares")]
+		public void Split_Bad_Number_of_Shares()
+		{
+			_handler.Split(new byte[32], 3, 257);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentException), ExpectedMessage = "The number of shares cannot be larger or eqaul to 257\nParameter name: numShares")]
+		public void Split_Bad_Beyond_Prime()
+		{
+			_handler.Split(new byte[32], 3, 258);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentException), ExpectedMessage = "The secret cannot be null\nParameter name: secret")]
+		public void Split_Null_Secret()
+		{
+			_handler.Split(null, 3, 4);
+		}
+
+		[Test]
+		[ExpectedException(typeof(ArgumentException), ExpectedMessage = "The secret cannot be empty\nParameter name: secret")]
+		public void Split_Empty_Secret()
+		{
+			_handler.Split(new byte[0], 3, 4);
+		}
+
+		[Test]
 		[Repeat(20)]
 		public void Two_Two_Scheme()
 		{
@@ -163,15 +198,15 @@ namespace SqrlNetTests
 		{
 			var random = new Random();
 			var numShares = random.Next(2, 255);
-			var threshhold = random.Next(1, numShares);
-			Assert.IsTrue(TestScheme(threshhold, numShares));
+			var threshold = random.Next(1, numShares);
+			Assert.IsTrue(TestScheme(threshold, numShares));
 		}
 
 		#endregion
 
 		#region Private Methods
 
-		private bool TestScheme(int threshhold, int numShares)
+		private bool TestScheme(int threshold, int numShares)
 		{
 			// generate secret
 			var secret = new byte[32];
@@ -179,10 +214,10 @@ namespace SqrlNetTests
 			rng.GetBytes(secret);
 
 			// split secret
-			var shares = _handler.Split(secret, threshhold, numShares);
+			var shares = _handler.Split(secret, threshold, numShares);
 
 			// reconstruct secret
-			var reconstructedSecret = _handler.Restore(threshhold, shares);
+			var reconstructedSecret = _handler.Restore(threshold, shares);
 
 			return secret.SequenceEqual(reconstructedSecret);
 		}
