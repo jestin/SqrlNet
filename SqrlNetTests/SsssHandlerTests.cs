@@ -33,20 +33,6 @@ namespace SqrlNetTests
 		}
 
 		[Test]
-		[ExpectedException(typeof(ArgumentException), ExpectedMessage = "The number of shares cannot be larger or eqaul to the prime number used to define the finite field\nParameter name: numShares")]
-		public void Split_Bad_Number_of_Shares()
-		{
-			_handler.Split(new byte[32], 3, 257);
-		}
-
-		[Test]
-		[ExpectedException(typeof(ArgumentException), ExpectedMessage = "The number of shares cannot be larger or eqaul to the prime number used to define the finite field\nParameter name: numShares")]
-		public void Split_Bad_Beyond_Prime()
-		{
-			_handler.Split(new byte[32], 3, 258);
-		}
-
-		[Test]
 		[ExpectedException(typeof(ArgumentException), ExpectedMessage = "The secret cannot be null\nParameter name: secret")]
 		public void Split_Null_Secret()
 		{

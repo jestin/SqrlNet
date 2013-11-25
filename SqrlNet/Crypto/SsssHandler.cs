@@ -9,7 +9,6 @@ namespace SqrlNet.Crypto
 	{
 		#region Private Variables
 
-		private int _prime = 257;
 		private RNGCryptoServiceProvider _rng;
 
 		#endregion
@@ -50,11 +49,6 @@ namespace SqrlNet.Crypto
 				throw new ArgumentException("The secret cannot be empty", "secret");
 			}
 
-			if(numShares >= _prime)
-			{
-				throw new ArgumentException("The number of shares cannot be larger or eqaul to the prime number used to define the finite field", "numShares");
-			}
-
 			if(threshold > numShares)
 			{
 				throw new ArgumentException("The threshold cannot be larger than the number of shares", "threshold");
@@ -87,16 +81,11 @@ namespace SqrlNet.Crypto
 
 					for(int exp = 1; exp < threshold; exp++)
 					{
-						accum = (byte)((accum + (coefs[exp] * ((int)Math.Pow(share.Key, exp) % _prime) % _prime)) % _prime);
+						accum = (byte)(accum + (coefs[exp] * (int)Math.Pow(share.Key, exp)));
 					}
 
 					share.Value[cur] = accum;
 				}
-			}
-
-			foreach(var share in shares)
-			{
-				Console.Error.WriteLine("{0}-{1}", share.Key, BitConverter.ToString(share.Value).Replace("-", ""));
 			}
 
 			return shares;
@@ -120,11 +109,11 @@ namespace SqrlNet.Crypto
 					{
 						if(a.Key == b.Key) continue;
 
-						numerator = (numerator * -b.Key) % _prime;
-						denominator = (denominator * (a.Key - b.Key)) % _prime;
+						numerator = (numerator * -b.Key);
+						denominator = (denominator * (a.Key - b.Key));
 					}
 
-					accum = (byte)((_prime + accum + (a.Value[cur] * numerator / denominator)) % _prime);
+					accum = (byte)(accum + (a.Value[cur] * numerator / denominator));
 				}
 
 				result[cur] = accum;

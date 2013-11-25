@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using SqrlNet.Crypto;
 using System.Security.Cryptography;
 using System.Text;
@@ -23,16 +24,33 @@ namespace SqrlNetExample
 			ISsssHandler ssss = new SsssHandler();
 			var rng = new RNGCryptoServiceProvider();
 
-			var secret = new byte[32];
-			rng.GetBytes(secret);
-			Console.WriteLine("{0}", Convert.ToBase64String(secret));
+			byte theByte = 0;
 
-			var shares = ssss.Split(secret, 2, 2);
-			//var oneThree = new Dictionary<int, byte[]>();
-			//oneThree[1] = shares[1];
-			//oneThree[3] = shares[3];
-			var reconstructedSecret = ssss.Restore(2, shares);
-			Console.WriteLine("{0}", Convert.ToBase64String(reconstructedSecret));
+			while(true)
+			{
+				var secret = new byte[1];
+				//rng.GetBytes(secret);
+				secret[0] = theByte;
+
+				var shares = ssss.Split(secret, 2, 2);
+				//var oneThree = new Dictionary<int, byte[]>();
+				//oneThree[1] = shares[1];
+				//oneThree[3] = shares[3];
+				var reconstructedSecret = ssss.Restore(2, shares);
+
+				if(!secret.SequenceEqual(reconstructedSecret))
+				{
+					Console.WriteLine("the byte: {0}", theByte);
+					foreach(var share in shares)
+					{
+						Console.WriteLine("{0}-{1}", share.Key, BitConverter.ToString(share.Value).Replace("-", ""));
+					}
+					Console.WriteLine("{0}", Convert.ToBase64String(secret));
+					Console.WriteLine("{0}", Convert.ToBase64String(reconstructedSecret));
+					break;
+				}
+				theByte++;
+			}
 
 			Console.Write("Password:  ");
 			var password = Console.ReadLine();
