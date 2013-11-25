@@ -120,7 +120,7 @@ namespace SqrlNetTests
 			var result = _client.GetSqrlDataForLogin(new byte[32], url);
 
 			_mocks.VerifyAll();
-			Assert.AreEqual(result.Url, url);
+			Assert.AreEqual(result.Url, url.Replace("sqrl://", ""));
 		}
 
 		#endregion
@@ -203,7 +203,7 @@ namespace SqrlNetTests
 			var result = _client.GetSqrlDataForLogin(new byte[32], url);
 
 			_mocks.VerifyAll();
-			Assert.AreEqual(result.Url, url);
+			Assert.AreEqual(result.Url, url.Replace("sqrl://", ""));
 		}
 
 		[Test]
@@ -218,7 +218,7 @@ namespace SqrlNetTests
 			var result = _client.GetSqrlDataForLogin(new byte[32], url);
 
 			_mocks.VerifyAll();
-			Assert.AreEqual(result.Url, url);
+			Assert.AreEqual(result.Url, url.Replace("qrl://", ""));
 		}
 
 		[Test]
@@ -233,7 +233,7 @@ namespace SqrlNetTests
 			var result = _client.GetSqrlDataForLogin(new byte[32], url);
 
 			_mocks.VerifyAll();
-			Assert.AreEqual(result.Url, url);
+			Assert.AreEqual(result.Url, url.Replace("sqrl://", ""));
 		}
 
 		[Test]
@@ -248,7 +248,7 @@ namespace SqrlNetTests
 			var result = _client.GetSqrlDataForLogin(new byte[32], url);
 
 			_mocks.VerifyAll();
-			Assert.AreEqual(result.Url, url);
+			Assert.AreEqual(result.Url, url.Replace("qrl://", ""));
 		}
 
 		[Test]

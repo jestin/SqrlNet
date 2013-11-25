@@ -47,7 +47,7 @@ namespace SqrlNetTests
 		}
 
 		[Test]
-		[Repeat(20)]
+		[Repeat(1000)]
 		public void Two_Two_Scheme()
 		{
 			// generate secret
@@ -65,7 +65,7 @@ namespace SqrlNetTests
 		}
 
 		[Test]
-		[Repeat(20)]
+		[Repeat(1000)]
 		public void Two_Three_Scheme()
 		{
 			// generate secret
@@ -84,12 +84,12 @@ namespace SqrlNetTests
 			var oneThree = new Dictionary<int, byte[]>();
 			oneThree[1] = shares[1];
 			oneThree[3] = shares[3];
-			//Assert.IsTrue(secret.SequenceEqual(_handler.Restore(2, oneThree)));
+			Assert.IsTrue(secret.SequenceEqual(_handler.Restore(2, oneThree)));
 
 			var twoThree = new Dictionary<int, byte[]>();
 			twoThree[2] = shares[2];
 			twoThree[3] = shares[3];
-			//Assert.IsTrue(secret.SequenceEqual(_handler.Restore(2, twoThree)));
+			Assert.IsTrue(secret.SequenceEqual(_handler.Restore(2, twoThree)));
 		}
 
 		#endregion

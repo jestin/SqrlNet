@@ -73,6 +73,11 @@ namespace SqrlNet.Crypto
 				// set the secret to the first coefficient
 				coefs[0] = secret[cur];
 
+				foreach(var coef in coefs)
+				{
+					Console.Error.WriteLine("coef: {0}", coef);
+				}
+
 				// grab points
 				foreach(var share in shares)
 				{

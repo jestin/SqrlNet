@@ -32,11 +32,11 @@ namespace SqrlNetExample
 				//rng.GetBytes(secret);
 				secret[0] = theByte;
 
-				var shares = ssss.Split(secret, 2, 2);
-				//var oneThree = new Dictionary<int, byte[]>();
-				//oneThree[1] = shares[1];
-				//oneThree[3] = shares[3];
-				var reconstructedSecret = ssss.Restore(2, shares);
+				var shares = ssss.Split(secret, 2, 3);
+				var oneThree = new Dictionary<int, byte[]>();
+				oneThree[1] = shares[1];
+				oneThree[3] = shares[3];
+				var reconstructedSecret = ssss.Restore(2, oneThree);
 
 				if(!secret.SequenceEqual(reconstructedSecret))
 				{
