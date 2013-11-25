@@ -6,6 +6,7 @@ using SqrlNet.Client;
 using SqrlNet.Server;
 using System.Net;
 using System.Web;
+using System.Collections.Generic;
 
 namespace SqrlNetExample
 {
@@ -19,7 +20,19 @@ namespace SqrlNetExample
 			ISqrlClient client = new SqrlClient(pbkdfHandler, hmac, signer);
 			IAesHandler aesHandler = new AesHandler();
 			ISqrlServer server = new SqrlServer(signer, aesHandler);
+			ISsssHandler ssss = new SsssHandler();
 			var rng = new RNGCryptoServiceProvider();
+
+			var secret = new byte[32];
+			rng.GetBytes(secret);
+			Console.WriteLine("{0}", Convert.ToBase64String(secret));
+
+			var shares = ssss.Split(secret, 2, 2);
+			//var oneThree = new Dictionary<int, byte[]>();
+			//oneThree[1] = shares[1];
+			//oneThree[3] = shares[3];
+			var reconstructedSecret = ssss.Restore(2, shares);
+			Console.WriteLine("{0}", Convert.ToBase64String(reconstructedSecret));
 
 			Console.Write("Password:  ");
 			var password = Console.ReadLine();

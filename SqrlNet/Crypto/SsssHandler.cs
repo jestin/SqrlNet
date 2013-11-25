@@ -1,13 +1,40 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Security.Cryptography;
-using System.Numerics;
 
 namespace SqrlNet.Crypto
 {
 	public class SsssHandler : ISsssHandler
 	{
+		#region Private Variables
+
 		private int _prime = 257;
+		private RNGCryptoServiceProvider _rng;
+
+		#endregion
+
+		#region Public Properties
+
+		public RNGCryptoServiceProvider Rng
+		{
+			private get
+			{
+				if(_rng == null)
+				{
+					_rng = new RNGCryptoServiceProvider();
+				}
+
+				return _rng;
+			}
+
+			set
+			{
+				_rng = value;
+			}
+		}
+
+		#endregion
 
 		#region ISsssHandler implementation
 
@@ -25,7 +52,7 @@ namespace SqrlNet.Crypto
 
 			if(numShares >= _prime)
 			{
-				throw new ArgumentException("The number of shares cannot be larger or eqaul to 257", "numShares");
+				throw new ArgumentException("The number of shares cannot be larger or eqaul to the prime number used to define the finite field", "numShares");
 			}
 
 			if(threshold > numShares)
@@ -33,34 +60,43 @@ namespace SqrlNet.Crypto
 				throw new ArgumentException("The threshold cannot be larger than the number of shares", "threshold");
 			}
 
-			var coefs = new BigInteger[threshold];
-			var rng = new RNGCryptoServiceProvider();
-
-			// set the secret to the first coefficient
-			coefs[0] = new BigInteger(secret);
-
-			// generate random numbers for the rest of the coefficients
-			for(int i = 1; i < threshold - 1; i++)
-			{
-				var bytes = new byte[32];
-				rng.GetBytes(bytes);
-				coefs[i] = new BigInteger(bytes);
-			}
-
-			// grab points
 			var shares = new Dictionary<int, byte[]>();
 
-			for(int shareIndex = 0; shareIndex < numShares; shareIndex++)
+			// initialize shares
+			for(int i = 0; i < numShares; i++)
 			{
-				// start the accumulator as the first coefficient (the secret)
-				var accum = coefs[0];
+				shares[i + 1] = new byte[secret.Length];
+			}
 
-				for(int exp = 1; exp < threshold; exp++)
+			// loop through each byte of the secret
+			for(var cur = 0; cur < secret.Length; cur++)
+			{
+				var coefs = new byte[threshold];
+
+				// generate random coefficients
+				Rng.GetBytes(coefs);
+
+				// set the secret to the first coefficient
+				coefs[0] = secret[cur];
+
+				// grab points
+				foreach(var share in shares)
 				{
-					accum = (accum + (coefs[exp] * (BigInteger.Pow(new BigInteger(shareIndex + 1), exp) % _prime) % _prime)) % _prime;
-				}
+					// start the accumulator as the first coefficient (the secret)
+					var accum = coefs[0];
 
-				shares[shareIndex] = accum.ToByteArray();
+					for(int exp = 1; exp < threshold; exp++)
+					{
+						accum = (byte)((accum + (coefs[exp] * ((int)Math.Pow(share.Key, exp) % _prime) % _prime)) % _prime);
+					}
+
+					share.Value[cur] = accum;
+				}
+			}
+
+			foreach(var share in shares)
+			{
+				Console.Error.WriteLine("{0}-{1}", share.Key, BitConverter.ToString(share.Value).Replace("-", ""));
 			}
 
 			return shares;
@@ -68,7 +104,33 @@ namespace SqrlNet.Crypto
 
 		public byte[] Restore(int threshold, IDictionary<int, byte[]> shares)
 		{
-			throw new NotImplementedException();
+			var length = shares.First().Value.Length;
+			var result = new byte[length];
+
+			for(var cur = 0; cur < length; cur++)
+			{
+				byte accum = 0;
+
+				foreach(var a in shares)
+				{
+					var numerator = 1;
+					var denominator = 1;
+
+					foreach(var b in shares)
+					{
+						if(a.Key == b.Key) continue;
+
+						numerator = (numerator * -b.Key) % _prime;
+						denominator = (denominator * (a.Key - b.Key)) % _prime;
+					}
+
+					accum = (byte)((_prime + accum + (a.Value[cur] * numerator / denominator)) % _prime);
+				}
+
+				result[cur] = accum;
+			}
+
+			return result;
 		}
 
 		#endregion
