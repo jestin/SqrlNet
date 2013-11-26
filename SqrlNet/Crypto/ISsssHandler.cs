@@ -30,16 +30,13 @@ namespace SqrlNet.Crypto
 		/// <summary>
 		/// Restore the secret given the threshhold number, and that number of shares.
 		/// </summary>
-		/// <param name='threshold'>
-		/// The threshhold that was used when splitting the secret into shares.
-		/// </param>
 		/// <param name='shares'>
 		/// The shares being used to reconstruct the secret.
 		/// </param>
 		/// <returns>
 		/// The reconstructed secret.
 		/// </returns>
-		byte[] Restore(int threshold, IDictionary<int, byte[]> shares);
+		byte[] Restore(IDictionary<int, byte[]> shares);
 	}
 }
 

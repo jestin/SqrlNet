@@ -93,32 +93,30 @@ namespace SqrlNet.Crypto
 			return shares;
 		}
 
-		public byte[] Restore(int threshold, IDictionary<int, byte[]> shares)
+		public byte[] Restore(IDictionary<int, byte[]> shares)
 		{
-			var length = shares.First().Value.Length;
+ 			var length = shares.First().Value.Length;
 			var result = new byte[length];
 
 			for(var cur = 0; cur < length; cur++)
 			{
-				byte accum = 0;
+				result[cur] = 0;
 
 				foreach(var a in shares)
 				{
-					var numerator = 1;
-					var denominator = 1;
+					int numerator = 1;
+					int denominator = 1;
 
 					foreach(var b in shares)
 					{
 						if(a.Key == b.Key) continue;
 
 						numerator = (numerator * -b.Key);
-						denominator = (denominator * (a.Key - b.Key));
+						denominator *= (a.Key - b.Key);
 					}
 
-					accum = (byte)(accum + (a.Value[cur] * numerator / denominator));
+					result[cur] += (byte)(a.Value[cur] * (numerator / denominator));
 				}
-
-				result[cur] = accum;
 			}
 
 			return result;

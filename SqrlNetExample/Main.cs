@@ -32,11 +32,34 @@ namespace SqrlNetExample
 				//rng.GetBytes(secret);
 				secret[0] = theByte;
 
-				var shares = ssss.Split(secret, 2, 3);
-				var oneThree = new Dictionary<int, byte[]>();
-				oneThree[1] = shares[1];
-				oneThree[3] = shares[3];
-				var reconstructedSecret = ssss.Restore(2, oneThree);
+				var shares = ssss.Split(secret, 3, 4);
+				var subset = new Dictionary<int, byte[]>();
+				subset[1] = shares[1];
+				subset[2] = shares[2];
+				//subset[3] = shares[3];
+				subset[4] = shares[4];
+				//subset[5] = shares[5];
+				//subset[6] = shares[6];
+				//subset[7] = shares[7];
+				//subset[8] = shares[8];
+				//subset[9] = shares[9];
+				//subset[10] = shares[10];
+				//subset[11] = shares[11];
+				//subset[12] = shares[12];
+				//subset[13] = shares[13];
+				//subset[14] = shares[14];
+				//subset[15] = shares[15];
+				//subset[16] = shares[16];
+				//subset[17] = shares[17];
+				//subset[18] = shares[18];
+				//subset[19] = shares[19];
+				//subset[20] = shares[20];
+				//subset[21] = shares[21];
+				//subset[22] = shares[22];
+				//subset[23] = shares[23];
+				//subset[24] = shares[24];
+				//subset[25] = shares[25];
+				var reconstructedSecret = ssss.Restore(subset);
 
 				if(!secret.SequenceEqual(reconstructedSecret))
 				{
@@ -50,6 +73,12 @@ namespace SqrlNetExample
 					break;
 				}
 				theByte++;
+
+				if(theByte == 0)
+				{
+					Console.WriteLine("Success!");
+					break;
+				}
 			}
 
 			Console.Write("Password:  ");
