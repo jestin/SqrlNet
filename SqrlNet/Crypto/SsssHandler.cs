@@ -85,7 +85,7 @@ namespace SqrlNet.Crypto
 
 					for(int exp = 0; exp < threshold; exp++)
 					{
-						share.Value[cur] += (byte)(coefs[exp] * (int)Math.Pow(share.Key, exp));
+						share.Value[cur] += (byte)(coefs[exp] * Math.Pow(share.Key, exp));
 					}
 				}
 			}
