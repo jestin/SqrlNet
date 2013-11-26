@@ -81,15 +81,12 @@ namespace SqrlNet.Crypto
 				// grab points
 				foreach(var share in shares)
 				{
-					// start the accumulator as the first coefficient (the secret)
-					var accum = coefs[0];
+					share.Value[cur] = 0;
 
-					for(int exp = 1; exp < threshold; exp++)
+					for(int exp = 0; exp < threshold; exp++)
 					{
-						accum = (byte)(accum + (coefs[exp] * (int)Math.Pow(share.Key, exp)));
+						share.Value[cur] += (byte)(coefs[exp] * (int)Math.Pow(share.Key, exp));
 					}
-
-					share.Value[cur] = accum;
 				}
 			}
 
