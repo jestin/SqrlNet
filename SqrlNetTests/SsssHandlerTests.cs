@@ -169,6 +169,51 @@ namespace SqrlNetTests
 		}
 
 		[Test]
+		public void Each_Byte_Two_Three_Scheme_With_Shares_One_And_Three()
+		{
+			for(byte secretByte = 0; secretByte <= 255; secretByte++)
+			{
+				var secret = new byte[1];
+				secret[0] = secretByte;
+				var shares = _handler.Split(secret, 2, 3);
+
+				var oneThree = new Dictionary<int, byte[]>();
+				oneThree[1] = shares[1];
+				oneThree[3] = shares[3];
+
+				var restoredSecret = _handler.Restore(oneThree);
+
+				Console.WriteLine("****************");
+				Console.WriteLine("Secret: {0}", secretByte);
+				Console.WriteLine("Restored: {0}", restoredSecret[0]);
+				Console.WriteLine("Shares: (1, {0}) (2, {1}) (3, {2})", shares[1][0], shares[2][0], shares[3][0]);
+				Console.WriteLine("****************");
+
+				Assert.AreEqual(secretByte, restoredSecret[0]);
+			}
+		}
+
+		[Test]
+		public void RestoreByte()
+		{
+			var shares = new Dictionary<int, byte>();
+
+			shares[1] = 141;
+			shares[3] = 167;
+
+			//shares[1] = 130;
+			//shares[3] = 134;
+
+			//shares[1] = 140;
+			//shares[3] = 164;
+
+			var restored = _handler.ResolveByte(shares);
+			Console.WriteLine("Restored: {0}", restored);
+
+			Assert.AreEqual(0, restored);
+		}
+
+		[Test]
 		[Ignore]
 		public void Each_Byte_Each_Scheme()
 		{

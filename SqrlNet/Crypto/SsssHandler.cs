@@ -123,11 +123,18 @@ namespace SqrlNet.Crypto
 				{
 					if(a.Key == b.Key) continue;
 
+					Console.WriteLine("a: {0} {1}", a.Key, a.Value);
+					Console.WriteLine("b: {0} {1}", b.Key, b.Value);
+
 					numerator = (numerator * -b.Key);
 					denominator *= (a.Key - b.Key);
+
+					Console.WriteLine("numerator: {0}", numerator);
+					Console.WriteLine("denominator: {0}", denominator);
 				}
 
-				result += (byte)(a.Value * (numerator / denominator));
+				result += (byte)((a.Value * numerator) / denominator);
+				Console.WriteLine("result: {0}", result);
 			}
 
 			return result;
