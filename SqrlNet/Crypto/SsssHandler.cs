@@ -100,23 +100,34 @@ namespace SqrlNet.Crypto
 
 			for(var cur = 0; cur < length; cur++)
 			{
-				result[cur] = 0;
+				result[cur] = ResolveByte(shares.ToDictionary(x => x.Key, x => x.Value[cur]));
+			}
 
-				foreach(var a in shares)
+			return result;
+		}
+
+		#endregion
+
+		#region Other Public Methods
+
+		public byte ResolveByte(IDictionary<int, byte> shares)
+		{
+			byte result = 0;
+
+			foreach(var a in shares)
+			{
+				int numerator = 1;
+				int denominator = 1;
+
+				foreach(var b in shares)
 				{
-					int numerator = 1;
-					int denominator = 1;
+					if(a.Key == b.Key) continue;
 
-					foreach(var b in shares)
-					{
-						if(a.Key == b.Key) continue;
-
-						numerator = (numerator * -b.Key);
-						denominator *= (a.Key - b.Key);
-					}
-
-					result[cur] += (byte)(a.Value[cur] * (numerator / denominator));
+					numerator = (numerator * -b.Key);
+					denominator *= (a.Key - b.Key);
 				}
+
+				result += (byte)(a.Value * (numerator / denominator));
 			}
 
 			return result;
