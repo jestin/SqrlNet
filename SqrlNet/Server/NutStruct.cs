@@ -1,9 +1,13 @@
 using System;
-using System.Net;
 using System.Runtime.InteropServices;
 
 namespace SqrlNet.Server
 {
+	/// <summary>
+	/// This is the nut data in struct form, but with explicit layout and an overlayed
+	/// byte array.  This makes it trivial to encode data into the nut, so it isn't just
+	/// random, and can be used for anti-phishing purposes.
+	/// </summary>
 	[StructLayout(LayoutKind.Explicit)]
 	public unsafe struct NutStruct
 	{
@@ -39,6 +43,12 @@ namespace SqrlNet.Server
 
 		#region Methods
 
+		/// <summary>
+		/// Gets the bytes.
+		/// </summary>
+		/// <returns>
+		/// The bytes.
+		/// </returns>
 		public byte[] GetBytes()
 		{
 			var data = new byte[16];
@@ -53,6 +63,12 @@ namespace SqrlNet.Server
 			return data;
 		}
 
+		/// <summary>
+		/// Sets the bytes.
+		/// </summary>
+		/// <param name='bytes'>
+		/// The bytes.
+		/// </param>
 		public void SetBytes(byte[] bytes)
 		{
 			fixed(byte* ptr = ByteArray)
@@ -67,4 +83,3 @@ namespace SqrlNet.Server
 		#endregion
 	}
 }
-

@@ -1,20 +1,36 @@
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Cryptography;
 
 namespace SqrlNet.Crypto
 {
+	/// <summary>
+	/// This is an implementation of Shamir's Secret Sharing Scheme, which can break up a secret
+	/// into several parts, and can restore the secret from a specified number of he parts.
+	/// WARNING:  This implementation is not yet functional!  DO NOT USE!
+	/// </summary>
 	public class SsssHandler : ISsssHandler
 	{
 		#region Private Variables
 
+		/// <summary>
+		/// The pseudo random number generator.  Since this is Microsoft's implementation, I may want to
+		/// consider swapping it for a more trustworty prng.  In light of the Snowden leaks, closed source
+		/// implementations of cryptography from large companies cannot be trusted.
+		/// </summary>
 		private RNGCryptoServiceProvider _rng;
 
 		#endregion
 
 		#region Public Properties
 
+		/// <summary>
+		/// Gets or sets the pseudo random number generator.
+		/// </summary>
+		/// <value>
+		/// The pseudo random number generator.
+		/// </value>
 		public RNGCryptoServiceProvider Rng
 		{
 			private get
@@ -37,6 +53,21 @@ namespace SqrlNet.Crypto
 
 		#region ISsssHandler implementation
 
+		/// <summary>
+		///  Split the secret into a number of shares, such that it can be reconstructed by a subset of the total shares. 
+		/// </summary>
+		/// <param name='secret'>
+		///  The secret to be split into parts. 
+		/// </param>
+		/// <param name='threshold'>
+		///  The minimum number of shares required to reconstruct the secret. 
+		/// </param>
+		/// <param name='numShares'>
+		///  The number of shares to divide the secret into. 
+		/// </param>
+		/// <returns>
+		///  A dictionary of the shares where the key is the x-coordinate and the value is the y-coordinate 
+		/// </returns>
 		public IDictionary<int, byte[]> Split(byte[] secret, int threshold, int numShares)
 		{
 			if(secret == null)
@@ -85,7 +116,7 @@ namespace SqrlNet.Crypto
 
 					for(int exp = 0; exp < threshold; exp++)
 					{
-						share.Value[cur] += (byte)(coefs[exp] * Math.Pow(share.Key, exp));
+						share.Value[cur] ^= GFMul(coefs[exp], (byte)Math.Pow(share.Key, exp));
 					}
 				}
 			}
@@ -93,6 +124,15 @@ namespace SqrlNet.Crypto
 			return shares;
 		}
 
+		/// <summary>
+		///  Restore the secret given the threshhold number, and that number of shares. 
+		/// </summary>
+		/// <param name='shares'>
+		///  The shares being used to reconstruct the secret. 
+		/// </param>
+		/// <returns>
+		///  The reconstructed secret. 
+		/// </returns>
 		public byte[] Restore(IDictionary<int, byte[]> shares)
 		{
  			var length = shares.First().Value.Length;
@@ -110,37 +150,105 @@ namespace SqrlNet.Crypto
 
 		#region Other Public Methods
 
+		/// <summary>
+		/// Resolves an individual byte.
+		/// </summary>
+		/// <returns>
+		/// The byte.
+		/// </returns>
+		/// <param name='shares'>
+		/// The shares.
+		/// </param>
 		public byte ResolveByte(IDictionary<int, byte> shares)
 		{
 			byte result = 0;
 
 			foreach(var a in shares)
 			{
-				int numerator = 1;
-				int denominator = 1;
+				byte numerator = 1;
+				byte denominator = 1;
 
 				foreach(var b in shares)
 				{
-					if(a.Key == b.Key) continue;
+					if(a.Key == b.Key)
+					{
+						continue;
+					}
 
 					Console.WriteLine("a: {0} {1}", a.Key, a.Value);
 					Console.WriteLine("b: {0} {1}", b.Key, b.Value);
 
-					numerator = (numerator * -b.Key);
-					denominator *= (a.Key - b.Key);
+					numerator = GFMul(numerator, (byte)-b.Key);
+					denominator = GFMul(denominator, (byte)((byte)a.Key ^ (byte)b.Key));
 
 					Console.WriteLine("numerator: {0}", numerator);
 					Console.WriteLine("denominator: {0}", denominator);
 				}
 
-				result += (byte)((a.Value * numerator) / denominator);
+				result ^= GFDiv(GFMul(a.Value, numerator), denominator);
 				Console.WriteLine("result: {0}", result);
 			}
 
 			return result;
 		}
 
+		/// <summary>
+		/// Multiplication under GF256.
+		/// </summary>
+		/// <returns>
+		/// The GF256 product.
+		/// </returns>
+		/// <param name='a'>
+		/// The first operand.
+		/// </param>
+		/// <param name='b'>
+		/// The second operand.
+		/// </param>
+		public byte GFMul(byte a, byte b)
+		{
+			byte p = 0;
+			byte counter;
+			byte hi_bit_set;
+
+			for (counter = 0; counter < 8; counter++)
+			{
+				if ((b & 1) != 0)
+				{
+					p ^= a;
+				}
+
+				hi_bit_set = (byte)(a & 0x80);
+				a <<= 1;
+
+				if (hi_bit_set != 0)
+				{
+					a ^= 0x1b; /* x^8 + x^4 + x^3 + x + 1 */
+				}
+
+				b >>= 1;
+			}
+
+			return p;
+		}
+
+		/// <summary>
+		/// Division in GF256.
+		/// </summary>
+		/// <returns>
+		/// The quotent.
+		/// </returns>
+		/// <param name='a'>
+		/// The numerator.
+		/// </param>
+		/// <param name='b'>
+		/// The demoninator.
+		/// </param>
+		public byte GFDiv(byte a, byte b)
+		{
+			// TODO: fix this
+			return GFMul(a, b);
+		}
+
 		#endregion
 	}
 }
-

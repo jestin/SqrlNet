@@ -5,21 +5,33 @@ using System.Security.Cryptography;
 
 namespace SqrlNet.Server
 {
+	/// <summary>
+	/// Data for the SQRL nonce, otherwise known as the 'nut' (Get it?  Squirrel?  Nut?  Hilarious!).
+	/// </summary>
 	public class NutData
 	{
 		#region Constructors
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="SqrlNet.Server.NutData"/> class.
+		/// </summary>
 		public NutData()
 		{
 		}
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="SqrlNet.Server.NutData"/> class.
+		/// </summary>
+		/// <param name='nutStruct'>
+		/// Nut struct.
+		/// </param>
 		public NutData(NutStruct nutStruct)
 		{
 			// convert the IP address
 			Address = new IPAddress(nutStruct.Address);
 
 			// convert the timestamp
-			Timestamp = new DateTime(1970,1,1,0,0,0,0);
+			Timestamp = new DateTime(1970, 1, 1, 0, 0, 0, 0);
 			Timestamp = Timestamp.AddSeconds(nutStruct.Timestamp).ToLocalTime();
 
 			Counter = nutStruct.Counter;
@@ -104,4 +116,3 @@ namespace SqrlNet.Server
 		#endregion
 	}
 }
-

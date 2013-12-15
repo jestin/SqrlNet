@@ -1,5 +1,3 @@
-using System;
-
 namespace SqrlNet.Crypto
 {
 	/// <summary>
@@ -11,22 +9,28 @@ namespace SqrlNet.Crypto
 		/// Sign the specified message with the private key.
 		/// </summary>
 		/// <param name='privateKey'>
-		/// Private key.
+		/// The private key.
 		/// </param>
 		/// <param name='message'>
-		/// Message.
+		/// The message.
 		/// </param>
+		/// <returns>
+		/// The message that has been signed (encrypted) by the private key.
+		/// </returns>
 		byte[] Sign(byte[] privateKey, byte[] message);
 
 		/// <summary>
 		/// Sign the specified message with the private key.
 		/// </summary>
 		/// <param name='privateKey'>
-		/// Private key.
+		/// The private key.
 		/// </param>
 		/// <param name='message'>
-		/// Message.
+		/// The message.
 		/// </param>
+		/// <returns>
+		/// The message that has been signed (encrypted) by the private key.
+		/// </returns>
 		byte[] Sign(byte[] privateKey, string message);
 
 		/// <summary>
@@ -38,6 +42,9 @@ namespace SqrlNet.Crypto
 		/// <param name='signedMessage'>
 		/// Signed message.
 		/// </param>
+		/// <returns>
+		/// The decrypted (verified) message.
+		/// </returns>
 		byte[] Verify(byte[] publicKey, byte[] signedMessage);
 
 		/// <summary>

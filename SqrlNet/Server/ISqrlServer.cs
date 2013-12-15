@@ -1,8 +1,9 @@
-using System;
-using System.Net;
-
 namespace SqrlNet.Server
 {
+	/// <summary>
+	/// An interface that contains all the functionality to create the server-side
+	/// implentation of the SQRL protocol.
+	/// </summary>
 	public interface ISqrlServer
 	{
 		/// <summary>
@@ -62,7 +63,9 @@ namespace SqrlNet.Server
 		/// <param name='data'>
 		/// The data contained in the SQRL request.
 		/// </param>
+		/// <param name="expectedUrl">
+		/// The URL that is expected from the request.
+		/// </param>
 		bool VerifySqrlRequest(SqrlData data, string expectedUrl);
 	}
 }
-

@@ -67,6 +67,24 @@ namespace SqrlNetTests
 		}
 
 		[Test]
+		//[Repeat(Repititions)]
+		public void Two_Two_Scheme_Single_Byte()
+		{
+			// generate secret
+			var secret = new byte[1];
+			var rng = new RNGCryptoServiceProvider();
+			rng.GetBytes(secret);
+
+			// split secret
+			var shares = _handler.Split(secret, 2, 2);
+			Console.Error.WriteLine(Convert.ToInt32(secret[0]));
+
+			var restoredSecret = _handler.Restore(shares);
+			Console.Error.WriteLine(Convert.ToInt32(restoredSecret[0]));
+			Assert.IsTrue(secret.SequenceEqual(restoredSecret));
+		}
+
+		[Test]
 		[Repeat(Repititions)]
 		public void Two_Three_Scheme()
 		{
@@ -198,14 +216,14 @@ namespace SqrlNetTests
 		{
 			var shares = new Dictionary<int, byte>();
 
-			shares[1] = 141;
-			shares[3] = 167;
+			//shares[1] = 141;
+			//shares[3] = 167;
 
 			//shares[1] = 130;
 			//shares[3] = 134;
 
-			//shares[1] = 140;
-			//shares[3] = 164;
+			shares[1] = 140;
+			shares[3] = 164;
 
 			var restored = _handler.ResolveByte(shares);
 			Console.WriteLine("Restored: {0}", restored);

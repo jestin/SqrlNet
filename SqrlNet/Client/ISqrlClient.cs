@@ -1,9 +1,7 @@
-using System;
-
 namespace SqrlNet.Client
 {
 	/// <summary>
-	/// This provides all the SQRL functionality needed to implement a SQRL client.
+	/// This interface provides all the SQRL functionality needed to implement a SQRL client.
 	/// </summary>
 	public interface ISqrlClient
 	{
@@ -51,7 +49,7 @@ namespace SqrlNet.Client
 		/// Master key.
 		/// </param>
 		/// <param name='url'>
-		/// URL.
+		/// The URL.
 		/// </param>
 		SqrlData GetSqrlDataForLogin(byte[] masterKey, string url);
 
@@ -65,10 +63,13 @@ namespace SqrlNet.Client
 		/// Master identity key.
 		/// </param>
 		/// <param name='password'>
-		/// Password.
+		/// The password.
+		/// </param>
+		/// <param name="salt">
+		/// The salt.
 		/// </param>
 		/// <param name='url'>
-		/// URL.
+		/// The URL.
 		/// </param>
 		SqrlData GetSqrlDataForLogin(byte[] masterIdentityKey, string password, byte[] salt, string url);
 
@@ -79,13 +80,13 @@ namespace SqrlNet.Client
 		/// The sqrl data for login.
 		/// </returns>
 		/// <param name='identity'>
-		/// Identity.
+		/// The identity.
 		/// </param>
 		/// <param name='password'>
-		/// Password.
+		/// The password.
 		/// </param>
 		/// <param name='url'>
-		/// URL.
+		/// The URL.
 		/// </param>
 		SqrlData GetSqrlDataForLogin(SqrlIdentity identity, string password, string url);
 
@@ -96,7 +97,7 @@ namespace SqrlNet.Client
 		/// All the data needed to define an identity.
 		/// </returns>
 		/// <param name='password'>
-		/// Password.
+		/// The password.
 		/// </param>
 		/// <param name='entropy'>
 		/// Random data from some non-deterministic source that allows for more secure master key generation.
@@ -127,7 +128,7 @@ namespace SqrlNet.Client
 		/// Verifies the password.
 		/// </summary>
 		/// <returns>
-		/// The password.
+		/// True if the password is correct.
 		/// </returns>
 		/// <param name='password'>
 		/// The password.
@@ -144,7 +145,7 @@ namespace SqrlNet.Client
 		/// The domain from URL.
 		/// </returns>
 		/// <param name='url'>
-		/// URL.
+		/// The URL.
 		/// </param>
 		string GetDomainFromUrl(string url);
 	}

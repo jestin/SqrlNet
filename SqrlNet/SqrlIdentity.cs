@@ -1,5 +1,3 @@
-using System;
-
 namespace SqrlNet
 {
 	/// <summary>
@@ -40,4 +38,3 @@ namespace SqrlNet
 		public byte[] PartialPasswordHash { get; set; }
 	}
 }
-

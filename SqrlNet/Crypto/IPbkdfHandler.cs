@@ -1,5 +1,3 @@
-using System;
-
 namespace SqrlNet.Crypto
 {
 	/// <summary>
@@ -14,10 +12,10 @@ namespace SqrlNet.Crypto
 		/// The password key.
 		/// </returns>
 		/// <param name='password'>
-		/// Password.
+		/// The password.
 		/// </param>
 		/// <param name='salt'>
-		/// Salt.
+		/// The salt.
 		/// </param>
 		byte[] GeneratePasswordKey(string password, byte[] salt);
 
@@ -50,4 +48,3 @@ namespace SqrlNet.Crypto
 		byte[] GetPartialHashFromPasswordKey(byte[] passwordKey);
 	}
 }
-

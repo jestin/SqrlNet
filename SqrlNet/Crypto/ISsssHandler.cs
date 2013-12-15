@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 
 namespace SqrlNet.Crypto
@@ -39,4 +38,3 @@ namespace SqrlNet.Crypto
 		byte[] Restore(IDictionary<int, byte[]> shares);
 	}
 }
-

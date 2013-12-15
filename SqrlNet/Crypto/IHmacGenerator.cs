@@ -1,5 +1,3 @@
-using System;
-
 namespace SqrlNet.Crypto
 {
 	/// <summary>
@@ -14,12 +12,11 @@ namespace SqrlNet.Crypto
 		/// The private key.
 		/// </returns>
 		/// <param name='masterKey'>
-		/// Master key.
+		/// The master key.
 		/// </param>
 		/// <param name='domain'>
-		/// Domain.
+		/// The domain.
 		/// </param>
 		byte[] GeneratePrivateKey(byte[] masterKey, string domain);
 	}
 }
-
