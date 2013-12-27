@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Numerics;
 
 namespace SqrlNet.Crypto
 {
@@ -20,6 +21,11 @@ namespace SqrlNet.Crypto
 		/// implementations of cryptography from large companies cannot be trusted.
 		/// </summary>
 		private RNGCryptoServiceProvider _rng;
+
+		/// <summary>
+		/// A large print to use with SSSS.
+		/// </summary>
+		private BigInteger _prime = BigInteger.Parse("115792089237316195423570985008687907853269984665640564039457584007913129640233");
 
 		#endregion
 
@@ -116,7 +122,7 @@ namespace SqrlNet.Crypto
 
 					for(int exp = 0; exp < threshold; exp++)
 					{
-						share.Value[cur] ^= GFMul(coefs[exp], (byte)Math.Pow(share.Key, exp));
+						//share.Value[cur] ^= GFMul(coefs[exp], (byte)Math.Pow(share.Key, exp));
 					}
 				}
 			}
@@ -178,75 +184,18 @@ namespace SqrlNet.Crypto
 					Console.WriteLine("a: {0} {1}", a.Key, a.Value);
 					Console.WriteLine("b: {0} {1}", b.Key, b.Value);
 
-					numerator = GFMul(numerator, (byte)-b.Key);
-					denominator = GFMul(denominator, (byte)((byte)a.Key ^ (byte)b.Key));
+					//numerator = GFMul(numerator, (byte)-b.Key);
+					//denominator = GFMul(denominator, (byte)((byte)a.Key ^ (byte)b.Key));
 
 					Console.WriteLine("numerator: {0}", numerator);
 					Console.WriteLine("denominator: {0}", denominator);
 				}
 
-				result ^= GFDiv(GFMul(a.Value, numerator), denominator);
+				//result ^= GFDiv(GFMul(a.Value, numerator), denominator);
 				Console.WriteLine("result: {0}", result);
 			}
 
 			return result;
-		}
-
-		/// <summary>
-		/// Multiplication under GF256.
-		/// </summary>
-		/// <returns>
-		/// The GF256 product.
-		/// </returns>
-		/// <param name='a'>
-		/// The first operand.
-		/// </param>
-		/// <param name='b'>
-		/// The second operand.
-		/// </param>
-		public byte GFMul(byte a, byte b)
-		{
-			byte p = 0;
-			byte counter;
-			byte hi_bit_set;
-
-			for (counter = 0; counter < 8; counter++)
-			{
-				if ((b & 1) != 0)
-				{
-					p ^= a;
-				}
-
-				hi_bit_set = (byte)(a & 0x80);
-				a <<= 1;
-
-				if (hi_bit_set != 0)
-				{
-					a ^= 0x1b; /* x^8 + x^4 + x^3 + x + 1 */
-				}
-
-				b >>= 1;
-			}
-
-			return p;
-		}
-
-		/// <summary>
-		/// Division in GF256.
-		/// </summary>
-		/// <returns>
-		/// The quotent.
-		/// </returns>
-		/// <param name='a'>
-		/// The numerator.
-		/// </param>
-		/// <param name='b'>
-		/// The demoninator.
-		/// </param>
-		public byte GFDiv(byte a, byte b)
-		{
-			// TODO: fix this
-			return GFMul(a, b);
 		}
 
 		#endregion
