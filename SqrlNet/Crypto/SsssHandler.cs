@@ -91,22 +91,7 @@ namespace SqrlNet.Crypto
 				throw new ArgumentException("The threshold cannot be larger than the number of shares", "threshold");
 			}
 
-			// create the BigInteger by appending 0x00 so that it becomes a positive integer
-			var modifiedSecret = new byte[secret.Length + 1];
-			Buffer.BlockCopy(secret, 0, modifiedSecret, 0, secret.Length);
-			modifiedSecret[secret.Length] = 0x00;
-
-			BigInteger secretInt;
-
-			try
-			{
-				secretInt = new BigInteger(modifiedSecret);
-			}
-			catch(IndexOutOfRangeException)
-			{
-				// account for a bug in the BigInteger constructor
-				secretInt = new BigInteger(0);
-			}
+			var secretInt = PositiveBigIntegerFromBytes(secret);
 
 			var shares = new Dictionary<int, byte[]>();
 
@@ -185,7 +170,7 @@ namespace SqrlNet.Crypto
 
 				// We multiply this way to minimize the amount of error we get from
 				// dividing a smaller number by the denominator.
-				intercept += (new BigInteger(firstShare.Value) * numerator) / denominator;
+				intercept += (PositiveBigIntegerFromBytes(firstShare.Value) * numerator) / denominator;
 			}
 
 			var result = intercept % _prime;
@@ -223,6 +208,24 @@ namespace SqrlNet.Crypto
 			} while(r >= n);
 
 			return r;
+		}
+
+		public BigInteger PositiveBigIntegerFromBytes(byte[] bytes)
+		{
+			// create the BigInteger by appending 0x00 so that it becomes a positive integer
+			var modifiedBytes = new byte[bytes.Length + 1];
+			Buffer.BlockCopy(bytes, 0, modifiedBytes, 0, bytes.Length);
+			modifiedBytes[bytes.Length] = 0x00;
+
+			try
+			{
+				return new BigInteger(modifiedBytes);
+			}
+			catch(IndexOutOfRangeException)
+			{
+				// account for a bug in the BigInteger constructor
+				return new BigInteger(0);
+			}
 		}
 
 		#endregion
