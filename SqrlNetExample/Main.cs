@@ -32,12 +32,12 @@ namespace SqrlNetExample
 				//rng.GetBytes(secret);
 				secret[0] = theByte;
 
-				var shares = ssss.Split(secret, 3, 4);
+				var shares = ssss.Split(secret, 2, 3);
 				var subset = new Dictionary<int, byte[]>();
 				subset[1] = shares[1];
 				subset[2] = shares[2];
 				//subset[3] = shares[3];
-				subset[4] = shares[4];
+				//subset[4] = shares[4];
 				//subset[5] = shares[5];
 				//subset[6] = shares[6];
 				//subset[7] = shares[7];

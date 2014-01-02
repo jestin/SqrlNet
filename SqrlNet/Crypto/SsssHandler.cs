@@ -91,40 +91,49 @@ namespace SqrlNet.Crypto
 				throw new ArgumentException("The threshold cannot be larger than the number of shares", "threshold");
 			}
 
-			var shares = new Dictionary<int, byte[]>();
+			// create the BigInteger by appending 0x00 so that it becomes a positive integer
+			var modifiedSecret = new byte[secret.Length + 1];
+			Buffer.BlockCopy(secret, 0, modifiedSecret, 0, secret.Length);
+			modifiedSecret[secret.Length] = 0x00;
 
-			// initialize shares
-			for(int i = 0; i < numShares; i++)
+			BigInteger secretInt;
+
+			try
 			{
-				shares[i + 1] = new byte[secret.Length];
+				secretInt = new BigInteger(modifiedSecret);
+			}
+			catch(IndexOutOfRangeException)
+			{
+				// account for a bug in the BigInteger constructor
+				secretInt = new BigInteger(0);
 			}
 
-			// loop through each byte of the secret
-			for(var cur = 0; cur < secret.Length; cur++)
+			var shares = new Dictionary<int, byte[]>();
+
+			var coefs = new BigInteger[threshold];
+
+			for(var i = 0; i < coefs.Length; i++)
 			{
-				var coefs = new byte[threshold];
+				coefs[i] = RandomBigIntegerBelow(_prime);
+			}
 
-				// generate random coefficients
-				Rng.GetBytes(coefs);
+			// grab points
+			for(int xCoord = 1; xCoord <= numShares; xCoord++)
+			{
+				// start with the constant term
+				var intValue = secretInt;
 
-				// set the secret to the first coefficient
-				coefs[0] = secret[cur];
-
-				foreach(var coef in coefs)
+				// add in all the other terms in the polynomial
+				for(int exp = 1; exp < threshold; exp++)
 				{
-					Console.Error.WriteLine("coef: {0}", coef);
+					intValue += BigInteger.Pow(new BigInteger(xCoord), exp);
 				}
 
-				// grab points
-				foreach(var share in shares)
-				{
-					share.Value[cur] = 0;
+				var shareValue = intValue.ToByteArray();
 
-					for(int exp = 0; exp < threshold; exp++)
-					{
-						//share.Value[cur] ^= GFMul(coefs[exp], (byte)Math.Pow(share.Key, exp));
-					}
-				}
+				// ensures that all shares are equal to the size of the original secret
+				Array.Resize(ref shareValue, secret.Length);
+				shares[xCoord] = shareValue;
 			}
 
 			return shares;
@@ -141,61 +150,79 @@ namespace SqrlNet.Crypto
 		/// </returns>
 		public byte[] Restore(IDictionary<int, byte[]> shares)
 		{
- 			var length = shares.First().Value.Length;
-			var result = new byte[length];
+			// get the size of the shares for padding later
+			int shareLength = shares.First().Value.Count();
 
-			for(var cur = 0; cur < length; cur++)
+			// Calculate P_k(x) = \sum_{i=0}^{i<k} y_i * l_i(x)
+			// We're only interested in P_k(0).
+			var intercept = new BigInteger(0);
+
+			// Need to compute the lagrange bases.
+			foreach(var firstShare in shares)
 			{
-				result[cur] = ResolveByte(shares.ToDictionary(x => x.Key, x => x.Value[cur]));
+				// The x value from first coordinate.
+				var firstX = new BigInteger(firstShare.Key);
+
+				// To keep track of the numerator and denominator of the Lagrange basis.
+				var numerator = new BigInteger(1);
+				var denominator = new BigInteger(1);
+
+				// Loop through all of the other coordinates to make the Lagrange basis.
+				foreach(var secondShare in shares)
+				{
+					// The x value of the second coordinate.
+					var secondX = new BigInteger(secondShare.Key);
+
+					// We don't want to look at pairs that are the same.
+					if(firstShare.Key != secondShare.Key)
+					{
+						// Using BigNumbers here helps with precision.
+						// We only care about x = 0, so we do 0-secondX rather than x-secondX.
+						numerator = numerator * -secondX;
+						denominator = denominator * (firstX - secondX);
+					}
+				}
+
+				// We multiply this way to minimize the amount of error we get from
+				// dividing a smaller number by the denominator.
+				intercept += (new BigInteger(firstShare.Value) * numerator) / denominator;
 			}
 
-			return result;
+			var result = intercept % _prime;
+
+			Console.Error.WriteLine("result {0}", result);
+
+			var original = result.ToByteArray();
+
+			// ensure that the array gets padded with zeros if it's too small
+			Array.Resize(ref original, shareLength);
+
+			// ensure that negative numbers that got padded use 0xFF instead
+			if(result.Sign < 0 && original[shareLength - 1] == 0x00)
+			{
+				original[shareLength - 1] = 0xFF;
+			}
+
+			return original;
 		}
 
 		#endregion
 
 		#region Other Public Methods
 
-		/// <summary>
-		/// Resolves an individual byte.
-		/// </summary>
-		/// <returns>
-		/// The byte.
-		/// </returns>
-		/// <param name='shares'>
-		/// The shares.
-		/// </param>
-		public byte ResolveByte(IDictionary<int, byte> shares)
+		public BigInteger RandomBigIntegerBelow(BigInteger n)
 		{
-			byte result = 0;
+			byte[] bytes = n.ToByteArray();
+			BigInteger r;
 
-			foreach(var a in shares)
+			do
 			{
-				byte numerator = 1;
-				byte denominator = 1;
+				Rng.GetBytes(bytes);
+				bytes[bytes.Length - 1] &= (byte)0x7F; //force sign bit to positive
+				r = new BigInteger(bytes);
+			} while(r >= n);
 
-				foreach(var b in shares)
-				{
-					if(a.Key == b.Key)
-					{
-						continue;
-					}
-
-					Console.WriteLine("a: {0} {1}", a.Key, a.Value);
-					Console.WriteLine("b: {0} {1}", b.Key, b.Value);
-
-					//numerator = GFMul(numerator, (byte)-b.Key);
-					//denominator = GFMul(denominator, (byte)((byte)a.Key ^ (byte)b.Key));
-
-					Console.WriteLine("numerator: {0}", numerator);
-					Console.WriteLine("denominator: {0}", denominator);
-				}
-
-				//result ^= GFDiv(GFMul(a.Value, numerator), denominator);
-				Console.WriteLine("result: {0}", result);
-			}
-
-			return result;
+			return r;
 		}
 
 		#endregion

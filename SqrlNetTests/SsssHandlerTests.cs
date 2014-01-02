@@ -5,6 +5,7 @@ using NUnit.Framework;
 using SqrlNet.Crypto;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Numerics;
 
 namespace SqrlNetTests
 {
@@ -12,7 +13,7 @@ namespace SqrlNetTests
 	public class SsssHandlerTests
 	{
 		private SsssHandler _handler;
-		private const int Repititions = 100;
+		private const int Repititions = 1000;
 
 		[SetUp]
 		public void Setup()
@@ -59,15 +60,17 @@ namespace SqrlNetTests
 
 			// split secret
 			var shares = _handler.Split(secret, 2, 2);
-			Console.Error.WriteLine(Convert.ToBase64String(secret));
+			//Console.Error.WriteLine("original {0} : {1}", new BigInteger(secret), Convert.ToBase64String(secret));
+			Console.Error.WriteLine("original {0} : {1}", new BigInteger(secret), BitConverter.ToString(secret));
 
 			var restoredSecret = _handler.Restore(shares);
-			Console.Error.WriteLine(Convert.ToBase64String(restoredSecret));
+			//Console.Error.WriteLine("restored {0} : {1}", new BigInteger(secret), Convert.ToBase64String(restoredSecret));
+			Console.Error.WriteLine("restored {0} : {1}", new BigInteger(restoredSecret), BitConverter.ToString(restoredSecret));
 			Assert.IsTrue(secret.SequenceEqual(restoredSecret));
 		}
 
 		[Test]
-		//[Repeat(Repititions)]
+		[Repeat(Repititions)]
 		public void Two_Two_Scheme_Single_Byte()
 		{
 			// generate secret
@@ -101,7 +104,6 @@ namespace SqrlNetTests
 			oneTwo[2] = shares[2];
 			Assert.IsTrue(secret.SequenceEqual(_handler.Restore(oneTwo)));
 
-			// This one fails
 			var oneThree = new Dictionary<int, byte[]>();
 			oneThree[1] = shares[1];
 			oneThree[3] = shares[3];
@@ -144,13 +146,11 @@ namespace SqrlNetTests
 			oneTwo[2] = shares[2];
 			Assert.IsTrue(secret.SequenceEqual(_handler.Restore(oneTwo)));
 
-			// This one fails
 			var oneThree = new Dictionary<int, byte[]>();
 			oneThree[1] = shares[1];
 			oneThree[3] = shares[3];
 			Assert.IsTrue(secret.SequenceEqual(_handler.Restore(oneThree)));
 
-			// This one fails
 			var oneFour = new Dictionary<int, byte[]>();
 			oneFour[1] = shares[1];
 			oneFour[4] = shares[4];
@@ -174,6 +174,47 @@ namespace SqrlNetTests
 
 		[Test]
 		[Repeat(Repititions)]
+		public void Three_Four_Scheme()
+		{
+			// generate secret
+			var secret = new byte[32];
+			var rng = new RNGCryptoServiceProvider();
+			rng.GetBytes(secret);
+
+			Console.Error.WriteLine("original {0} : {1}", new BigInteger(secret), BitConverter.ToString(secret));
+
+			// split secret
+			var shares = _handler.Split(secret, 3, 4);
+
+			var oneTwoThree = new Dictionary<int, byte[]>();
+			oneTwoThree[1] = shares[1];
+			oneTwoThree[2] = shares[2];
+			oneTwoThree[3] = shares[3];
+			Assert.IsTrue(secret.SequenceEqual(_handler.Restore(oneTwoThree)));
+
+			var oneThreeFour = new Dictionary<int, byte[]>();
+			oneThreeFour[1] = shares[1];
+			oneThreeFour[3] = shares[3];
+			oneThreeFour[4] = shares[4];
+			Assert.IsTrue(secret.SequenceEqual(_handler.Restore(oneThreeFour)));
+
+			var oneTwoFour = new Dictionary<int, byte[]>();
+			oneTwoFour[1] = shares[1];
+			oneTwoFour[2] = shares[2];
+			oneTwoFour[4] = shares[4];
+			var oneTwoFourResult = _handler.Restore(oneTwoFour);
+			Console.Error.WriteLine("restored {0} : {1}", new BigInteger(oneTwoFourResult), BitConverter.ToString(oneTwoFourResult));
+			Assert.IsTrue(secret.SequenceEqual(oneTwoFourResult));
+
+			var twoThreeFour = new Dictionary<int, byte[]>();
+			twoThreeFour[2] = shares[2];
+			twoThreeFour[3] = shares[3];
+			twoThreeFour[4] = shares[4];
+			Assert.IsTrue(secret.SequenceEqual(_handler.Restore(twoThreeFour)));
+		}
+
+		[Test]
+		[Repeat(Repititions)]
 		public void Four_Four_Scheme()
 		{
 			// generate secret
@@ -184,83 +225,6 @@ namespace SqrlNetTests
 			// split secret
 			var shares = _handler.Split(secret, 4, 4);
 			Assert.IsTrue(secret.SequenceEqual(_handler.Restore(shares)));
-		}
-
-		[Test]
-		public void Each_Byte_Two_Three_Scheme_With_Shares_One_And_Three()
-		{
-			for(byte secretByte = 0; secretByte <= 255; secretByte++)
-			{
-				var secret = new byte[1];
-				secret[0] = secretByte;
-				var shares = _handler.Split(secret, 2, 3);
-
-				var oneThree = new Dictionary<int, byte[]>();
-				oneThree[1] = shares[1];
-				oneThree[3] = shares[3];
-
-				var restoredSecret = _handler.Restore(oneThree);
-
-				Console.WriteLine("****************");
-				Console.WriteLine("Secret: {0}", secretByte);
-				Console.WriteLine("Restored: {0}", restoredSecret[0]);
-				Console.WriteLine("Shares: (1, {0}) (2, {1}) (3, {2})", shares[1][0], shares[2][0], shares[3][0]);
-				Console.WriteLine("****************");
-
-				Assert.AreEqual(secretByte, restoredSecret[0]);
-			}
-		}
-
-		[Test]
-		public void RestoreByte()
-		{
-			var shares = new Dictionary<int, byte>();
-
-			//shares[1] = 141;
-			//shares[3] = 167;
-
-			//shares[1] = 130;
-			//shares[3] = 134;
-
-			shares[1] = 140;
-			shares[3] = 164;
-
-			var restored = _handler.ResolveByte(shares);
-			Console.WriteLine("Restored: {0}", restored);
-
-			Assert.AreEqual(0, restored);
-		}
-
-		[Test]
-		[Ignore]
-		public void Each_Byte_Each_Scheme()
-		{
-			for(var numShares = 2; numShares < 256; numShares++)
-			{
-				for(var threshold = 2; threshold <= numShares; threshold++)
-				{
-					for(var theByte = 0; theByte < 256; theByte++)
-					{
-						var secret = new Byte[1] { (byte)theByte };
-						var shares = _handler.Split(secret, threshold, numShares);
-
-						foreach(var permutation in GetAllPermutations(shares, threshold))
-						{
-							var restoredSecret = _handler.Restore(permutation);
-							Assert.IsTrue(secret.SequenceEqual(restoredSecret));
-						}
-					}
-				}
-			}
-		}
-
-		#endregion
-
-		#region Private Methods
-
-		private IEnumerable<IDictionary<int, byte[]>> GetAllPermutations(IDictionary<int, byte[]> allShares, int threshold)
-		{
-			return new Collection<IDictionary<int, byte[]>>();
 		}
 
 		#endregion
