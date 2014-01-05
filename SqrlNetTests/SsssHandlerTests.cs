@@ -294,7 +294,7 @@ namespace SqrlNetTests
 		public void Three_Five_Scheme()
 		{
 			// generate secret
-			var secret = new byte[1];
+			var secret = new byte[32];
 			var rng = new RNGCryptoServiceProvider();
 			rng.GetBytes(secret);
 
@@ -327,7 +327,7 @@ namespace SqrlNetTests
 			oneTwoFour[2] = shares[2];
 			oneTwoFour[4] = shares[4];
 			var oneTwoFourResult = _handler.Restore(oneTwoFour);
-			Console.Error.WriteLine("(1, {0}), (2, {1}), (4, {2})", shares[1][0], shares[2][0], shares[4][0]);
+			Console.Error.WriteLine("(1, {0}), (2, {1}), (4, {2})", new BigInteger(shares[1]), new BigInteger(shares[2]), new BigInteger(shares[4]));
 			Console.Error.WriteLine("restored {0} : {1}", new BigInteger(oneTwoFourResult), BitConverter.ToString(oneTwoFourResult));
 			Assert.IsTrue(secret.SequenceEqual(oneTwoFourResult));
 
@@ -360,6 +360,18 @@ namespace SqrlNetTests
 			threeFourFive[4] = shares[4];
 			threeFourFive[5] = shares[5];
 			Assert.IsTrue(secret.SequenceEqual(_handler.Restore(threeFourFive)));
+		}
+
+		[Test]
+		public void Random()
+		{
+			BigInteger prime = BigInteger.Parse("115792089237316195423570985008687907853269984665640564039457584007913129640233");
+
+			for(int i = 0; i < 100; i++)
+			{
+				var random = _handler.RandomBigIntegerBelow(prime);
+				Console.Error.WriteLine(random);
+			}
 		}
 
 		#endregion

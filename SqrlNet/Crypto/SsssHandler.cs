@@ -171,6 +171,7 @@ namespace SqrlNet.Crypto
 				// We multiply this way to minimize the amount of error we get from
 				// dividing a smaller number by the denominator.
 				intercept += (PositiveBigIntegerFromBytes(firstShare.Value) * numerator) / denominator;
+				//intercept += (PositiveBigIntegerFromBytes(firstShare.Value) * numerator) * ModInverse(denominator);
 			}
 
 			var result = intercept % _prime;
@@ -226,6 +227,29 @@ namespace SqrlNet.Crypto
 				// account for a bug in the BigInteger constructor
 				return new BigInteger(0);
 			}
+		}
+
+		public BigInteger[] GreatestCommonDivisorDecomposition(BigInteger a,BigInteger b)
+		{ 
+			if (b == 0)
+			{
+				return new BigInteger[] { a, new BigInteger(1), new BigInteger(0) };
+			}
+			else
+			{ 
+				var n = a / b;
+				var c = a % b;
+				var r = GreatestCommonDivisorDecomposition(b, c); 
+				return new BigInteger[] { r[0], r[2], r[1] - r[2] * n };
+			}
+		}
+
+		public BigInteger ModInverse(BigInteger k)
+		{ 
+			k = k % _prime;
+			var r = (k < 0) ? -GreatestCommonDivisorDecomposition(_prime, -k)[2]
+							: GreatestCommonDivisorDecomposition(_prime, k)[2];
+			return (_prime + r) % _prime;
 		}
 
 		#endregion
