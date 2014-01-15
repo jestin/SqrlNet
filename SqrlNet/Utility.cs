@@ -6,7 +6,7 @@ namespace SqrlNet
 	/// A static class with useful utility methods that are useful to both client
 	/// and server applications.  Please be careful not to bloat this class.
 	/// </summary>
-	internal static class Utility
+	public static class Utility
 	{
 		#region ISqrlParser implementation
 
@@ -48,8 +48,26 @@ namespace SqrlNet
 		/// </param>
 		public static string GetDomainFromUrl(string url)
 		{
+			// convert to lower case
+			url = url.ToLower();
+
 			// strip off scheme
 			var domain = GetUrlWithoutProtocol(url);
+
+			var atIndex = domain.IndexOf('@');
+
+			if(atIndex >= 0)
+			{
+				domain = domain.Substring(atIndex + 1);
+			}
+
+			var colonIndex = domain.IndexOf(':');
+
+			if(colonIndex >= 0)
+			{
+				var nextSlash = domain.IndexOf('/');
+				domain = domain.Remove(colonIndex, nextSlash - colonIndex);
+			}
 
 			var pipeIndex = domain.IndexOf('|');
 

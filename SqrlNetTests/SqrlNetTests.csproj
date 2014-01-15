@@ -44,6 +44,7 @@
     <Compile Include="NutDataTests.cs" />
     <Compile Include="AesHandlerTests.cs" />
     <Compile Include="SsssHandlerTests.cs" />
+    <Compile Include="UtilityTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
