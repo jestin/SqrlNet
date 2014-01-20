@@ -127,7 +127,7 @@ public partial class MainWindow: Gtk.Window
 
 	private void SendSqrlData(SqrlData data)
 	{
-		var request = WebRequest.Create("http://" + data.Url);
+		var request = (HttpWebRequest) WebRequest.Create("http://" + data.Url);
 		request.Method = "POST";
 
 		string postData = string.Format("publickey={0}&signature={1}&url={2}",
@@ -136,6 +136,7 @@ public partial class MainWindow: Gtk.Window
 		                                data.Url);
 
 		var byteArray = Encoding.UTF8.GetBytes(postData);
+		request.UserAgent = "SQRL/1";
 		request.ContentType = "application/x-www-form-urlencoded";
 		request.ContentLength = byteArray.Length;
 		var dataStream = request.GetRequestStream();

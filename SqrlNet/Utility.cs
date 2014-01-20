@@ -86,6 +86,36 @@ namespace SqrlNet
 			return domain.Substring(0, slashIndex);
 		}
 
+		public static string ConvertToSqrlBase64String(byte[] bytes)
+		{
+			var result = Convert.ToBase64String(bytes);
+
+			result = result.Replace('+', '-');
+			result = result.Replace('/', '_');
+			result = result.TrimEnd(new[] { '=' });
+
+			return result;
+		}
+
+		public static byte[] ConvertFromSqrlBase64String(string data)
+		{
+			data = data.Replace('-', '+');
+			data = data.Replace('_', '/');
+
+			// re-add padding
+			var m = data.Length % 4;
+
+			if(m != 0)
+			{
+				for(int i = 0; i < 4 - m; i++)
+				{
+					data = data + "=";
+				}
+			}
+
+			return Convert.FromBase64String(data);
+		}
+
 		#endregion
 	}
 }
