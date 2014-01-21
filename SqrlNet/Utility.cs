@@ -86,6 +86,15 @@ namespace SqrlNet
 			return domain.Substring(0, slashIndex);
 		}
 
+		/// <summary>
+		/// Converts to a base64 string, but making it URL friendly for use with SQRL.
+		/// </summary>
+		/// <returns>
+		/// The base64 string.
+		/// </returns>
+		/// <param name='bytes'>
+		/// The data to convert.
+		/// </param>
 		public static string ConvertToSqrlBase64String(byte[] bytes)
 		{
 			var result = Convert.ToBase64String(bytes);
@@ -97,6 +106,15 @@ namespace SqrlNet
 			return result;
 		}
 
+		/// <summary>
+		/// Converts from a base64 string that has been made URL friendly.
+		/// </summary>
+		/// <returns>
+		/// The data as it was before encoding.
+		/// </returns>
+		/// <param name='data'>
+		/// The base64 encoded string.
+		/// </param>
 		public static byte[] ConvertFromSqrlBase64String(string data)
 		{
 			data = data.Replace('-', '+');
