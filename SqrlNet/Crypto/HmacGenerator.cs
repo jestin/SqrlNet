@@ -24,7 +24,7 @@ namespace SqrlNet.Crypto
 		/// </param>
 		public byte[] GeneratePrivateKey(byte[] masterKey, string domain)
 		{
-			using(HMACSHA256 hmac = new HMACSHA256(masterKey))
+			using(var hmac = new HMACSHA256(masterKey))
 			{
 				return hmac.ComputeHash(Encoding.UTF8.GetBytes(domain));
 			}

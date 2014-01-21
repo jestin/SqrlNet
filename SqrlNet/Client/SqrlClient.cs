@@ -338,7 +338,7 @@ namespace SqrlNet.Client
 				throw new Exception("a and b must be of the same length");
 			}
 
-			byte[] result = new byte[a.Length];
+			var result = new byte[a.Length];
 
 			for(int i = 0; i < a.Length; i++)
 			{

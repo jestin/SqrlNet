@@ -38,7 +38,7 @@ namespace SqrlNet.Server
 
 		#region Static Variables
 
-		private static UInt32 _counter = 0;
+		private static UInt32 counter = 0;
 
 		#endregion
 
@@ -64,13 +64,13 @@ namespace SqrlNet.Server
 			{
 				Address = new IPAddress(0),
 				Timestamp = DateTime.UtcNow,
-				Counter = _counter,
+				Counter = counter,
 				Entropy = new byte[4]
 			};
 
 			rng.GetBytes(nutData.Entropy);
 
-			_counter++;
+			counter++;
 
 			return GenerateNut(key, iv, nutData);
 		}
