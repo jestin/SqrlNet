@@ -7,12 +7,14 @@ namespace SqrlNet.Client
 	{
 		#region ISqrlHttpHelper implementation
 
-		public HttpWebRequest GetRequest(SqrlData data)
+		public HttpWebRequest GetLoginRequest(SqrlData data)
 		{
 			var request = (HttpWebRequest) WebRequest.Create("http://" + data.Url);
 			request.Method = "POST";
 
-			string postData = string.Format("publickey={0}&signature={1}&url={2}",
+			string postData = string.Format("client={0}&server={1}&ids={2}&pids={3}",
+			                                GetClientParameter(data, SqrlCommand.Login),
+			                                GetServerParameter(data),
 			                                Utility.ConvertToSqrlBase64String(data.PublicKey),
 			                                Utility.ConvertToSqrlBase64String(data.Signature),
 			                                data.Url);
@@ -26,6 +28,40 @@ namespace SqrlNet.Client
 			dataStream.Close();
 
 			return request;
+		}
+
+		#endregion
+
+		#region Public Methods
+
+		public string GetClientParameter(SqrlData data, SqrlCommand cmd)
+		{
+			string result = string.Empty;
+
+			switch(cmd)
+			{
+				case SqrlCommand.SetKey:
+					break;
+				case SqrlCommand.SetLock:
+					break;
+				case SqrlCommand.Create:
+					break;
+				case SqrlCommand.Login:
+					result = string.Format("ver={0}\r\ncmd={1}\r\nidk={2}",
+				                       1,
+				                       cmd.ToString().ToLower(),
+				                       data.PublicKey);
+					break;
+				default:
+					throw new System.ArgumentOutOfRangeException();
+			}
+
+			return Utility.ConvertToSqrlBase64String(ASCIIEncoding.ASCII.GetBytes(result));
+		}
+
+		public string GetServerParameter(SqrlData data)
+		{
+			return string.Empty;
 		}
 
 		#endregion

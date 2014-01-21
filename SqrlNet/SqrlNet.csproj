@@ -58,6 +58,8 @@
     <Compile Include="Crypto\SsssHandler.cs" />
     <Compile Include="Client\ISqrlHttpHelper.cs" />
     <Compile Include="Client\SqrlHttpHelper.cs" />
+    <Compile Include="SqrlCommand.cs" />
+    <Compile Include="TransactionInformationFlags.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
