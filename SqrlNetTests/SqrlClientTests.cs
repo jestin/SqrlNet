@@ -130,14 +130,16 @@ namespace SqrlNetTests
 		[Test]
 		public void CreateIdentity_Succeeds()
 		{
+			byte[] identityUnlockKey;
 			_pbkdfHandler.Expect(x => x.GeneratePasswordKey(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything)).Return(new byte[32]);
 			_pbkdfHandler.Expect(x => x.GetPartialHashFromPasswordKey(Arg<byte[]>.Is.Anything)).Return(new byte[16]);
 			_mocks.ReplayAll();
 
-			var result = _client.CreateIdentity("password", new byte[4096]);
+			var result = _client.CreateIdentity("password", new byte[4096], out identityUnlockKey);
 
 			_mocks.VerifyAll();
 			Assert.IsNotNull(result);
+			Assert.IsNotNull(identityUnlockKey);
 		}
 
 		#endregion

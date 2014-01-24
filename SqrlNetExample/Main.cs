@@ -83,9 +83,10 @@ namespace SqrlNetExample
 
 			Console.Write("Password:  ");
 			var password = Console.ReadLine();
+			byte[] identityUnlockKey;
 
 			// very insecure way of gathering entropy, but good enough for testing temporary identities
-			var identity = client.CreateIdentity(password, Encoding.UTF8.GetBytes(DateTime.Now.ToLongDateString()));
+			var identity = client.CreateIdentity(password, Encoding.UTF8.GetBytes(DateTime.Now.ToLongDateString()), out identityUnlockKey);
 
 			if(client.VerifyPassword(password, identity))
 			{

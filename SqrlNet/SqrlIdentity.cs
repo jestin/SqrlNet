@@ -36,5 +36,14 @@ namespace SqrlNet
 		/// The partial password hash.
 		/// </value>
 		public byte[] PartialPasswordHash { get; set; }
+
+		/// <summary>
+		/// This is the key that is used to negotiate SQRL locking every time
+		/// a new website is associated with this SQRL identity.
+		/// </summary>
+		/// <value>
+		/// The identity lock key.
+		/// </value>
+		public byte[] IdentityLockKey { get; set; }
 	}
 }

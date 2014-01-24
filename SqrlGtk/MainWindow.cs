@@ -165,8 +165,14 @@ public partial class MainWindow: Gtk.Window
 
 		if(response == ResponseType.Ok)
 		{
-			identity = _sqrlClient.CreateIdentity(dlg.Password, Encoding.UTF8.GetBytes(DateTime.Now.ToLongDateString()));
+			byte[] identityUnlockKey;
+			identity = _sqrlClient.CreateIdentity(dlg.Password, Encoding.UTF8.GetBytes(DateTime.Now.ToLongDateString()), out identityUnlockKey);
 			identity.Name = dlg.IdentityName;
+
+			// this is likely not the right time to clear this memory, but
+			// we need to ensure that the user prints out a copy of this key
+			// before we erase it forever.
+			Array.Clear(identityUnlockKey, 0, identityUnlockKey.Length);
 		}
 
 		dlg.Destroy();
