@@ -14,6 +14,7 @@ namespace SqrlNet.Client
 		private readonly IPbkdfHandler _pbkdfHandler;
 		private readonly IHmacGenerator _hmacGenerator;
 		private readonly ISqrlSigner _signer;
+		private readonly ISqrlPseudoRandomNumberGenerator _prng;
 
 		#endregion
 
@@ -31,14 +32,19 @@ namespace SqrlNet.Client
 		/// <param name='signer'>
 		/// The signer.
 		/// </param>
+		/// <param name='prng'>
+		/// The pseudo random number generator.
+		/// </param>
 		public SqrlClient(
 			IPbkdfHandler pbkdfHandler,
 			IHmacGenerator hmacGenerator,
-			ISqrlSigner signer)
+			ISqrlSigner signer,
+			ISqrlPseudoRandomNumberGenerator prng)
 		{
 			_pbkdfHandler = pbkdfHandler;
 			_hmacGenerator = hmacGenerator;
 			_signer = signer;
+			_prng = prng;
 		}
 
 		#endregion
@@ -217,13 +223,12 @@ namespace SqrlNet.Client
 			identity.Salt = new byte[8];
 			var masterKey = new byte[32];
 
-			var rngCsp = new RNGCryptoServiceProvider();
 			var sha256 = SHA256Managed.Create();
 
-			rngCsp.GetBytes(identity.Salt);
-			rngCsp.GetBytes(masterKey);
+			_prng.GetBytes(identity.Salt);
+			_prng.GetBytes(masterKey);
 
-			// XOR the generated master key with the entropy (making any potential backdoors in the implementation of RNGCryptoServiceProvider irrelevent)
+			// XOR the generated master key with the entropy (making any potential backdoors in the implementation of the pseudo random number generator irrelevent)
 			masterKey = Xor(masterKey, sha256.ComputeHash(entropy));
 
 			// call the SCrypt PBKDF to create the password key
@@ -241,7 +246,7 @@ namespace SqrlNet.Client
 			// generate identity unlock key
 
 			identityUnlockKey = new byte[32];
-			rngCsp.GetBytes(identityUnlockKey);
+			_prng.GetBytes(identityUnlockKey);
 
 			return identity;
 		}
@@ -267,7 +272,6 @@ namespace SqrlNet.Client
 		public SqrlIdentity ChangePassword(string oldPassword, byte[] oldSalt, string newPassword, byte[] masterIdentityKey)
 		{
 			var identity = new SqrlIdentity();
-			var rngCsp = new RNGCryptoServiceProvider();
 
 			// calculate the master key
 			var oldPasswordKey = _pbkdfHandler.GeneratePasswordKey(oldPassword, oldSalt);
@@ -275,7 +279,7 @@ namespace SqrlNet.Client
 
 			// generate new salt
 			identity.Salt = new byte[8];
-			rngCsp.GetBytes(identity.Salt);
+			_prng.GetBytes(identity.Salt);
 
 			// generate the new password key
 			var newPasswordKey = _pbkdfHandler.GeneratePasswordKey(newPassword, identity.Salt);

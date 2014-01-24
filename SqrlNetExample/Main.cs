@@ -18,9 +18,10 @@ namespace SqrlNetExample
 			ISqrlSigner signer = new SqrlSigner();
 			IPbkdfHandler pbkdfHandler = new PbkdfHandler();
 			IHmacGenerator hmac = new HmacGenerator();
-			ISqrlClient client = new SqrlClient(pbkdfHandler, hmac, signer);
+			ISqrlPseudoRandomNumberGenerator prng = new SqrlPseudoRandomNumberGenerator();
+			ISqrlClient client = new SqrlClient(pbkdfHandler, hmac, signer, prng);
 			IAesHandler aesHandler = new AesHandler();
-			ISqrlServer server = new SqrlServer(signer, aesHandler);
+			ISqrlServer server = new SqrlServer(signer, aesHandler, prng);
 			ISsssHandler ssss = new SsssHandler();
 			var rng = new RNGCryptoServiceProvider();
 

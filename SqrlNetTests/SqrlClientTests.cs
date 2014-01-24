@@ -15,6 +15,7 @@ namespace SqrlNetTests
 		private IPbkdfHandler _pbkdfHandler;
 		private IHmacGenerator _hmacGenerator;
 		private ISqrlSigner _signer;
+		private ISqrlPseudoRandomNumberGenerator _prng;
 
 		private SqrlClient _client;
 
@@ -24,8 +25,9 @@ namespace SqrlNetTests
 			_pbkdfHandler = _mocks.StrictMock<IPbkdfHandler>();
 			_hmacGenerator = _mocks.StrictMock<IHmacGenerator>();
 			_signer = _mocks.StrictMock<ISqrlSigner>();
+			_prng = _mocks.DynamicMock<ISqrlPseudoRandomNumberGenerator>();
 
-			_client = new SqrlClient(_pbkdfHandler, _hmacGenerator, _signer);
+			_client = new SqrlClient(_pbkdfHandler, _hmacGenerator, _signer, _prng);
 		}
 
 		[TearDown]

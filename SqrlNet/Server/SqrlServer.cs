@@ -1,6 +1,5 @@
 using System;
 using System.Net;
-using System.Security.Cryptography;
 using System.Text;
 using SqrlNet.Crypto;
 
@@ -16,6 +15,7 @@ namespace SqrlNet.Server
 
 		private readonly ISqrlSigner _sqrlSigner;
 		private readonly IAesHandler _aesHandler;
+		private readonly ISqrlPseudoRandomNumberGenerator _prng;
 
 		#endregion
 
@@ -28,12 +28,17 @@ namespace SqrlNet.Server
 		/// <param name='aesHandler'>
 		/// AES handler.
 		/// </param>
+		/// <param name='prng'>
+		/// The pseudo random number generator.
+		/// </param>
 		public SqrlServer(
 			ISqrlSigner sqrlSigner,
-			IAesHandler aesHandler)
+			IAesHandler aesHandler,
+			ISqrlPseudoRandomNumberGenerator prng)
 		{
 			_sqrlSigner = sqrlSigner;
 			_aesHandler = aesHandler;
+			_prng = prng;
 		}
 
 		#region Static Variables
@@ -58,8 +63,6 @@ namespace SqrlNet.Server
 		/// </param>
 		public byte[] GenerateNut(byte[] key, byte[] iv)
 		{
-			var rng = new RNGCryptoServiceProvider();
-
 			var nutData = new NutData
 			{
 				Address = new IPAddress(0),
@@ -68,7 +71,7 @@ namespace SqrlNet.Server
 				Entropy = new byte[4]
 			};
 
-			rng.GetBytes(nutData.Entropy);
+			_prng.GetBytes(nutData.Entropy);
 
 			counter++;
 
