@@ -61,6 +61,9 @@
     <Compile Include="Client\SqrlHttpHelper.cs" />
     <Compile Include="SqrlCommand.cs" />
     <Compile Include="TransactionInformationFlags.cs" />
+    <Compile Include="Crypto\ISqrlPseudoRandomNumberGenerator.cs" />
+    <Compile Include="Crypto\Sodium\SodiumPseudoRandomNumberGenerator.cs" />
+    <Compile Include="Crypto\SqrlPseudoRandomNumberGenerator.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
