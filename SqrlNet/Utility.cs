@@ -163,6 +163,15 @@ namespace SqrlNet
 			return result;
 		}
 
+		/// <summary>
+		/// Gets a byte array initialized to zero.
+		/// </summary>
+		/// <returns>
+		/// A byte array containing all zeros.
+		/// </returns>
+		/// <param name='count'>
+		/// The length of the desired array.
+		/// </param>
 		public static byte[] GetZeroBytes(int count)
 		{
 			var bytes = new byte[count];
