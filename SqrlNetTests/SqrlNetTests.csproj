@@ -45,6 +45,7 @@
     <Compile Include="AesHandlerTests.cs" />
     <Compile Include="SsssHandlerTests.cs" />
     <Compile Include="UtilityTests.cs" />
+    <Compile Include="CryptSharpPbkdfHandlerTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

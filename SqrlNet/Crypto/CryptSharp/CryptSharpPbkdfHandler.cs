@@ -26,19 +26,38 @@ namespace SqrlNet.Crypto.CryptSharp
 		/// <param name='salt'>
 		///  The salt. 
 		/// </param>
-		public byte[] GeneratePasswordKey(string password, byte[] salt)
+		/// <param name='iterations'>
+		///  The number of iterations. 
+		/// </param>
+		public byte[] GeneratePasswordKey(string password, byte[] salt, int iterations)
 		{
 			var key = new byte[32];
-			SCrypt.ComputeKey(
-				Encoding.UTF8.GetBytes(password),
-				salt,
-				32,
-				1024,
-				1,
-				null,
-				key);
+			var inputKey = Encoding.UTF8.GetBytes(password);
+			var runningKey = new byte[32];
 
-			return key;
+			// initialize the running key to all 0's
+			for(int i = 0; i < 32; i++)
+			{
+				runningKey[i] = 0x00;
+			}
+
+			// run SCRYPT in a loop
+			for(int i = 0; i < iterations; i++)
+			{
+				SCrypt.ComputeKey(
+					inputKey,
+					salt,
+					256,
+					512,
+					1,
+					null,
+					key);
+
+				runningKey = Utility.Xor(runningKey, key);
+				inputKey = key;
+			}
+
+			return runningKey;
 		}
 
 		/// <summary>
@@ -58,7 +77,7 @@ namespace SqrlNet.Crypto.CryptSharp
 		/// </param>
 		public bool VerifyPassword(string password, byte[] salt, byte[] partialHash)
 		{
-			var passwordKey = GeneratePasswordKey(password, salt);
+			var passwordKey = GeneratePasswordKey(password, salt, 1);
 			return partialHash.SequenceEqual(GetPartialHashFromPasswordKey(passwordKey));
 		}
 

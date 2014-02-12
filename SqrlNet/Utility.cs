@@ -134,6 +134,35 @@ namespace SqrlNet
 			return Convert.FromBase64String(data);
 		}
 
+		/// <summary>
+		/// XOR two byte arrays of equal length.
+		/// </summary>
+		/// <param name='a'>
+		/// A byte array.
+		/// </param>
+		/// <param name='b'>
+		/// Another byte array.
+		/// </param>
+		/// <returns>
+		/// The result of the XOR operation of the two parameters
+		/// </returns>
+		public static byte[] Xor(byte[] a, byte[] b)
+		{
+			if(a.Length != b.Length)
+			{
+				throw new Exception("a and b must be of the same length");
+			}
+
+			var result = new byte[a.Length];
+
+			for(int i = 0; i < a.Length; i++)
+			{
+				result[i] = (byte)(a[i] ^ b[i]);
+			}
+
+			return result;
+		}
+
 		#endregion
 	}
 }

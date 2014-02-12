@@ -41,7 +41,7 @@ namespace SqrlNetTests
 		[Test]
 		public void CalculateMasterKey_Succeeds()
 		{
-			_pbkdfHandler.Expect(x => x.GeneratePasswordKey(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything)).Return(new byte[32]);
+			_pbkdfHandler.Expect(x => x.GeneratePasswordKey(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything, Arg<int>.Is.Anything)).Return(new byte[32]);
 			_mocks.ReplayAll();
 
 			var result = _client.CalculateMasterKey(new byte[32], "password", new byte[8]);
@@ -54,7 +54,7 @@ namespace SqrlNetTests
 		[ExpectedException(typeof(Exception), ExpectedMessage = "master identity key must be 256 bits (32 bytes).")]
 		public void CalculateMasterKey_Bad_MasterIdentityKey_Fails()
 		{
-			_pbkdfHandler.Expect(x => x.GeneratePasswordKey(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything)).Return(new byte[64]);
+			_pbkdfHandler.Expect(x => x.GeneratePasswordKey(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything, Arg<int>.Is.Anything)).Return(new byte[64]);
 			_mocks.ReplayAll();
 
 			_client.CalculateMasterKey(new byte[31], "password", new byte[8]);
@@ -64,7 +64,7 @@ namespace SqrlNetTests
 		[ExpectedException(typeof(Exception), ExpectedMessage = "password key must be 256 bits (32 bytes).  Check validity of PBKDF.")]
 		public void CalculateMasterKey_Bad_PBKDF_Output_Fails()
 		{
-			_pbkdfHandler.Expect(x => x.GeneratePasswordKey(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything)).Return(new byte[31]);
+			_pbkdfHandler.Expect(x => x.GeneratePasswordKey(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything, Arg<int>.Is.Anything)).Return(new byte[31]);
 			_mocks.ReplayAll();
 
 			_client.CalculateMasterKey(new byte[32], "password", new byte[8]);
@@ -77,7 +77,7 @@ namespace SqrlNetTests
 		[Test]
 		public void CalculateMasterIdentityKey_Succeeds()
 		{
-			_pbkdfHandler.Expect(x => x.GeneratePasswordKey(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything)).Return(new byte[32]);
+			_pbkdfHandler.Expect(x => x.GeneratePasswordKey(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything, Arg<int>.Is.Anything)).Return(new byte[32]);
 			_mocks.ReplayAll();
 
 			var result = _client.CalculateMasterIdentityKey(new byte[32], "password", new byte[8]);
@@ -90,7 +90,7 @@ namespace SqrlNetTests
 		[ExpectedException(typeof(Exception), ExpectedMessage = "master key must be 256 bits (32 bytes).")]
 		public void CalculateMasterIdentityKey_Bad_MasterIdentityKey_Fails()
 		{
-			_pbkdfHandler.Expect(x => x.GeneratePasswordKey(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything)).Return(new byte[32]);
+			_pbkdfHandler.Expect(x => x.GeneratePasswordKey(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything, Arg<int>.Is.Anything)).Return(new byte[32]);
 			_mocks.ReplayAll();
 
 			_client.CalculateMasterIdentityKey(new byte[31], "password", new byte[8]);
@@ -100,7 +100,7 @@ namespace SqrlNetTests
 		[ExpectedException(typeof(Exception), ExpectedMessage = "password key must be 256 bits (32 bytes).  Check validity of PBKDF.")]
 		public void CalculateMasterIdentityKey_Bad_PBKDF_Output_Fails()
 		{
-			_pbkdfHandler.Expect(x => x.GeneratePasswordKey(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything)).Return(new byte[31]);
+			_pbkdfHandler.Expect(x => x.GeneratePasswordKey(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything, Arg<int>.Is.Anything)).Return(new byte[31]);
 			_mocks.ReplayAll();
 
 			_client.CalculateMasterIdentityKey(new byte[32], "password", new byte[8]);
@@ -133,7 +133,7 @@ namespace SqrlNetTests
 		public void CreateIdentity_Succeeds()
 		{
 			byte[] identityUnlockKey;
-			_pbkdfHandler.Expect(x => x.GeneratePasswordKey(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything)).Return(new byte[32]);
+			_pbkdfHandler.Expect(x => x.GeneratePasswordKey(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything, Arg<int>.Is.Anything)).Return(new byte[32]);
 			_pbkdfHandler.Expect(x => x.GetPartialHashFromPasswordKey(Arg<byte[]>.Is.Anything)).Return(new byte[16]);
 			_mocks.ReplayAll();
 
@@ -151,7 +151,7 @@ namespace SqrlNetTests
 		[Test]
 		public void ChangePassword_Succeeds()
 		{
-			_pbkdfHandler.Expect(x => x.GeneratePasswordKey(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything)).Return(new byte[32]).Repeat.Times(2);
+			_pbkdfHandler.Expect(x => x.GeneratePasswordKey(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything, Arg<int>.Is.Anything)).Return(new byte[32]).Repeat.Times(2);
 			_pbkdfHandler.Expect(x => x.GetPartialHashFromPasswordKey(Arg<byte[]>.Is.Anything)).Return(new byte[16]);
 			_mocks.ReplayAll();
 
@@ -324,7 +324,7 @@ namespace SqrlNetTests
 				0x00, 0x00, 0x00, 0x00,
 			};
 
-			_pbkdfHandler.Expect(x => x.GeneratePasswordKey(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything)).Return(passwordKey);
+			_pbkdfHandler.Expect(x => x.GeneratePasswordKey(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything, Arg<int>.Is.Anything)).Return(passwordKey);
 			_mocks.ReplayAll();
 
 			var result = _client.CalculateMasterKey(masterIdentityKey, "password", new byte[8]);
