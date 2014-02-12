@@ -163,6 +163,18 @@ namespace SqrlNet
 			return result;
 		}
 
+		public static byte[] GetZeroBytes(int count)
+		{
+			var bytes = new byte[count];
+
+			for(int i = 0; i < count; i++)
+			{
+				bytes[i] = 0x00;
+			}
+
+			return bytes;
+		}
+
 		#endregion
 	}
 }

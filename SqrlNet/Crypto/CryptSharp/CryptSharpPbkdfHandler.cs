@@ -32,13 +32,13 @@ namespace SqrlNet.Crypto.CryptSharp
 		public byte[] GeneratePasswordKey(string password, byte[] salt, int iterations)
 		{
 			var key = new byte[32];
-			var inputKey = Encoding.UTF8.GetBytes(password);
-			var runningKey = new byte[32];
+			byte[] inputKey = String.IsNullOrEmpty(password) ? Utility.GetZeroBytes(32) : Encoding.UTF8.GetBytes(password);
+			var runningKey = Utility.GetZeroBytes(32);
 
-			// initialize the running key to all 0's
-			for(int i = 0; i < 32; i++)
+			// handle null salt
+			if(salt == null)
 			{
-				runningKey[i] = 0x00;
+				salt = Utility.GetZeroBytes(32);
 			}
 
 			// run SCRYPT in a loop
@@ -47,14 +47,14 @@ namespace SqrlNet.Crypto.CryptSharp
 				SCrypt.ComputeKey(
 					inputKey,
 					salt,
-					256,
 					512,
+					256,
 					1,
 					null,
 					key);
 
 				runningKey = Utility.Xor(runningKey, key);
-				inputKey = key;
+				Buffer.BlockCopy(key, 0, salt, 0, 32);
 			}
 
 			return runningKey;
