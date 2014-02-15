@@ -20,7 +20,7 @@ namespace SqrlNet.Crypto
 		/// <param name='iterations'>
 		/// The number of iterations.
 		/// </param>
-		byte[] GeneratePasswordKey(string password, byte[] salt, int iterations);
+		byte[] GeneratePasswordKey(string password, byte[] salt, int iterations = 1);
 
 		/// <summary>
 		/// Verifies the password.

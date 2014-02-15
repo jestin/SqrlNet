@@ -73,7 +73,7 @@ namespace SqrlNet.Client
 				throw new Exception("master identity key must be 256 bits (32 bytes).");
 			}
 
-			var passwordKey = _pbkdfHandler.GeneratePasswordKey(password, salt, 1);
+			var passwordKey = _pbkdfHandler.GeneratePasswordKey(password, salt);
 
 			if(passwordKey.Length != 32)
 			{
@@ -109,7 +109,7 @@ namespace SqrlNet.Client
 				throw new Exception("master key must be 256 bits (32 bytes).");
 			}
 
-			var passwordKey = _pbkdfHandler.GeneratePasswordKey(password, salt, 1);
+			var passwordKey = _pbkdfHandler.GeneratePasswordKey(password, salt);
 
 			if(passwordKey.Length != 32)
 			{
@@ -232,7 +232,7 @@ namespace SqrlNet.Client
 			masterKey = Xor(masterKey, sha256.ComputeHash(entropy));
 
 			// call the SCrypt PBKDF to create the password key
-			var passwordKey = _pbkdfHandler.GeneratePasswordKey(password, identity.Salt, 1);
+			var passwordKey = _pbkdfHandler.GeneratePasswordKey(password, identity.Salt);
 
 			// get the partial hash for password verification
 			identity.PartialPasswordHash = _pbkdfHandler.GetPartialHashFromPasswordKey(passwordKey);
@@ -274,7 +274,7 @@ namespace SqrlNet.Client
 			var identity = new SqrlIdentity();
 
 			// calculate the master key
-			var oldPasswordKey = _pbkdfHandler.GeneratePasswordKey(oldPassword, oldSalt, 1);
+			var oldPasswordKey = _pbkdfHandler.GeneratePasswordKey(oldPassword, oldSalt);
 			var masterKey = Utility.Xor(oldPasswordKey, masterIdentityKey);
 
 			// generate new salt
@@ -282,7 +282,7 @@ namespace SqrlNet.Client
 			_prng.GetBytes(identity.Salt);
 
 			// generate the new password key
-			var newPasswordKey = _pbkdfHandler.GeneratePasswordKey(newPassword, identity.Salt, 1);
+			var newPasswordKey = _pbkdfHandler.GeneratePasswordKey(newPassword, identity.Salt);
 
 			// get the partial hash for password verification
 			identity.PartialPasswordHash = _pbkdfHandler.GetPartialHashFromPasswordKey(newPasswordKey);

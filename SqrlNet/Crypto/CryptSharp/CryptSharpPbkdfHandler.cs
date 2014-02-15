@@ -29,7 +29,7 @@ namespace SqrlNet.Crypto.CryptSharp
 		/// <param name='iterations'>
 		///  The number of iterations. 
 		/// </param>
-		public byte[] GeneratePasswordKey(string password, byte[] salt, int iterations)
+		public byte[] GeneratePasswordKey(string password, byte[] salt, int iterations = 1)
 		{
 			var key = new byte[32];
 			byte[] inputKey = String.IsNullOrEmpty(password) ? Utility.GetZeroBytes(32) : Encoding.UTF8.GetBytes(password);
@@ -77,7 +77,7 @@ namespace SqrlNet.Crypto.CryptSharp
 		/// </param>
 		public bool VerifyPassword(string password, byte[] salt, byte[] partialHash)
 		{
-			var passwordKey = GeneratePasswordKey(password, salt, 1);
+			var passwordKey = GeneratePasswordKey(password, salt);
 			return partialHash.SequenceEqual(GetPartialHashFromPasswordKey(passwordKey));
 		}
 
