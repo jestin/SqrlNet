@@ -241,7 +241,7 @@ namespace SqrlNetTests
 		// Salt: ba6006e4
 		// Iterations: 123
 		//
-		// Output Key: a15abed469fa6e28742430bbc5cd954321b00ba368e26b55fea949f1f8c1f2b0
+		// Output Key: 2c8e863c03b8884de4541129035bf4fa60998561ae72201fd055dc42138778e3
 		[Test]
 		public void GeneratePasswordKey_password_ba6006e4_1()
 		{
@@ -252,7 +252,7 @@ namespace SqrlNetTests
 
 			Console.Error.WriteLine(hex);
 
-			Assert.AreEqual("ffed73acde445d516057a333b58f36a2dcf02abed8e5b309fe96dce142f76b7b", hex);
+			Assert.AreEqual("2c8e863c03b8884de4541129035bf4fa60998561ae72201fd055dc42138778e3", hex);
 		}
 
 		#endregion

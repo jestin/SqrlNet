@@ -34,19 +34,22 @@ namespace SqrlNet.Crypto.CryptSharp
 			var key = new byte[32];
 			byte[] inputKey = String.IsNullOrEmpty(password) ? Utility.GetZeroBytes(32) : Encoding.UTF8.GetBytes(password);
 			var runningKey = Utility.GetZeroBytes(32);
+			var runningSalt = Utility.GetZeroBytes(32);
 
 			// handle null salt
-			if(salt == null)
+			if(salt != null)
 			{
-				salt = Utility.GetZeroBytes(32);
+				Buffer.BlockCopy(salt, 0, runningSalt, 0, salt.Length);
 			}
+
+
 
 			// run SCRYPT in a loop
 			for(int i = 0; i < iterations; i++)
 			{
 				SCrypt.ComputeKey(
 					inputKey,
-					salt,
+					runningSalt,
 					512,
 					256,
 					1,
@@ -54,14 +57,7 @@ namespace SqrlNet.Crypto.CryptSharp
 					key);
 
 				runningKey = Utility.Xor(runningKey, key);
-
-				if(salt.Length != key.Length)
-				{
-					Array.Clear(salt, 0, salt.Length);
-					salt = new byte[key.Length];
-				}
-
-				Buffer.BlockCopy(key, 0, salt, 0, 32);
+				Buffer.BlockCopy(key, 0, runningSalt, 0, 32);
 			}
 
 			return runningKey;

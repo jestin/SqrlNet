@@ -17,7 +17,12 @@ namespace SqrlNet.Crypto.Sodium
 		/// </param>
 		public void GetBytes(byte[] bytes)
 		{
-			bytes = SodiumCore.GetRandomBytes(bytes.Length);
+			var randomBytes = SodiumCore.GetRandomBytes(bytes.Length);
+
+			for(int i = 0; i < bytes.Length; i++)
+			{
+				bytes[i] = randomBytes[i];
+			}
 		}
 
 		#endregion
