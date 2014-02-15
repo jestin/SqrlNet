@@ -53,7 +53,7 @@ namespace SqrlNet.Client
 		/// The client parameter.
 		/// </returns>
 		/// <param name='data'>
-		/// Data.
+		/// The SQRL data.
 		/// </param>
 		/// <param name='cmd'>
 		/// The command.
@@ -90,7 +90,7 @@ namespace SqrlNet.Client
 		/// The server parameter.
 		/// </returns>
 		/// <param name='data'>
-		/// Data.
+		/// The SQRL data.
 		/// </param>
 		public string GetServerParameter(SqrlData data)
 		{

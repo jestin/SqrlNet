@@ -168,6 +168,7 @@ public partial class MainWindow: Gtk.Window
 		if(response == ResponseType.Ok)
 		{
 			byte[] identityUnlockKey;
+			// TODO: use better entropy
 			identity = _sqrlClient.CreateIdentity(dlg.Password, Encoding.UTF8.GetBytes(DateTime.Now.ToLongDateString()), out identityUnlockKey);
 			identity.Name = dlg.IdentityName;
 

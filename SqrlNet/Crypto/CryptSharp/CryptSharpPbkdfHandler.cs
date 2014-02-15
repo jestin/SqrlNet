@@ -54,6 +54,13 @@ namespace SqrlNet.Crypto.CryptSharp
 					key);
 
 				runningKey = Utility.Xor(runningKey, key);
+
+				if(salt.Length != key.Length)
+				{
+					Array.Clear(salt, 0, salt.Length);
+					salt = new byte[key.Length];
+				}
+
 				Buffer.BlockCopy(key, 0, salt, 0, 32);
 			}
 
