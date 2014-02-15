@@ -75,9 +75,12 @@ namespace SqrlNet.Crypto.CryptSharp
 		/// <param name='partialHash'>
 		///  The lower 128 bits of a hash of the output of the PBKDF (GeneratePasswordKey). 
 		/// </param>
-		public bool VerifyPassword(string password, byte[] salt, byte[] partialHash)
+		/// <param name='iterations'>
+		/// The number of iterations to run through.
+		/// </param>
+		public bool VerifyPassword(string password, byte[] salt, byte[] partialHash, int iterations = 1)
 		{
-			var passwordKey = GeneratePasswordKey(password, salt);
+			var passwordKey = GeneratePasswordKey(password, salt, iterations);
 			return partialHash.SequenceEqual(GetPartialHashFromPasswordKey(passwordKey));
 		}
 

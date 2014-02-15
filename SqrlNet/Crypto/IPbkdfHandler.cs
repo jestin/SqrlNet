@@ -37,7 +37,10 @@ namespace SqrlNet.Crypto
 		/// <param name='partialHash'>
 		/// The lower 128 bits of a hash of the output of the PBKDF (GeneratePasswordKey).
 		/// </param>
-		bool VerifyPassword(string password, byte[] salt, byte[] partialHash);
+		/// <param name='iterations'>
+		/// The number of iterations to run through.
+		/// </param>
+		bool VerifyPassword(string password, byte[] salt, byte[] partialHash, int iterations = 1);
 
 		/// <summary>
 		/// Gets the partial hash used for password verification from the password key generated from the PBKDF.
