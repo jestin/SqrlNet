@@ -180,6 +180,76 @@ namespace SqrlNetTests
 
 			Assert.That(bytes.SequenceEqual(decoded));
 		}
+
+		[Test]
+		public void Xor_Simple_Succeeds()
+		{
+			var a = new byte[] { 0xff, 0x00, 0xff, 0x00 };
+			var b = new byte[] { 0x00, 0xff, 0x00, 0xff };
+
+			var result = Utility.Xor(a, b);
+
+			Assert.That(result.SequenceEqual(new byte[] { 0xff, 0xff, 0xff, 0xff }));
+		}
+
+		[Test]
+		public void Xor_Overlap_Succeeds()
+		{
+			var a = new byte[] { 0xff, 0xff, 0xff, 0x00 };
+			var b = new byte[] { 0x00, 0xff, 0x00, 0xff };
+
+			var result = Utility.Xor(a, b);
+
+			Assert.That(result.SequenceEqual(new byte[] { 0xff, 0x00, 0xff, 0xff }));
+		}
+
+		[Test]
+		public void Xor_Full_Overlap_Of_Ones_Succeeds()
+		{
+			var a = new byte[] { 0xff, 0xff, 0xff, 0xff };
+			var b = new byte[] { 0xff, 0xff, 0xff, 0xff };
+
+			var result = Utility.Xor(a, b);
+
+			Assert.That(result.SequenceEqual(new byte[] { 0x00, 0x00, 0x00, 0x00 }));
+		}
+
+		[Test]
+		public void Xor_Full_Overlap_Of_Zeros_Succeeds()
+		{
+			var a = new byte[] { 0x00, 0x00, 0x00, 0x00 };
+			var b = new byte[] { 0x00, 0x00, 0x00, 0x00 };
+
+			var result = Utility.Xor(a, b);
+
+			Assert.That(result.SequenceEqual(new byte[] { 0x00, 0x00, 0x00, 0x00 }));
+		}
+
+		[Test]
+		public void Xor_Random_Values_Succeeds()
+		{
+			var rng = new RNGCryptoServiceProvider();
+			var a = new byte[64];
+			var b = new byte[64];
+
+			rng.GetBytes(a);
+			rng.GetBytes(b);
+
+			var result = Utility.Xor(a, b);
+
+			Assert.That(a.SequenceEqual(Utility.Xor(b, result)));
+			Assert.That(b.SequenceEqual(Utility.Xor(a, result)));
+			Assert.That(result.SequenceEqual(Utility.Xor(b, a)));
+		}
+
+		[Test]
+		public void GetZeroBytes_Succeeds()
+		{
+			var zeroBytes = Utility.GetZeroBytes(256);
+
+			Assert.AreEqual(256, zeroBytes.Length);
+			Assert.AreEqual(0, zeroBytes.Sum(x => x));
+		}
 	}
 }
 
