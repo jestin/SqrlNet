@@ -18,13 +18,15 @@ Once cloned, you can open SqrlNet.sln from either Visual Studio, MonoDevelop, or
 	cd SqrlNet
 	mdtool build
 
-To clean the projecct, run:
+To clean the project, run:
 
 	mdtool build -t:Clean SqrlNet.sln
 
 ## Running
 
 In order to run the example applications (SqrlGtk, SqrlServerExample, SqrlNetExample), you need to make sure that libsodium is installed in a directory where it will be available to applications.  This means it must either reside in the `bin` directory of the applications, or a directory in your system's library path (eg. `/usr/local/lib` for Ubuntu).
+
+To install libsodium on your operating system, follow the instructions that are posted on [libsodium's github page](https://github.com/jedisct1/libsodium).
 
 ### Registering the protocol handler
 
