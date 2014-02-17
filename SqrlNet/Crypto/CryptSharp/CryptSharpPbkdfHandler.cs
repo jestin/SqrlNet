@@ -36,13 +36,11 @@ namespace SqrlNet.Crypto.CryptSharp
 			var runningKey = Utility.GetZeroBytes(32);
 			var runningSalt = Utility.GetZeroBytes(32);
 
-			// handle null salt
+			// copy salt
 			if(salt != null)
 			{
 				Buffer.BlockCopy(salt, 0, runningSalt, 0, salt.Length);
 			}
-
-
 
 			// run SCRYPT in a loop
 			for(int i = 0; i < iterations; i++)

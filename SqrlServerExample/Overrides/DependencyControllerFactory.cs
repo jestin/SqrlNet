@@ -13,4 +13,3 @@ namespace SqrlServerExample.Overrides
 		}
 	}
 }
-
