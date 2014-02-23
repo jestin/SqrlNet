@@ -168,7 +168,7 @@ namespace SqrlNetTests
 		[Test]
 		public void VerifyPassword_Succeeds()
 		{
-			_pbkdfHandler.Expect(x => x.VerifyPassword(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything, Arg<byte[]>.Is.Anything)).Return(true);
+			_pbkdfHandler.Expect(x => x.VerifyPassword(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything, Arg<byte[]>.Is.Anything, Arg<int>.Is.Anything)).Return(true);
 			_mocks.ReplayAll();
 
 			var result = _client.VerifyPassword("password", new SqrlIdentity());
@@ -180,7 +180,7 @@ namespace SqrlNetTests
 		[Test]
 		public void VerifyPassword_Fails()
 		{
-			_pbkdfHandler.Expect(x => x.VerifyPassword(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything, Arg<byte[]>.Is.Anything)).Return(false);
+			_pbkdfHandler.Expect(x => x.VerifyPassword(Arg<string>.Is.Anything, Arg<byte[]>.Is.Anything, Arg<byte[]>.Is.Anything, Arg<int>.Is.Anything)).Return(false);
 			_mocks.ReplayAll();
 
 			var result = _client.VerifyPassword("password", new SqrlIdentity());
