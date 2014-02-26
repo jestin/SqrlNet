@@ -22,6 +22,20 @@ To clean the project, run:
 
 	mdtool build -t:Clean SqrlNet.sln
 
+## Building Documentation
+
+If you are using tools from the Mono project, you can build both XML and HTML documentation easily.  First generate the XML Monodoc files using:
+
+	mdoc update -i SqrlNet/bin/Debug/SqrlNet.xml -o SqrlNet/en SqrlNet/bin/Debug/SqrlNet.dll
+
+*Note - replace 'Debug' with 'Release' if you are building the Release build by default*
+
+From there, you can generate HTML documentation with:
+
+	mdoc export-html -o SqrlNet/html/ SqrlNet/en
+
+Now you can open the documentation in a web browser by opening `<root>/SqrlNet/SqrlNet/html/index.html`.
+
 ## Running
 
 In order to run the example applications (SqrlGtk, SqrlServerExample, SqrlNetExample), you need to make sure that libsodium is installed in a directory where it will be available to applications.  This means it must either reside in the `bin` directory of the applications, or a directory in your system's library path (eg. `/usr/local/lib` for Ubuntu).
