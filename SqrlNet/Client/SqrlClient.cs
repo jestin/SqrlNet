@@ -212,9 +212,9 @@ namespace SqrlNet.Client
 		/// <param name='entropy'>
 		///  Random data from some non-deterministic source that allows for more secure master key generation. 
 		/// </param>
-		/// /// <param name='identityUnlockKey'>
-		/// This is the super-secret unlock key that is never to be stored in the client, or on any other
-		/// computer.  It is intended to be turned into a QR code and hidden in a safe.
+		/// <param name='identityUnlockKey'>
+		///  This is the super-secret unlock key that is never to be stored in the client, or on any other computer. It is
+		/// intended to be turned into a QR code and hidden in a safe. 
 		/// </param>
 		public SqrlIdentity CreateIdentity(string password, byte[] entropy, out byte[] identityUnlockKey)
 		{
@@ -244,9 +244,11 @@ namespace SqrlNet.Client
 			Array.Clear(passwordKey, 0, passwordKey.Length);
 
 			// generate identity unlock key
-
 			identityUnlockKey = new byte[32];
 			_prng.GetBytes(identityUnlockKey);
+
+			// create a public key from this secret identity unlock key
+			identity.IdentityLockKey = _signer.MakePublicKey(identityUnlockKey);
 
 			return identity;
 		}
