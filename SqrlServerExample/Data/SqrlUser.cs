@@ -1,11 +1,13 @@
+using SqrlNet;
+
 namespace SqrlServerExample.Data
 {
-	public class SqrlUser
+	public class SqrlUser : ISqrlUser
 	{
 		public string Id { get; set; }
 		public string UserName { get; set; }
 		public bool Initialized { get; set; }
-		public byte[] VerifyUnlockKey { get; set; }
-		public byte[] ServerUnlockKey { get; set; }
+		public string VerifyUnlockKey { get; set; }
+		public string ServerUnlockKey { get; set; }
 	}
 }

@@ -84,7 +84,7 @@ namespace SqrlServerExample.Controllers
 			};
 
 			var image = barcodeWriter.Write(url);
-			MemoryStream stream = new System.IO.MemoryStream();
+			MemoryStream stream = new MemoryStream();
 			image.Save(stream, ImageFormat.Png);
 			byte[] imageBytes = stream.ToArray();
 
@@ -189,4 +189,3 @@ namespace SqrlServerExample.Controllers
 		#endregion
 	}
 }
-

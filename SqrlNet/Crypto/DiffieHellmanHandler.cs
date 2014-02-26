@@ -1,5 +1,8 @@
 namespace SqrlNet.Crypto
 {
+	/// <summary>
+	/// Handler for Diffie-Hellman Key Agreement.
+	/// </summary>
 	public class DiffieHellmanHandler : IDiffieHellmanHandler
 	{
 		#region IDiffieHellmanHandler implementation
