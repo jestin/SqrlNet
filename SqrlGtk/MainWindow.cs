@@ -21,6 +21,7 @@ public partial class MainWindow: Gtk.Window
 	private readonly IPbkdfHandler _pbkdfHandler;
 	private readonly IHmacGenerator _hmacGenerator;
 	private readonly ISqrlSigner _sqrlSigner;
+	private readonly IDiffieHellmanHandler _diffieHellmanHandler;
 	private readonly ISqrlPseudoRandomNumberGenerator _prng;
 
 	#endregion
@@ -39,8 +40,9 @@ public partial class MainWindow: Gtk.Window
 		_pbkdfHandler = new PbkdfHandler();
 		_hmacGenerator = new HmacGenerator();
 		_sqrlSigner = new SqrlSigner();
+		_diffieHellmanHandler = new DiffieHellmanHandler();
 		_prng = new SqrlPseudoRandomNumberGenerator();
-		_sqrlClient = new SqrlClient(_pbkdfHandler, _hmacGenerator, _sqrlSigner, _prng);
+		_sqrlClient = new SqrlClient(_pbkdfHandler, _hmacGenerator, _sqrlSigner, _diffieHellmanHandler, _prng);
 
 		this.domainLabel.Text = string.Format("Do you want to log in to {0}", _sqrlClient.GetDomainFromUrl(url));
 

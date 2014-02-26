@@ -15,6 +15,7 @@ namespace SqrlNetTests
 		private IPbkdfHandler _pbkdfHandler;
 		private IHmacGenerator _hmacGenerator;
 		private ISqrlSigner _signer;
+		private IDiffieHellmanHandler _diffieHellmanHandler;
 		private ISqrlPseudoRandomNumberGenerator _prng;
 
 		private SqrlClient _client;
@@ -25,9 +26,10 @@ namespace SqrlNetTests
 			_pbkdfHandler = _mocks.StrictMock<IPbkdfHandler>();
 			_hmacGenerator = _mocks.StrictMock<IHmacGenerator>();
 			_signer = _mocks.StrictMock<ISqrlSigner>();
+			_diffieHellmanHandler = _mocks.StrictMock<IDiffieHellmanHandler>();
 			_prng = _mocks.DynamicMock<ISqrlPseudoRandomNumberGenerator>();
 
-			_client = new SqrlClient(_pbkdfHandler, _hmacGenerator, _signer, _prng);
+			_client = new SqrlClient(_pbkdfHandler, _hmacGenerator, _signer, _diffieHellmanHandler, _prng);
 		}
 
 		[TearDown]
@@ -188,6 +190,26 @@ namespace SqrlNetTests
 
 			_mocks.VerifyAll();
 			Assert.IsFalse(result);
+		}
+
+		#endregion
+
+		#region CreateRemoteUnlockKeys Tests
+
+		[Test]
+		public void CreateRemoteUnlockKeys_Succeeds()
+		{
+			_prng.Expect(x => x.GetBytes(Arg<byte[]>.Is.Anything));
+			_diffieHellmanHandler.Expect(x => x.CreateKey(Arg<byte[]>.Is.Anything, Arg<byte[]>.Is.Anything)).Return(new byte[32]);
+			_signer.Expect(x => x.MakePublicKey(Arg<byte[]>.Is.Anything)).Repeat.Times(2).Return(new byte[32]);
+			_mocks.ReplayAll();
+
+			byte[] verifyUnlockKey;
+			byte[] serverUnlockKey;
+
+			_client.CreateRemoteUnlockKeys(new byte[32], out verifyUnlockKey, out serverUnlockKey);
+
+			_mocks.VerifyAll();
 		}
 
 		#endregion

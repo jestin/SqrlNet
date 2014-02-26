@@ -14,6 +14,7 @@ namespace SqrlNet.Client
 		private readonly IPbkdfHandler _pbkdfHandler;
 		private readonly IHmacGenerator _hmacGenerator;
 		private readonly ISqrlSigner _signer;
+		private readonly IDiffieHellmanHandler _diffieHellmanHandler;
 		private readonly ISqrlPseudoRandomNumberGenerator _prng;
 
 		#endregion
@@ -32,6 +33,9 @@ namespace SqrlNet.Client
 		/// <param name='signer'>
 		/// The signer.
 		/// </param>
+		/// <param name='diffieHellmanHandler'>
+		/// The Diffie-Hellman handler.
+		/// </param>
 		/// <param name='prng'>
 		/// The pseudo random number generator.
 		/// </param>
@@ -39,11 +43,13 @@ namespace SqrlNet.Client
 			IPbkdfHandler pbkdfHandler,
 			IHmacGenerator hmacGenerator,
 			ISqrlSigner signer,
+			IDiffieHellmanHandler diffieHellmanHandler,
 			ISqrlPseudoRandomNumberGenerator prng)
 		{
 			_pbkdfHandler = pbkdfHandler;
 			_hmacGenerator = hmacGenerator;
 			_signer = signer;
+			_diffieHellmanHandler = diffieHellmanHandler;
 			_prng = prng;
 		}
 
@@ -137,7 +143,16 @@ namespace SqrlNet.Client
 		/// </param>
 		public void CreateRemoteUnlockKeys(byte[] identityLockKey, out byte[] verifyUnlockKey, out byte[] serverUnlockKey)
 		{
-			throw new NotImplementedException();
+			// generate random lock key
+			var randomLockKey = new byte[32];
+			_prng.GetBytes(randomLockKey);
+
+			// create keys
+			verifyUnlockKey = _signer.MakePublicKey(_diffieHellmanHandler.CreateKey(identityLockKey, randomLockKey));
+			serverUnlockKey = _signer.MakePublicKey(randomLockKey);
+
+			// remove all traces of the random lock key from memory
+			Array.Clear(randomLockKey, 0, randomLockKey.Length);
 		}
 
 		/// <summary>
