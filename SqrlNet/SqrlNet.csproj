@@ -64,6 +64,8 @@
     <Compile Include="Crypto\ISqrlPseudoRandomNumberGenerator.cs" />
     <Compile Include="Crypto\Sodium\SodiumPseudoRandomNumberGenerator.cs" />
     <Compile Include="Crypto\SqrlPseudoRandomNumberGenerator.cs" />
+    <Compile Include="Crypto\IDiffieHellmanHandler.cs" />
+    <Compile Include="Crypto\DiffieHellmanHandler.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
