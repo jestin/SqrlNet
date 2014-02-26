@@ -40,6 +40,20 @@ namespace SqrlNet.Client
 		byte[] CalculateMasterIdentityKey(byte[] masterKey, string password, byte[] salt);
 
 		/// <summary>
+		/// Gets the data needed to associate a SQRL identity with a domain.
+		/// </summary>
+		/// <returns>
+		/// The data for association.
+		/// </returns>
+		/// <param name='identity'>
+		/// The SQRL identity to associate.
+		/// </param>
+		/// <param name='url'>
+		/// The URL given by the domain.
+		/// </param>
+		SqrlAssociationData GetSqrlDataForAssociation(SqrlIdentity identity, string url);
+
+		/// <summary>
 		/// Gets the sqrl data for login.
 		/// </summary>
 		/// <returns>

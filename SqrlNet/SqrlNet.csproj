@@ -67,6 +67,7 @@
     <Compile Include="Crypto\DiffieHellmanHandler.cs" />
     <Compile Include="SqrlLoginData.cs" />
     <Compile Include="ISqrlUser.cs" />
+    <Compile Include="SqrlAssociationData.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

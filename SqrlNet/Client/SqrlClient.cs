@@ -124,6 +124,23 @@ namespace SqrlNet.Client
 		}
 
 		/// <summary>
+		///  Gets the data needed to associate a SQRL identity with a domain. 
+		/// </summary>
+		/// <returns>
+		///  The data for association. 
+		/// </returns>
+		/// <param name='identity'>
+		///  The SQRL identity to associate. 
+		/// </param>
+		/// <param name='url'>
+		///  The URL given by the domain. 
+		/// </param>
+		public SqrlAssociationData GetSqrlDataForAssociation(SqrlIdentity identity, string url)
+		{
+			throw new NotImplementedException();
+		}
+
+		/// <summary>
 		///  Gets the sqrl data for login. 
 		/// </summary>
 		/// <returns>
