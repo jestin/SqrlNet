@@ -124,18 +124,18 @@ namespace SqrlNet.Client
 		}
 
 		/// <summary>
-		///  Gets the data needed to associate a SQRL identity with a domain. 
+		///  Creates the remote unlock keys. 
 		/// </summary>
-		/// <returns>
-		///  The data for association. 
-		/// </returns>
-		/// <param name='identity'>
-		///  The SQRL identity to associate. 
+		/// <param name='identityLockKey'>
+		///  Identity lock key. 
 		/// </param>
-		/// <param name='url'>
-		///  The URL given by the domain. 
+		/// <param name='verifyUnlockKey'>
+		///  Verify unlock key. 
 		/// </param>
-		public SqrlAssociationData GetSqrlDataForAssociation(SqrlIdentity identity, string url)
+		/// <param name='serverUnlockKey'>
+		///  Server unlock key. 
+		/// </param>
+		public void CreateRemoteUnlockKeys(byte[] identityLockKey, out byte[] verifyUnlockKey, out byte[] serverUnlockKey)
 		{
 			throw new NotImplementedException();
 		}
