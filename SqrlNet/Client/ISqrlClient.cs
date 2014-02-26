@@ -51,7 +51,7 @@ namespace SqrlNet.Client
 		/// <param name='url'>
 		/// The URL.
 		/// </param>
-		SqrlData GetSqrlDataForLogin(byte[] masterKey, string url);
+		SqrlLoginData GetSqrlDataForLogin(byte[] masterKey, string url);
 
 		/// <summary>
 		/// Gets the sqrl data for login.
@@ -71,7 +71,7 @@ namespace SqrlNet.Client
 		/// <param name='url'>
 		/// The URL.
 		/// </param>
-		SqrlData GetSqrlDataForLogin(byte[] masterIdentityKey, string password, byte[] salt, string url);
+		SqrlLoginData GetSqrlDataForLogin(byte[] masterIdentityKey, string password, byte[] salt, string url);
 
 		/// <summary>
 		/// Gets the sqrl data for login.
@@ -88,7 +88,7 @@ namespace SqrlNet.Client
 		/// <param name='url'>
 		/// The URL.
 		/// </param>
-		SqrlData GetSqrlDataForLogin(SqrlIdentity identity, string password, string url);
+		SqrlLoginData GetSqrlDataForLogin(SqrlIdentity identity, string password, string url);
 
 		/// <summary>
 		/// Creates an identity for use with SQRL.

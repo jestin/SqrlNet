@@ -40,7 +40,6 @@
     <Compile Include="Client\ISqrlClient.cs" />
     <Compile Include="Server\ISqrlServer.cs" />
     <Compile Include="Server\SqrlServer.cs" />
-    <Compile Include="SqrlData.cs" />
     <Compile Include="Crypto\IHmacGenerator.cs" />
     <Compile Include="Crypto\ISqrlSigner.cs" />
     <Compile Include="Crypto\IPbkdfHandler.cs" />
@@ -66,6 +65,7 @@
     <Compile Include="Crypto\SqrlPseudoRandomNumberGenerator.cs" />
     <Compile Include="Crypto\IDiffieHellmanHandler.cs" />
     <Compile Include="Crypto\DiffieHellmanHandler.cs" />
+    <Compile Include="SqrlLoginData.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

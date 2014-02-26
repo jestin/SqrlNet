@@ -135,12 +135,12 @@ namespace SqrlNet.Client
 		/// <param name='url'>
 		///  The URL. 
 		/// </param>
-		public SqrlData GetSqrlDataForLogin(byte[] masterKey, string url)
+		public SqrlLoginData GetSqrlDataForLogin(byte[] masterKey, string url)
 		{
 			var domain = Utility.GetDomainFromUrl(url);
 			var privateKey = _hmacGenerator.GeneratePrivateKey(masterKey, domain);
 
-			var sqrlData = new SqrlData
+			var sqrlData = new SqrlLoginData
 			{
 				Url = Utility.GetUrlWithoutProtocol(url),
 				Signature = _signer.Sign(privateKey, Utility.GetUrlWithoutProtocol(url)),
@@ -170,7 +170,7 @@ namespace SqrlNet.Client
 		/// <param name='url'>
 		///  The URL. 
 		/// </param>
-		public SqrlData GetSqrlDataForLogin(byte[] masterIdentityKey, string password, byte[] salt, string url)
+		public SqrlLoginData GetSqrlDataForLogin(byte[] masterIdentityKey, string password, byte[] salt, string url)
 		{
 			var masterKey = CalculateMasterKey(masterIdentityKey, password, salt);
 			var sqrlData = GetSqrlDataForLogin(masterKey, url);
@@ -195,7 +195,7 @@ namespace SqrlNet.Client
 		/// <param name='url'>
 		///  The URL. 
 		/// </param>
-		public SqrlData GetSqrlDataForLogin(SqrlIdentity identity, string password, string url)
+		public SqrlLoginData GetSqrlDataForLogin(SqrlIdentity identity, string password, string url)
 		{
 			return GetSqrlDataForLogin(identity.MasterIdentityKey, password, identity.Salt, url);
 		}

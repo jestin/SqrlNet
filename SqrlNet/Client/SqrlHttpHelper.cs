@@ -19,7 +19,7 @@ namespace SqrlNet.Client
 		/// <param name='data'>
 		///  The SQRL data to be included in the request. 
 		/// </param>
-		public HttpWebRequest GetLoginRequest(SqrlData data)
+		public HttpWebRequest GetLoginRequest(SqrlLoginData data)
 		{
 			var request = (HttpWebRequest) WebRequest.Create("http://" + data.Url);
 			request.Method = "POST";
@@ -58,7 +58,7 @@ namespace SqrlNet.Client
 		/// <param name='cmd'>
 		/// The command.
 		/// </param>
-		public string GetClientParameter(SqrlData data, SqrlCommand cmd)
+		public string GetClientParameter(SqrlLoginData data, SqrlCommand cmd)
 		{
 			string result = string.Empty;
 
@@ -92,7 +92,7 @@ namespace SqrlNet.Client
 		/// <param name='data'>
 		/// The SQRL data.
 		/// </param>
-		public string GetServerParameter(SqrlData data)
+		public string GetServerParameter(SqrlLoginData data)
 		{
 			return string.Empty;
 		}

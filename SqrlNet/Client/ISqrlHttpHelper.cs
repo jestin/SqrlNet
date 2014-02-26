@@ -16,6 +16,6 @@ namespace SqrlNet.Client
 		/// <param name='data'>
 		/// The SQRL data to be included in the request.
 		/// </param>
-		HttpWebRequest GetLoginRequest(SqrlData data);
+		HttpWebRequest GetLoginRequest(SqrlLoginData data);
 	}
 }

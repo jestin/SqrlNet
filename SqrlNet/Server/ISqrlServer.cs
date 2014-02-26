@@ -66,6 +66,6 @@ namespace SqrlNet.Server
 		/// <param name="expectedUrl">
 		/// The URL that is expected from the request.
 		/// </param>
-		bool VerifySqrlRequest(SqrlData data, string expectedUrl);
+		bool VerifySqrlRequest(SqrlLoginData data, string expectedUrl);
 	}
 }

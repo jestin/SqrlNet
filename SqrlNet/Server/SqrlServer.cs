@@ -134,7 +134,7 @@ namespace SqrlNet.Server
 		/// <param name='expectedUrl'>
 		///  The URL that is expected from the request. 
 		/// </param>
-		public bool VerifySqrlRequest(SqrlData data, string expectedUrl)
+		public bool VerifySqrlRequest(SqrlLoginData data, string expectedUrl)
 		{
 			var decryptedSignatureData = _sqrlSigner.Verify(data.PublicKey, data.Signature);
 

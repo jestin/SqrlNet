@@ -101,7 +101,7 @@ namespace SqrlServerExample.Controllers
 		[HttpPost]
 		public ActionResult Sqrl(string id, string publickey, string signature, string url)
 		{
-			var data = new SqrlData
+			var data = new SqrlLoginData
 			{
 				PublicKey = HttpServerUtility.UrlTokenDecode(publickey),
 				Signature = HttpServerUtility.UrlTokenDecode(signature),

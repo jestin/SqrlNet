@@ -127,7 +127,7 @@ public partial class MainWindow: Gtk.Window
 
 	#region Private Methods
 
-	private void SendSqrlData(SqrlData data)
+	private void SendSqrlData(SqrlLoginData data)
 	{
 		var request = (HttpWebRequest) WebRequest.Create("http://" + data.Url);
 		request.Method = "POST";

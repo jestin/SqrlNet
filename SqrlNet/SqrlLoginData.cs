@@ -3,7 +3,7 @@ namespace SqrlNet
 	/// <summary>
 	/// All the data needed to send a SQRL login request to a server
 	/// </summary>
-	public class SqrlData
+	public class SqrlLoginData
 	{
 		/// <summary>
 		/// Gets or sets the URL.
