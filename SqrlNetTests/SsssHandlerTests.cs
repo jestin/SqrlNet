@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 namespace SqrlNetTests
 {
 	[TestFixture]
+	[Ignore]
 	public class SsssHandlerTests
 	{
 		private SsssHandler _handler;
