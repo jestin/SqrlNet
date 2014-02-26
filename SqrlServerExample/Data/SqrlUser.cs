@@ -1,5 +1,3 @@
-using System;
-
 namespace SqrlServerExample.Data
 {
 	public class SqrlUser
@@ -7,5 +5,7 @@ namespace SqrlServerExample.Data
 		public string Id { get; set; }
 		public string UserName { get; set; }
 		public bool Initialized { get; set; }
+		public byte[] VerifyUnlockKey { get; set; }
+		public byte[] ServerUnlockKey { get; set; }
 	}
 }

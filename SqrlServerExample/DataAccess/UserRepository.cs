@@ -1,4 +1,3 @@
-using System;
 using SqrlServerExample.Data;
 using MongoDB.Driver.Builders;
 using MongoDB.Driver;
