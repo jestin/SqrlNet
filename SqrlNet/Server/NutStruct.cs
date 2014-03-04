@@ -44,12 +44,12 @@ namespace SqrlNet.Server
 		/// The bytes.
 		/// </summary>
 		[FieldOffset(0)]
-		public fixed byte ByteArray[16];
+		private fixed byte ByteArray[16];
 
 		#region Methods
 
 		/// <summary>
-		/// Gets the bytes.
+		/// Gets the bytes of the struct.
 		/// </summary>
 		/// <returns>
 		/// The bytes.
@@ -69,7 +69,7 @@ namespace SqrlNet.Server
 		}
 
 		/// <summary>
-		/// Sets the bytes.
+		/// Sets the bytes of the struct.
 		/// </summary>
 		/// <param name='bytes'>
 		/// The bytes.
