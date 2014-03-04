@@ -4,6 +4,10 @@ namespace SqrlNet.Server
 	/// An interface that contains all the functionality to create the server-side
 	/// implentation of the SQRL protocol.
 	/// </summary>
+	/// <remarks>
+	/// When implemented, this interface will provide all the required functionality of
+	/// the server-side responsibilities of the SQRL protocol.
+	/// </remarks>
 	public interface ISqrlServer
 	{
 		/// <summary>

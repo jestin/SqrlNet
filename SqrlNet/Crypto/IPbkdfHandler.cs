@@ -79,5 +79,13 @@ namespace SqrlNet.Crypto
 	/// <summary>
 	/// A delegate to be called upon the completion of an iteration
 	/// </summary>
+	/// <param name='iteration'>
+	/// The recently finished iteration.
+	/// </param>
+	/// <remarks>
+	/// This delegate should handle any per-iteration updates or calculations
+	/// that need to occurr while the PBKDF handler is iterating over the
+	/// SCRYPT hashing algorithm.
+	/// </remarks>
 	public delegate void IterationDelegate(int iteration);
 }

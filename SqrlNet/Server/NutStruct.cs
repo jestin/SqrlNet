@@ -8,6 +8,11 @@ namespace SqrlNet.Server
 	/// byte array.  This makes it trivial to encode data into the nut, so it isn't just
 	/// random, and can be used for anti-phishing purposes.
 	/// </summary>
+	/// <remarks>
+	/// This struct operates much like a C-style union data type, in that the bytes that
+	/// make up the struct can be directly set or retrieved, or the individual fields
+	/// can be manipulated.  So remember, changing the data one way affects it the other.
+	/// </remarks>
 	[StructLayout(LayoutKind.Explicit)]
 	public unsafe struct NutStruct
 	{

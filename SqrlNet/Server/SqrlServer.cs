@@ -9,6 +9,11 @@ namespace SqrlNet.Server
 	/// A class that contains all the functionality to create the server-side
 	/// implentation of the SQRL protocol.
 	/// </summary>
+	/// <remarks>
+	/// This class is to used by a web server and called upon to perform the
+	/// server-side tasks of the SQRL protocol.  It should be well-suited for
+	/// use with both ASP.NET WebForms and ASP.NET MVC.
+	/// </remarks>
 	public class SqrlServer : ISqrlServer
 	{
 		#region Dependencies

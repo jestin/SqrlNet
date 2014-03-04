@@ -7,6 +7,13 @@ namespace SqrlNet.Client
 	/// <summary>
 	/// This class provides all the SQRL functionality needed to implement a SQRL client.
 	/// </summary>
+	/// <remarks>
+	/// Injected with its required dependencies, this class will perform all the necessary
+	/// SQRL operations, except for the actual network communication.  It was decided that
+	/// The communication will be kept seperate so that this class could be used purely
+	/// for back-end data.  This makes it ideal to use in a client-server type manner, 
+	/// perhaps as a local RCP service or a WCF service.
+	/// </remarks>
 	public class SqrlClient : ISqrlClient
 	{
 		#region Dependencies

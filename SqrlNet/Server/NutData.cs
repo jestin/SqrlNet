@@ -8,6 +8,10 @@ namespace SqrlNet.Server
 	/// <summary>
 	/// Data for the SQRL nonce, otherwise known as the 'nut' (Get it?  Squirrel?  Nut?  Hilarious!).
 	/// </summary>
+	/// <remarks>
+	/// This class includes a constructor that initializes from a <see cref="SqrlNet.Server.NutStruct"/>,
+	/// as well as a method to return a <see cref="SqrlNet.Server.NutStruct"/> representation of itself.
+	/// </remarks>
 	public class NutData
 	{
 		#region Constructors

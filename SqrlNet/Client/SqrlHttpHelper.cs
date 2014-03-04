@@ -6,6 +6,11 @@ namespace SqrlNet.Client
 	/// <summary>
 	/// A helper class that takes SQRL data and forms various http requests.
 	/// </summary>
+	/// <remarks>
+	/// This class will create the actual web requests that make up the SQRL
+	/// protocol.  It is intended to be used alongside an implementation of
+	/// ISqrlClient.
+	/// </remarks>
 	public class SqrlHttpHelper : ISqrlHttpHelper
 	{
 		#region ISqrlHttpHelper implementation

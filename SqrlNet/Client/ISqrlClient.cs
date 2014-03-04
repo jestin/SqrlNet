@@ -3,6 +3,10 @@ namespace SqrlNet.Client
 	/// <summary>
 	/// This interface provides all the SQRL functionality needed to implement a SQRL client.
 	/// </summary>
+	/// <remarks>
+	/// By implementing this interface, all client-side functions of the SQRL system will available
+	/// to developers writing SQRL client applications.
+	/// </remarks>
 	public interface ISqrlClient
 	{
 		/// <summary>
