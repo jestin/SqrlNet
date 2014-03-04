@@ -248,7 +248,7 @@ namespace SqrlNetTests
 			var iterationCounter = 0;
 			var salt = StringToByteArray("ba6006e4c23262a8cc7f242e110cc644e7ad8237e2b0a2265fbe6d51148c27b3");
 
-			_handler.OnIterationComplete += delegate(int iteration) {
+			_handler.IterationComplete += delegate(int iteration) {
 				iterationCounter++;
 			};
 

@@ -15,17 +15,14 @@ namespace SqrlNet.Crypto.CryptSharp
 		#region IPbkdfHandler implementation
 
 		/// <summary>
-		///  Gets or sets the iteration complete event. 
+		///  Occurs when an iteration is completed. 
 		/// </summary>
-		/// <value>
-		///  The iteration complete event. 
-		/// </value>
 		/// <remarks>
 		///  This event will fire whenever the GeneratePasswordKey method finishes with a single iteration of the SCRYPT
 		/// algorithm. Keep in mind that the GeneratePasswordKey method is called during the VerifyPassword method, which will
 		/// cause the delegate to fire during VerifyPassword as well. 
 		/// </remarks>
-		public event IterationCompleteHandler OnIterationComplete;
+		public event IterationCompleteHandler IterationComplete;
 
 		/// <summary>
 		///  Generates the password key. 
@@ -70,9 +67,9 @@ namespace SqrlNet.Crypto.CryptSharp
 				runningKey = Utility.Xor(runningKey, key);
 				Buffer.BlockCopy(key, 0, runningSalt, 0, 32);
 
-				if(OnIterationComplete != null)
+				if(IterationComplete != null)
 				{
-					OnIterationComplete(i);
+					IterationComplete(i);
 				}
 			}
 
