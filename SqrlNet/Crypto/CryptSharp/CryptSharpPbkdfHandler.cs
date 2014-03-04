@@ -15,6 +15,14 @@ namespace SqrlNet.Crypto.CryptSharp
 		#region IPbkdfHandler implementation
 
 		/// <summary>
+		/// Gets or sets the iteration complete delegate.
+		/// </summary>
+		/// <value>
+		/// The iteration complete delegate.
+		/// </value>
+		public IterationDelegate OnIterationComplete { get; set; }
+
+		/// <summary>
 		///  Generates the password key. 
 		/// </summary>
 		/// <returns>
@@ -32,7 +40,7 @@ namespace SqrlNet.Crypto.CryptSharp
 		/// <param name='onIterationComplete'>
 		///  A callback delegate that runs at the completion of each iteration 
 		/// </param>
-		public byte[] GeneratePasswordKey(string password, byte[] salt, int iterations = 1, IterationDelegate onIterationComplete = null)
+		public byte[] GeneratePasswordKey(string password, byte[] salt, int iterations = 1)
 		{
 			var key = new byte[32];
 			byte[] inputKey = String.IsNullOrEmpty(password) ? Utility.GetZeroBytes(32) : Encoding.UTF8.GetBytes(password);
@@ -60,9 +68,9 @@ namespace SqrlNet.Crypto.CryptSharp
 				runningKey = Utility.Xor(runningKey, key);
 				Buffer.BlockCopy(key, 0, runningSalt, 0, 32);
 
-				if(onIterationComplete != null)
+				if(OnIterationComplete != null)
 				{
-					onIterationComplete(i);
+					OnIterationComplete(i);
 				}
 			}
 

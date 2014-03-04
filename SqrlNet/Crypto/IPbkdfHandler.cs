@@ -5,6 +5,20 @@ namespace SqrlNet.Crypto
 	/// </summary>
 	public interface IPbkdfHandler
 	{
+		#region Delegates
+
+		/// <summary>
+		/// Gets or sets the iteration complete delegate.
+		/// </summary>
+		/// <value>
+		/// The iteration complete delegate.
+		/// </value>
+		IterationDelegate OnIterationComplete { get; set; }
+
+		#endregion
+
+		#region Methods
+
 		/// <summary>
 		/// Generates the password key.
 		/// </summary>
@@ -23,7 +37,7 @@ namespace SqrlNet.Crypto
 		/// <param name='onIterationComplete'>
 		/// A callback delegate that runs at the completion of each iteration
 		/// </param>
-		byte[] GeneratePasswordKey(string password, byte[] salt, int iterations = 1, IterationDelegate onIterationComplete = null);
+		byte[] GeneratePasswordKey(string password, byte[] salt, int iterations = 1);
 
 		/// <summary>
 		/// Verifies the password.
@@ -55,6 +69,8 @@ namespace SqrlNet.Crypto
 		/// Password key.
 		/// </param>
 		byte[] GetPartialHashFromPasswordKey(byte[] passwordKey);
+
+		#endregion
 	}
 
 	/// <summary>
