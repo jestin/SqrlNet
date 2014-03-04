@@ -13,6 +13,12 @@ namespace SqrlNet.Crypto
 		/// <value>
 		/// The iteration complete delegate.
 		/// </value>
+		/// <remarks>
+		/// This delegate will fire whenever the GeneratePasswordKey method finishes
+		/// with a single iteration of the SCRYPT algorithm.  Keep in mind that the
+		/// GeneratePasswordKey method is called during the VerifyPassword method,
+		/// which will cause the delegate to fire during VerifyPassword as well.
+		/// </remarks>
 		IterationDelegate OnIterationComplete { get; set; }
 
 		#endregion
@@ -33,9 +39,6 @@ namespace SqrlNet.Crypto
 		/// </param>
 		/// <param name='iterations'>
 		/// The number of iterations.
-		/// </param>
-		/// <param name='onIterationComplete'>
-		/// A callback delegate that runs at the completion of each iteration
 		/// </param>
 		byte[] GeneratePasswordKey(string password, byte[] salt, int iterations = 1);
 
