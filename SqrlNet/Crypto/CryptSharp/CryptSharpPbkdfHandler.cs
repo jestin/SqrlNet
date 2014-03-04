@@ -29,7 +29,10 @@ namespace SqrlNet.Crypto.CryptSharp
 		/// <param name='iterations'>
 		///  The number of iterations. 
 		/// </param>
-		public byte[] GeneratePasswordKey(string password, byte[] salt, int iterations = 1)
+		/// <param name='onIterationComplete'>
+		///  A callback delegate that runs at the completion of each iteration 
+		/// </param>
+		public byte[] GeneratePasswordKey(string password, byte[] salt, int iterations = 1, IterationDelegate onIterationComplete = null)
 		{
 			var key = new byte[32];
 			byte[] inputKey = String.IsNullOrEmpty(password) ? Utility.GetZeroBytes(32) : Encoding.UTF8.GetBytes(password);
@@ -56,6 +59,11 @@ namespace SqrlNet.Crypto.CryptSharp
 
 				runningKey = Utility.Xor(runningKey, key);
 				Buffer.BlockCopy(key, 0, runningSalt, 0, 32);
+
+				if(onIterationComplete != null)
+				{
+					onIterationComplete(i);
+				}
 			}
 
 			return runningKey;

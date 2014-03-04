@@ -20,7 +20,10 @@ namespace SqrlNet.Crypto
 		/// <param name='iterations'>
 		/// The number of iterations.
 		/// </param>
-		byte[] GeneratePasswordKey(string password, byte[] salt, int iterations = 1);
+		/// <param name='onIterationComplete'>
+		/// A callback delegate that runs at the completion of each iteration
+		/// </param>
+		byte[] GeneratePasswordKey(string password, byte[] salt, int iterations = 1, IterationDelegate onIterationComplete = null);
 
 		/// <summary>
 		/// Verifies the password.
@@ -53,4 +56,9 @@ namespace SqrlNet.Crypto
 		/// </param>
 		byte[] GetPartialHashFromPasswordKey(byte[] passwordKey);
 	}
+
+	/// <summary>
+	/// A delegate to be called upon the completion of an iteration
+	/// </summary>
+	public delegate void IterationDelegate(int iteration);
 }

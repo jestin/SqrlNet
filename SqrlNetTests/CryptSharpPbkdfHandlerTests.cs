@@ -236,6 +236,29 @@ namespace SqrlNetTests
 			Assert.AreEqual("a15abed469fa6e28742430bbc5cd954321b00ba368e26b55fea949f1f8c1f2b0", hex);
 		}
 
+		// enscrypt password ba6006e4c23262a8cc7f242e110cc644e7ad8237e2b0a2265fbe6d51148c27b3 10i
+  		// Password: password
+		// Salt: ba6006e4c23262a8cc7f242e110cc644e7ad8237e2b0a2265fbe6d51148c27b3
+		// Iterations: 123
+		//
+		// Output Key: a15abed469fa6e28742430bbc5cd954321b00ba368e26b55fea949f1f8c1f2b0
+		[Test]
+		public void GeneratePasswordKey_password_ba6006e4c23262a8cc7f242e110cc644e7ad8237e2b0a2265fbe6d51148c27b3_10_With_Callback()
+		{
+			var iterationCounter = 0;
+			var salt = StringToByteArray("ba6006e4c23262a8cc7f242e110cc644e7ad8237e2b0a2265fbe6d51148c27b3");
+			var hash = _handler.GeneratePasswordKey("password", salt, 10, delegate(int iteration) {
+				iterationCounter++;
+			});
+
+			var hex = BitConverter.ToString(hash).Replace("-","").ToLower();
+
+			Console.Error.WriteLine(hex);
+
+			Assert.AreEqual("a15abed469fa6e28742430bbc5cd954321b00ba368e26b55fea949f1f8c1f2b0", hex);
+			Assert.AreEqual(10, iterationCounter);
+		}
+
 		// enscrypt password ba6006e4 1i
   		// Password: password
 		// Salt: ba6006e4
