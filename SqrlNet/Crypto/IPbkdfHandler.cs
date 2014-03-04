@@ -5,21 +5,21 @@ namespace SqrlNet.Crypto
 	/// </summary>
 	public interface IPbkdfHandler
 	{
-		#region Delegates
+		#region Events
 
 		/// <summary>
-		/// Gets or sets the iteration complete delegate.
+		/// Gets or sets the iteration complete event.
 		/// </summary>
 		/// <value>
-		/// The iteration complete delegate.
+		/// The iteration complete event.
 		/// </value>
 		/// <remarks>
-		/// This delegate will fire whenever the GeneratePasswordKey method finishes
+		/// This event will fire whenever the GeneratePasswordKey method finishes
 		/// with a single iteration of the SCRYPT algorithm.  Keep in mind that the
 		/// GeneratePasswordKey method is called during the VerifyPassword method,
 		/// which will cause the delegate to fire during VerifyPassword as well.
 		/// </remarks>
-		IterationDelegate OnIterationComplete { get; set; }
+		event IterationCompleteHandler OnIterationComplete;
 
 		#endregion
 
@@ -87,5 +87,5 @@ namespace SqrlNet.Crypto
 	/// that need to occurr while the PBKDF handler is iterating over the
 	/// SCRYPT hashing algorithm.
 	/// </remarks>
-	public delegate void IterationDelegate(int iteration);
+	public delegate void IterationCompleteHandler(int iteration);
 }
