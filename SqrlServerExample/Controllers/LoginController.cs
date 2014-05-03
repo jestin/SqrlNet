@@ -108,13 +108,11 @@ namespace SqrlServerExample.Controllers
 				Url = url
 			};
 
-			var expected = string.Format("{0}/{1}",
-			                             Url.Action("Sqrl",
-													"Login",
-													null,
-													"sqrl",
-													Request.Url.Host + ":" + Request.Url.Port),
-			                             id);
+			var expected = Url.Action("Sqrl",
+			                          "Login",
+			                          null,
+			                          "sqrl",
+			                          Request.Url.Host + ":" + Request.Url.Port);
 
 			if(_sqrlServer.VerifySqrlRequest(data, expected) && _nutRepository.IsNutActive(id))
 			{

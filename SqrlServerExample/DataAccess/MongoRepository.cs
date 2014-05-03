@@ -38,7 +38,7 @@ namespace SqrlServerExample.DataAccess
 
 		#region Constructors
 
-		public MongoRepository (IMongoDbContext dbContext)
+		protected MongoRepository (IMongoDbContext dbContext)
 		{
 			_db = dbContext;
 

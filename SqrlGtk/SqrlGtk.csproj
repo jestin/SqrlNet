@@ -19,7 +19,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
-    <Commandlineparameters>sqrl://127.0.0.1:8080/Login/Sqrl/PmQwQfTXx2nrW4VpVmDHXh_mG5hryl5GWxWR29YOWc41</Commandlineparameters>
+    <Commandlineparameters>sqrl://127.0.0.1:8082/Login/Sqrl/U08URt2smqlQDUmEZxrbVZvWT6V8YaEmb_aCzllyn8I1</Commandlineparameters>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>

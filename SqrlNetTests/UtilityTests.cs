@@ -80,6 +80,13 @@ namespace SqrlNetTests
 		}
 
 		[Test]
+		public void GetUrlWithoutProtocol_Succeeds()
+		{
+			var url = "sqrl://127.0.0.1:8082/Login/Sqrl/XUqqbMyyb0t0MlseG0TxF1IpjDw7UQeQOn6uDu7KqR01";
+			Assert.AreEqual("127.0.0.1:8082/Login/Sqrl/XUqqbMyyb0t0MlseG0TxF1IpjDw7UQeQOn6uDu7KqR01", Utility.GetUrlWithoutProtocol(url));
+		}
+
+		[Test]
 		public void SqrlBase64Encoding_16_Bits()
 		{
 			var rng = new RNGCryptoServiceProvider();
