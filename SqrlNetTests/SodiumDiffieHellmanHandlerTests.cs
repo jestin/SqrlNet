@@ -10,7 +10,6 @@ namespace SqrlNetTests
 	public class SodiumDiffieHellmanHandlerTests
 	{
 		private SodiumDiffieHellmanHandler _handler;
-		private readonly ISqrlSigner _signer = new SqrlSigner();
 		private readonly ISqrlPseudoRandomNumberGenerator _rng = new SqrlPseudoRandomNumberGenerator();
 
 		[SetUp]
@@ -33,8 +32,8 @@ namespace SqrlNetTests
 			_rng.GetBytes(sk1);
 			_rng.GetBytes(sk2);
 
-			var pk1 = _signer.MakePublicKey(sk1);
-			var pk2 = _signer.MakePublicKey(sk2);
+			var pk1 = _handler.MakePublicKey(sk1);
+			var pk2 = _handler.MakePublicKey(sk2);
 
 			var key1 = _handler.CreateKey(pk2, sk1);
 			var key2 = _handler.CreateKey(pk1, sk2);

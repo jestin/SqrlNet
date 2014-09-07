@@ -20,5 +20,12 @@ namespace SqrlNet.Crypto
 		/// opposite source as the public key.
 		/// </param>
 		byte[] CreateKey(byte[] publicKey, byte[] privateKey);
+
+		/// <summary>
+		/// Makes the public key.
+		/// </summary>
+		/// <returns>A Curve25519 public key that can be used for a Diffie-Hellman exchange</returns>
+		/// <param name="privateKey">Private key.</param>
+		byte[] MakePublicKey(byte[] privateKey);
 	}
 }

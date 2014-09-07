@@ -30,6 +30,19 @@ namespace SqrlNet.Crypto.Sodium
 			return key;
 		}
 
+		/// <summary>
+		/// Makes the public key.
+		/// </summary>
+		/// <returns>A Curve25519 public key that can be used for a Diffie-Hellman exchange</returns>
+		/// <param name="privateKey">Private key.</param>
+		public byte[] MakePublicKey(byte[] privateKey)
+		{
+			var publicKey = new byte[32];
+			ScalarMult.Base(publicKey, privateKey);
+
+			return publicKey;
+		}
+
 		#endregion
 	}
 }
