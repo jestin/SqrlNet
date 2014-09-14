@@ -76,7 +76,7 @@ namespace SqrlNet.Client
 				case SqrlCommand.Create:
 					break;
 				case SqrlCommand.Login:
-					result = string.Format("ver={0}\r\ncmd={1}\r\nidk={2}",
+					result = string.Format("ver={0}\r\ncmd={1}\r\nidk={2}\r\n",
 					                       1,
 					                       cmd.ToString().ToLower(),
 					                       Utility.ConvertToSqrlBase64String(data.PublicKey));
