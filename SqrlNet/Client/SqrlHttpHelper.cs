@@ -77,15 +77,15 @@ namespace SqrlNet.Client
 					break;
 				case SqrlCommand.Login:
 					result = string.Format("ver={0}\r\ncmd={1}\r\nidk={2}",
-				                       1,
-				                       cmd.ToString().ToLower(),
-				                       data.PublicKey);
+					                       1,
+					                       cmd.ToString().ToLower(),
+					                       Utility.ConvertToSqrlBase64String(data.PublicKey));
 					break;
 				default:
 					throw new System.ArgumentOutOfRangeException();
 			}
 
-			return Utility.ConvertToSqrlBase64String(ASCIIEncoding.ASCII.GetBytes(result));
+			return Utility.ConvertToSqrlBase64String(Encoding.ASCII.GetBytes(result));
 		}
 
 		/// <summary>
@@ -99,7 +99,7 @@ namespace SqrlNet.Client
 		/// </param>
 		public string GetServerParameter(SqrlLoginData data)
 		{
-			return string.Empty;
+			return Utility.ConvertToSqrlBase64String(Encoding.ASCII.GetBytes(data.Url));
 		}
 
 		#endregion
