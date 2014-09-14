@@ -27,7 +27,7 @@ namespace SqrlNet
 		/// Note: When neither of the ID match bits are set, none of the identity
 		/// credentials supplied by the client are known to the web server.
 		/// </summary>
-		PreviousIdMatch = 2,
+		PreviousIdMatch = 1 << 1,
 
 		/// <summary>
 		/// IPs matched: When set, this bit indicates that the IP address of the
@@ -36,7 +36,7 @@ namespace SqrlNet
 		/// same IP address from which the SQRL client's query was received for
 		/// this reply.
 		/// </summary>
-		IpMatch = 4,
+		IpMatch = 1 << 2,
 
 		/// <summary>
 		/// SQRL enabled: When set, the account associated with the identified user
@@ -44,7 +44,7 @@ namespace SqrlNet
 		/// this bit will be set unless a “disable” command (see below) has most
 		/// recently been received from the identified user.
 		/// </summary>
-		SqrlEnabled = 8,
+		SqrlEnabled = 1 << 3,
 
 		/// <summary>
 		/// User logged in: When set, the account associated with the identified user
@@ -54,7 +54,7 @@ namespace SqrlNet
 		/// commands. If it was set before the receipt of a successful logout
 		/// command, it would then be reset.
 		/// </summary>
-		UserLoggedIn = 10,
+		UserLoggedIn = 1 << 4,
 
 		/// <summary>
 		/// SQRL account creation allowed: When set, the website is indicating that it
@@ -65,7 +65,7 @@ namespace SqrlNet
 		/// “create” command, probably accompanied with one of the login commands, to
 		/// create an account and login the user.
 		/// </summary>
-		SqrlAccountCreationAllowed = 20,
+		SqrlAccountCreationAllowed = 1 << 5,
 
 		/// <summary>
 		/// Command failed: When set, this bit indicates that the web server had an
@@ -78,7 +78,7 @@ namespace SqrlNet
 		/// web server failure reason. The web server is free to use the “ask” command
 		/// without arguments to explain the problem to the client's user.
 		/// </summary>
-		CommandFailed = 40,
+		CommandFailed = 1 << 6,
 
 		/// <summary>
 		/// SQRL failure: This bit only has meaning when the preceding “Command failed”
@@ -92,6 +92,6 @@ namespace SqrlNet
 		/// web server of the client, a transmission error, or the presence of
 		/// third-party tampering.
 		/// </summary>
-		SqrlFailure = 80
+		SqrlFailure = 1 << 7
 	}
 }
