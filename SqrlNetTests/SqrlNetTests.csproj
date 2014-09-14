@@ -54,5 +54,9 @@
       <Project>{B4C916F0-7A49-4858-B2D6-DAE958790635}</Project>
       <Name>SqrlNet</Name>
     </ProjectReference>
+    <ProjectReference Include="..\libsodium-net\libsodium-net\libsodium-net.csproj">
+      <Project>{48C1DF3F-2E09-4088-89B2-6E1B058E3100}</Project>
+      <Name>libsodium-net</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
