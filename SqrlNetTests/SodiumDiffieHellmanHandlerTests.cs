@@ -43,6 +43,31 @@ namespace SqrlNetTests
 
 			CollectionAssert.AreEqual(key1, key2);
 		}
+
+		[Test]
+		public void Basic_Key_Agreement_Fails()
+		{
+			var alicePrivateKey = new byte[32];
+			var bobPrivateKey = new byte[32];
+			var charliePrivateKey = new byte[32];
+
+			_rng.GetBytes(alicePrivateKey);
+			_rng.GetBytes(bobPrivateKey);
+			_rng.GetBytes(charliePrivateKey);
+
+			var alicePublicKey = _signer.MakePublicKey(alicePrivateKey);
+			var bobPublicKey = _signer.MakePublicKey(bobPrivateKey);
+			var charliePublicKey = _signer.MakePublicKey(charliePrivateKey);
+
+			// key for alice and bob
+			var key1 = _handler.CreateKey(bobPublicKey, alicePrivateKey);
+
+			// key for bob and charlie
+			var key2 = _handler.CreateKey(charliePublicKey, bobPrivateKey);
+
+			// the keys should not be the same
+			CollectionAssert.AreNotEqual(key1, key2);
+		}
 	}
 }
 
