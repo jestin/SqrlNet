@@ -1,4 +1,5 @@
 using SqrlNet.Crypto;
+using System;
 
 namespace SqrlNet
 {
@@ -17,6 +18,12 @@ namespace SqrlNet
 
 		#region Constructors
 
+		/// <summary>
+		/// Initializes a new instance of the <see cref="SqrlNet.IdLockHandler"/> class.
+		/// </summary>
+		/// <param name="prng">Pseudo random number generator.</param>
+		/// <param name="diffieHellmanHandler">Diffie hellman handler.</param>
+		/// <param name="signer">Signer.</param>
 		public IdLockHandler(
 			ISqrlPseudoRandomNumberGenerator prng,
 			IDiffieHellmanHandler diffieHellmanHandler,
@@ -45,9 +52,13 @@ namespace SqrlNet
 
 			serverUnlockKey = _signer.MakePublicKey(randomLockKey);
 
+			Array.Clear(randomLockKey, 0, randomLockKey.Length);
+
 			var privateVerifyUnlockKey = _diffieHellmanHandler.CreateKey(identityLockKey, randomLockKey);
 
 			verifyUnlockKey = _signer.MakePublicKey(privateVerifyUnlockKey);
+
+			Array.Clear(privateVerifyUnlockKey, 0, privateVerifyUnlockKey.Length);
 		}
 
 		#endregion
