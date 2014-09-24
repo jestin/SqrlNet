@@ -1,4 +1,4 @@
-namespace SqrlNet
+namespace SqrlNet.Client
 {
 	/// <summary>
 	/// Interface for the identity lock handler

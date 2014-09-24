@@ -1,5 +1,5 @@
 using NUnit.Framework;
-using SqrlNet;
+using SqrlNet.Client;
 using SqrlNet.Crypto;
 using System.Text;
 

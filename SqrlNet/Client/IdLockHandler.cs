@@ -1,7 +1,7 @@
 using SqrlNet.Crypto;
 using System;
 
-namespace SqrlNet
+namespace SqrlNet.Client
 {
 	/// <summary>
 	/// Identifier lock handler.
@@ -52,9 +52,9 @@ namespace SqrlNet
 
 			serverUnlockKey = _signer.MakePublicKey(randomLockKey);
 
-			Array.Clear(randomLockKey, 0, randomLockKey.Length);
-
 			var privateVerifyUnlockKey = _diffieHellmanHandler.CreateKey(identityLockKey, randomLockKey);
+
+			Array.Clear(randomLockKey, 0, randomLockKey.Length);
 
 			verifyUnlockKey = _signer.MakePublicKey(privateVerifyUnlockKey);
 
