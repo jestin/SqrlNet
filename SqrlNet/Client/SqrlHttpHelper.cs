@@ -102,6 +102,58 @@ namespace SqrlNet.Client
 			return Utility.ConvertToSqrlBase64String(Encoding.ASCII.GetBytes(data.Url));
 		}
 
+		public string GetCommandParameter(SqrlCommand command)
+		{
+			var sb = new StringBuilder();
+
+			if((command & SqrlCommand.SetKey) == SqrlCommand.SetKey)
+			{
+				sb.Append("~setkey");
+			}
+
+			if((command & SqrlCommand.SetLock) == SqrlCommand.SetLock)
+			{
+				sb.Append("~setlock");
+			}
+
+			if((command & SqrlCommand.Disable) == SqrlCommand.Disable)
+			{
+				sb.Append("~disable");
+			}
+
+			if((command & SqrlCommand.Enable) == SqrlCommand.Enable)
+			{
+				sb.Append("~enable");
+			}
+
+			if((command & SqrlCommand.Delete) == SqrlCommand.Delete)
+			{
+				sb.Append("~delete");
+			}
+
+			if((command & SqrlCommand.Create) == SqrlCommand.Create)
+			{
+				sb.Append("~create");
+			}
+
+			if((command & SqrlCommand.Login) == SqrlCommand.Login)
+			{
+				sb.Append("~login");
+			}
+
+			if((command & SqrlCommand.LogMe) == SqrlCommand.LogMe)
+			{
+				sb.Append("~logme");
+			}
+
+			if((command & SqrlCommand.LogOff) == SqrlCommand.LogOff)
+			{
+				sb.Append("~logoff");
+			}
+
+			return sb.ToString().Trim(new [] { '~' });
+		}
+
 		#endregion
 	}
 }

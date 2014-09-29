@@ -1,8 +1,11 @@
+using System;
+
 namespace SqrlNet
 {
 	/// <summary>
 	/// The various SQRL commands that can be sent to the server.
 	/// </summary>
+	[Flags]
 	public enum SqrlCommand
 	{
 		/// <summary>
@@ -16,7 +19,7 @@ namespace SqrlNet
 		/// web server to accept any modification to the account's existing identity
 		/// association.
 		/// </summary>
-		SetKey,
+		SetKey = 1,
 
 		/// <summary>
 		/// This verb requests the web server to establish—or update the account's
@@ -26,7 +29,7 @@ namespace SqrlNet
 		/// the client must also provide the valid unlock request signature (urs) for the
 		/// current values to enable their replacement.
 		/// </summary>
-		SetLock,
+		SetLock = 1 << 1,
 
 		/// <summary>
 		/// This verb instructs the web server to immediately disable the SQRL system's
@@ -36,7 +39,7 @@ namespace SqrlNet
 		/// master key can be created and set. A recognized user may therefore request this
 		/// without supplying any additional credentials.
 		/// </summary>
-		Disable,
+		Disable = 1 << 2,
 
 		/// <summary>
 		/// This is the reverse of the disable verb. It reestablishes SQRL system login
@@ -44,7 +47,7 @@ namespace SqrlNet
 		/// additional authorization provided by the account's current unlock request
 		/// signature (urs).
 		/// </summary>
-		Enable,
+		Enable = 1 << 3,
 
 		/// <summary>
 		/// This verb instructs the web server to completely remove (in one fell swoop) ALL
@@ -54,7 +57,7 @@ namespace SqrlNet
 		/// the account, though they would first need to authenticate their identity through
 		/// non-SQRL means.
 		/// </summary>
-		Delete,
+		Delete = 1 << 4,
 
 		/// <summary>
 		/// This verb instructs the web server to create an entirely new web account from scratch.
@@ -63,7 +66,7 @@ namespace SqrlNet
 		/// account creation indicate this by returning the “SQRL account creation allowed” bit
 		/// set in the “tif” (transaction information flags) parameter.
 		/// </summary>
-		Create,
+		Create = 1 << 5,
 
 		/// <summary>
 		/// There are two variants of logging in with SQRL. The login verb requests the web server
@@ -71,7 +74,7 @@ namespace SqrlNet
 		/// the typical choice in a fully trusted scenario where the user and/or SQRL client was
 		/// confident that a MITM phishing attack was unlikely.
 		/// </summary>
-		Login,
+		Login = 1 << 6,
 
 		/// <summary>
 		/// This second logme variant of SQRL login requests the web server to explicitly DISABLE
@@ -83,7 +86,7 @@ namespace SqrlNet
 		/// returned and validated by the web server (also over a secure HTTPS connection), the
 		/// logme option is not available.
 		/// </summary>
-		LogMe,
+		LogMe = 1 << 7,
 
 		/// <summary>
 		/// This verb requests the web server to immediately logoff and invalidate any and all
@@ -93,6 +96,6 @@ namespace SqrlNet
 		/// per account, this could be used along with the login or logme verbs to foreclose any
 		/// other existing accounts prior to the user logging in with their SQRL credentials.
 		/// </summary>
-		LogOff
+		LogOff = 1 << 8
 	}
 }
