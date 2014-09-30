@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using SqrlNet.Client;
+using SqrlNet;
 
 namespace SqrlNetTests
 {
@@ -19,7 +20,7 @@ namespace SqrlNetTests
 		[Test]
 		public void GetCommandParameter_Create_Succeeds()
 		{
-			var result = SqrlHttpHelper.GetCommandParameter(SqrlNet.SqrlCommand.Create | SqrlNet.SqrlCommand.SetKey | SqrlNet.SqrlCommand.SetLock);
+			var result = SqrlHttpHelper.GetCommandParameter(SqrlCommand.Create | SqrlCommand.SetKey | SqrlCommand.SetLock);
 
 			Assert.IsNotNullOrEmpty(result);
 			Assert.AreEqual("setkey~setlock~create", result);
@@ -28,7 +29,7 @@ namespace SqrlNetTests
 		[Test]
 		public void GetCommandParameter_SetKey_Succeeds()
 		{
-			var result = SqrlHttpHelper.GetCommandParameter(SqrlNet.SqrlCommand.SetKey);
+			var result = SqrlHttpHelper.GetCommandParameter(SqrlCommand.SetKey);
 
 			Assert.IsNotNullOrEmpty(result);
 			Assert.AreEqual("setkey", result);
@@ -37,7 +38,7 @@ namespace SqrlNetTests
 		[Test]
 		public void GetCommandParameter_SetLock_Succeeds()
 		{
-			var result = SqrlHttpHelper.GetCommandParameter(SqrlNet.SqrlCommand.SetLock);
+			var result = SqrlHttpHelper.GetCommandParameter(SqrlCommand.SetLock);
 
 			Assert.IsNotNullOrEmpty(result);
 			Assert.AreEqual("setlock", result);
@@ -46,7 +47,7 @@ namespace SqrlNetTests
 		[Test]
 		public void GetCommandParameter_Disable_Succeeds()
 		{
-			var result = SqrlHttpHelper.GetCommandParameter(SqrlNet.SqrlCommand.Disable);
+			var result = SqrlHttpHelper.GetCommandParameter(SqrlCommand.Disable);
 
 			Assert.IsNotNullOrEmpty(result);
 			Assert.AreEqual("disable", result);
@@ -55,7 +56,7 @@ namespace SqrlNetTests
 		[Test]
 		public void GetCommandParameter_Enable_Succeeds()
 		{
-			var result = SqrlHttpHelper.GetCommandParameter(SqrlNet.SqrlCommand.Enable);
+			var result = SqrlHttpHelper.GetCommandParameter(SqrlCommand.Enable);
 
 			Assert.IsNotNullOrEmpty(result);
 			Assert.AreEqual("enable", result);
@@ -64,7 +65,7 @@ namespace SqrlNetTests
 		[Test]
 		public void GetCommandParameter_Login_Succeeds()
 		{
-			var result = SqrlHttpHelper.GetCommandParameter(SqrlNet.SqrlCommand.Login);
+			var result = SqrlHttpHelper.GetCommandParameter(SqrlCommand.Login);
 
 			Assert.IsNotNullOrEmpty(result);
 			Assert.AreEqual("login", result);
@@ -73,7 +74,7 @@ namespace SqrlNetTests
 		[Test]
 		public void GetCommandParameter_Login_SetKey_Succeeds()
 		{
-			var result = SqrlHttpHelper.GetCommandParameter(SqrlNet.SqrlCommand.Login | SqrlNet.SqrlCommand.SetKey);
+			var result = SqrlHttpHelper.GetCommandParameter(SqrlCommand.Login | SqrlCommand.SetKey);
 
 			Assert.IsNotNullOrEmpty(result);
 			Assert.AreEqual("setkey~login", result);
@@ -82,7 +83,7 @@ namespace SqrlNetTests
 		[Test]
 		public void GetCommandParameter_Login_SetLock_Succeeds()
 		{
-			var result = SqrlHttpHelper.GetCommandParameter(SqrlNet.SqrlCommand.Login | SqrlNet.SqrlCommand.SetLock);
+			var result = SqrlHttpHelper.GetCommandParameter(SqrlCommand.Login | SqrlCommand.SetLock);
 
 			Assert.IsNotNullOrEmpty(result);
 			Assert.AreEqual("setlock~login", result);
@@ -91,7 +92,7 @@ namespace SqrlNetTests
 		[Test]
 		public void GetOptionParameter_SqrlOnly_Succeeds()
 		{
-			var result = SqrlHttpHelper.GetOptionParameter(SqrlNet.SqrlOptions.SqrlOnly);
+			var result = SqrlHttpHelper.GetOptionParameter(SqrlOptions.SqrlOnly);
 
 			Assert.IsNotNullOrEmpty(result);
 			Assert.AreEqual("sqrlonly", result);
@@ -100,7 +101,7 @@ namespace SqrlNetTests
 		[Test]
 		public void GetOptionParameter_HardLock_Succeeds()
 		{
-			var result = SqrlHttpHelper.GetOptionParameter(SqrlNet.SqrlOptions.HardLock);
+			var result = SqrlHttpHelper.GetOptionParameter(SqrlOptions.HardLock);
 
 			Assert.IsNotNullOrEmpty(result);
 			Assert.AreEqual("hardlock", result);
@@ -109,7 +110,7 @@ namespace SqrlNetTests
 		[Test]
 		public void GetOptionParameter_SqrlOnly_HardLock_Succeeds()
 		{
-			var result = SqrlHttpHelper.GetOptionParameter(SqrlNet.SqrlOptions.SqrlOnly | SqrlNet.SqrlOptions.HardLock);
+			var result = SqrlHttpHelper.GetOptionParameter(SqrlOptions.SqrlOnly | SqrlOptions.HardLock);
 
 			Assert.IsNotNullOrEmpty(result);
 			Assert.AreEqual("sqrlonly~hardlock", result);
