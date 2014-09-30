@@ -1,5 +1,7 @@
 using System.Net;
 using System.Text;
+using System;
+using System.Linq;
 
 namespace SqrlNet.Client
 {
@@ -97,61 +99,29 @@ namespace SqrlNet.Client
 		/// <param name='data'>
 		/// The SQRL data.
 		/// </param>
-		public string GetServerParameter(SqrlLoginData data)
+		public static string GetServerParameter(SqrlLoginData data)
 		{
 			return Utility.ConvertToSqrlBase64String(Encoding.ASCII.GetBytes(data.Url));
 		}
 
-		public string GetCommandParameter(SqrlCommand command)
+		/// <summary>
+		/// Gets the command parameter in serialized string form.
+		/// </summary>
+		/// <returns>The command parameter as a serialized string of commands.</returns>
+		/// <param name="command">Command.</param>
+		public static string GetCommandParameter(SqrlCommand command)
 		{
 			var sb = new StringBuilder();
-
-			if((command & SqrlCommand.SetKey) == SqrlCommand.SetKey)
+			foreach(var cmd in Enum.GetValues(typeof(SqrlCommand)).Cast<SqrlCommand>())
 			{
-				sb.Append("~setkey");
+				if((command & cmd) == cmd)
+				{
+					sb.Append("~" + cmd.ToString().ToLower());
+				}
 			}
-
-			if((command & SqrlCommand.SetLock) == SqrlCommand.SetLock)
-			{
-				sb.Append("~setlock");
-			}
-
-			if((command & SqrlCommand.Disable) == SqrlCommand.Disable)
-			{
-				sb.Append("~disable");
-			}
-
-			if((command & SqrlCommand.Enable) == SqrlCommand.Enable)
-			{
-				sb.Append("~enable");
-			}
-
-			if((command & SqrlCommand.Delete) == SqrlCommand.Delete)
-			{
-				sb.Append("~delete");
-			}
-
-			if((command & SqrlCommand.Create) == SqrlCommand.Create)
-			{
-				sb.Append("~create");
-			}
-
-			if((command & SqrlCommand.Login) == SqrlCommand.Login)
-			{
-				sb.Append("~login");
-			}
-
-			if((command & SqrlCommand.LogMe) == SqrlCommand.LogMe)
-			{
-				sb.Append("~logme");
-			}
-
-			if((command & SqrlCommand.LogOff) == SqrlCommand.LogOff)
-			{
-				sb.Append("~logoff");
-			}
-
-			return sb.ToString().Trim(new [] { '~' });
+			return sb.ToString().Trim(new[] {
+				'~'
+			});
 		}
 
 		#endregion
