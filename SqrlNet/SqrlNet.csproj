@@ -73,6 +73,7 @@
     <Compile Include="Crypto\Sodium\SodiumDiffieHellmanHandler.cs" />
     <Compile Include="Client\IdLockHandler.cs" />
     <Compile Include="Client\IIdLockHandler.cs" />
+    <Compile Include="SqrlOptions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
