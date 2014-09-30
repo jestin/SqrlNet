@@ -87,5 +87,32 @@ namespace SqrlNetTests
 			Assert.IsNotNullOrEmpty(result);
 			Assert.AreEqual("setlock~login", result);
 		}
+
+		[Test]
+		public void GetOptionParameter_SqrlOnly_Succeeds()
+		{
+			var result = SqrlHttpHelper.GetOptionParameter(SqrlNet.SqrlOptions.SqrlOnly);
+
+			Assert.IsNotNullOrEmpty(result);
+			Assert.AreEqual("sqrlonly", result);
+		}
+
+		[Test]
+		public void GetOptionParameter_HardLock_Succeeds()
+		{
+			var result = SqrlHttpHelper.GetOptionParameter(SqrlNet.SqrlOptions.HardLock);
+
+			Assert.IsNotNullOrEmpty(result);
+			Assert.AreEqual("hardlock", result);
+		}
+
+		[Test]
+		public void GetOptionParameter_SqrlOnly_HardLock_Succeeds()
+		{
+			var result = SqrlHttpHelper.GetOptionParameter(SqrlNet.SqrlOptions.SqrlOnly | SqrlNet.SqrlOptions.HardLock);
+
+			Assert.IsNotNullOrEmpty(result);
+			Assert.AreEqual("sqrlonly~hardlock", result);
+		}
 	}
 }

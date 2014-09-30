@@ -119,9 +119,22 @@ namespace SqrlNet.Client
 					sb.Append("~" + cmd.ToString().ToLower());
 				}
 			}
-			return sb.ToString().Trim(new[] {
-				'~'
-			});
+
+			return sb.ToString().Trim(new[] { '~' });
+		}
+
+		public static string GetOptionParameter(SqrlOptions options)
+		{
+			var sb = new StringBuilder();
+			foreach(var opt in Enum.GetValues(typeof(SqrlOptions)).Cast<SqrlOptions>())
+			{
+				if((options & opt) == opt)
+				{
+					sb.Append("~" + opt.ToString().ToLower());
+				}
+			}
+
+			return sb.ToString().Trim(new[] { '~' });
 		}
 
 		#endregion
