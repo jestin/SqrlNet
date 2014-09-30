@@ -19,7 +19,7 @@ namespace SqrlNet.Client
 		#region Constructors
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="SqrlNet.IdLockHandler"/> class.
+		/// Initializes a new instance of the <see cref="SqrlNet.Client.IdLockHandler"/> class.
 		/// </summary>
 		/// <param name="prng">Pseudo random number generator.</param>
 		/// <param name="diffieHellmanHandler">Diffie hellman handler.</param>
