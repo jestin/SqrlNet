@@ -48,7 +48,7 @@
     <Compile Include="CryptSharpPbkdfHandlerTests.cs" />
     <Compile Include="SodiumDiffieHellmanHandlerTests.cs" />
     <Compile Include="IdLockHandlerTests.cs" />
-    <Compile Include="SqrlHttpHandlerTests.cs" />
+    <Compile Include="SqrlHttpHelperTests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
